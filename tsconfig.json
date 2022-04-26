@@ -15,9 +15,8 @@
     "lib": ["esnext", "dom"],
     "types": ["vite/client", "vitest/globals"],
     "paths": {
-      "@render/*": ["src-render/*"],
-      "@main/*": ["src-main/*"]
+      "@/*": ["src/*"]
     }
   },
-  "include": ["src-main", "src-renderer", "vite-plugin"]
+  "include": ["src", "vite-plugin"]
 }

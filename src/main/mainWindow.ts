@@ -11,6 +11,7 @@ export async function createWindow() {
     autoHideMenuBar: true,
     center: true,
     webPreferences: {
+      preload: join(app.getAppPath(), '../preload/index.js'),
       devTools: isDev,
     },
   })

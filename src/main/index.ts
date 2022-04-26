@@ -1,5 +1,6 @@
 import { app } from 'electron'
 import { isDev } from './config'
+import './rpc'
 import { createWindow, restoreOrCreateWindow } from './mainWindow'
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'

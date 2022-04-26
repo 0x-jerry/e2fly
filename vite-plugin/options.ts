@@ -15,8 +15,7 @@ export function resolveOptions(options: ViteElectronBuilderOptions, viteConfig: 
   )
 
   const {
-    outputFile = join(root, 'dist/main/index.js'),
-    entryFile = join(root, 'src-main/index.ts'),
+    entry,
     tsconfig = join(root, 'tsconfig.json'),
     electronBuilderConfig = buildConfig,
     afterEsbuildBuild = async () => {},
@@ -26,8 +25,7 @@ export function resolveOptions(options: ViteElectronBuilderOptions, viteConfig: 
 
   const resolvedViteElectronBuilderOptions: ResolvedViteElectronBuilderOptions = {
     root,
-    outputFile,
-    entryFile,
+    entry,
     tsconfig,
     electronBuilderConfig,
     env,
