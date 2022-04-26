@@ -5,7 +5,11 @@ import { isDev } from './config'
 export async function createWindow() {
   const win = new BrowserWindow({
     width: 1000,
-    height: 800,
+    height: 640,
+    minHeight: 640,
+    minWidth: 1000,
+    autoHideMenuBar: true,
+    center: true,
     webPreferences: {
       devTools: isDev,
     },
