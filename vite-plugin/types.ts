@@ -16,6 +16,9 @@ export interface ElectronEntry {
   electron?: boolean
 }
 export interface ResolvedViteElectronBuilderOptions extends Required<ViteElectronBuilderOptions> {
-  env: Record<string, any>
+  env: {
+    DEV_SERVER_URL: string
+    [key: string]: any
+  }
   command: 'build' | 'serve'
 }

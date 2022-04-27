@@ -1,6 +1,7 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
+      DEV_SERVER_URL?: string
       /**
        * WS address
        */
