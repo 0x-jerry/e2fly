@@ -5,10 +5,10 @@
 </template>
 
 <script setup lang="ts">
-import { rpc } from '../rpc'
+import { rpcProxy } from '../rpc'
 
 async function test() {
-  const res = await rpc.ping()
+  const res = await rpcProxy.ping()
   console.log(res)
 }
 </script>

@@ -12,7 +12,7 @@
     "postuninstall": "electron-builder install-app-deps"
   },
   "dependencies": {
-    "@0x-jerry/utils": "^1.6.4",
+    "@0x-jerry/utils": "^1.7.1",
     "@0x-jerry/vue-kit": "^1.2.0",
     "get-port": "^6.1.2",
     "vue": "^3.2.33",
