@@ -3,13 +3,13 @@ import type { MainThreadMethods } from '@/main/rpc/methods'
 import { methods } from './methods'
 import { e2fly } from '../bridge'
 
-const ws = new WebSocket(e2fly.rpc.addr!)
+// const ws = new WebSocket(e2fly.rpc.addr!)
 
 export const rpc = createRPC<MainThreadMethods>(methods, {
   id: e2fly.rpc.id!,
-  send: (data) => ws.send(JSON.stringify(data)),
+  send: (data) => e2fly.rpc.send(data),
 })
 
 export const rpcProxy = rpc.proxy
 
-ws.addEventListener('message', (e) => rpc.receive(JSON.parse(e.data)))
+e2fly.rpc.receiver(rpc.receive)

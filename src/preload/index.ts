@@ -1,9 +1,15 @@
-import { contextBridge } from 'electron'
+import { RPCRequestCtx } from '@0x-jerry/utils'
+import { contextBridge, ipcRenderer } from 'electron'
 
 const expose = {
   rpc: {
-    addr: process.env.E2FLY_WS_ADDR,
     id: process.env.E2FLY_RPC_PROTOCOL_ID,
+    send: (data: any) => ipcRenderer.send('rpc', data),
+    receiver: (resolve: (msg: RPCRequestCtx) => any) => {
+      ipcRenderer.on('rpc', (e, data) => {
+        resolve({ ...data, send: (data) => ipcRenderer.send('rpc', data) })
+      })
+    },
   },
 }
 

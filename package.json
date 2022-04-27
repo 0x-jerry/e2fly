@@ -14,12 +14,9 @@
   "dependencies": {
     "@0x-jerry/utils": "^1.7.1",
     "@0x-jerry/vue-kit": "^1.2.0",
-    "get-port": "^6.1.2",
-    "vue": "^3.2.33",
-    "ws": "^8.5.0"
+    "vue": "^3.2.33"
   },
   "devDependencies": {
-    "@types/ws": "^8.5.3",
     "@vitejs/plugin-vue": "^2.3.1",
     "electron": "^18.0.4",
     "electron-builder": "^23.0.3",
