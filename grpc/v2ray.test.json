@@ -1,0 +1,64 @@
+{
+  "stats": {},
+  "api": {
+    "tag": "api",
+    "services": [
+      "StatsService"
+    ]
+  },
+  "policy": {
+    "levels": {
+      "0": {
+        "statsUserUplink": true,
+        "statsUserDownlink": true
+      }
+    },
+    "system": {
+      "statsInboundUplink": true,
+      "statsInboundDownlink": true,
+      "statsOutboundUplink": true,
+      "statsOutboundDownlink": true
+    }
+  },
+  "inbounds": [
+    {
+      "protocol": "http",
+      "listen": "127.0.0.1",
+      "port": 13225,
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "tls",
+          "http"
+        ]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 10086,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "address": "127.0.0.1"
+      },
+      "tag": "api"
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {}
+    }
+  ],
+  "routing": {
+    "rules": [
+      {
+        "inboundTag": [
+          "api"
+        ],
+        "outboundTag": "api",
+        "type": "field"
+      }
+    ]
+  }
+}
