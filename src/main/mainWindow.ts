@@ -12,7 +12,6 @@ export async function createWindow() {
     center: true,
     webPreferences: {
       preload: getResourcePath('dist/preload/index.js'),
-      devTools: isDev,
     },
   })
 
