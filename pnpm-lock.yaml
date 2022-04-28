@@ -6,6 +6,7 @@ specifiers:
   '@0x-jerry/vue-kit': ^1.2.0
   '@grpc/grpc-js': ^1.6.7
   '@grpc/proto-loader': ^0.6.9
+  '@types/node': ^17.0.29
   '@vitejs/plugin-vue': ^2.3.1
   electron: ^18.0.4
   electron-builder: ^23.0.3
@@ -26,6 +27,7 @@ dependencies:
   vue: 3.2.33
 
 devDependencies:
+  '@types/node': registry.npmmirror.com/@types/node/17.0.29
   '@vitejs/plugin-vue': 2.3.1_vite@2.9.5+vue@3.2.33
   electron: 18.0.4
   electron-builder: 23.0.3
@@ -167,7 +169,7 @@ packages:
   /@types/fs-extra/9.0.13:
     resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
     dependencies:
-      '@types/node': 17.0.25
+      '@types/node': registry.npmmirror.com/@types/node/17.0.29
     dev: true
 
   /@types/minimatch/3.0.5:
@@ -179,19 +181,11 @@ packages:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
     dev: true
 
-  /@types/node/16.11.27:
-    resolution: {integrity: sha512-C1pD3kgLoZ56Uuy5lhfOxie4aZlA3UMGLX9rXteq4WitEZH6Rl80mwactt9QG0w0gLFlN/kLBTFnGXtDVWvWQw==}
-    dev: true
-
-  /@types/node/17.0.25:
-    resolution: {integrity: sha512-wANk6fBrUwdpY4isjWrKTufkrXdu1D2YHCot2fD/DfWxF5sMrVSA+KN7ydckvaTCh0HiqX9IVl0L5/ZoXg5M7w==}
-    dev: true
-
   /@types/plist/3.0.2:
     resolution: {integrity: sha512-ULqvZNGMv0zRFvqn8/4LSPtnmN4MfhlPNtJCTpKuIIxGVGZ2rYWzFXrvEBoh9CVyqSE7D6YFRJ1hydLHI6kbWw==}
     requiresBuild: true
     dependencies:
-      '@types/node': 17.0.25
+      '@types/node': registry.npmmirror.com/@types/node/17.0.29
       xmlbuilder: 15.1.1
     dev: true
     optional: true
@@ -993,7 +987,7 @@ packages:
     requiresBuild: true
     dependencies:
       '@electron/get': 1.14.1
-      '@types/node': 16.11.27
+      '@types/node': registry.npmmirror.com/@types/node/16.11.27
       extract-zip: 1.7.0
     transitivePeerDependencies:
       - supports-color
@@ -2432,7 +2426,7 @@ packages:
     engines: {node: ^8.13.0 || >=10.10.0}
     dependencies:
       '@grpc/proto-loader': registry.npmmirror.com/@grpc/proto-loader/0.6.9
-      '@types/node': registry.npmmirror.com/@types/node/17.0.25
+      '@types/node': registry.npmmirror.com/@types/node/17.0.29
     dev: false
 
   registry.npmmirror.com/@grpc/proto-loader/0.6.9:
@@ -2519,7 +2513,7 @@ packages:
     requiresBuild: true
     dependencies:
       '@types/minimatch': 3.0.5
-      '@types/node': 17.0.25
+      '@types/node': registry.npmmirror.com/@types/node/17.0.29
     dev: true
     optional: true
 
@@ -2529,11 +2523,16 @@ packages:
     version: 4.0.2
     dev: false
 
-  registry.npmmirror.com/@types/node/17.0.25:
-    resolution: {integrity: sha512-wANk6fBrUwdpY4isjWrKTufkrXdu1D2YHCot2fD/DfWxF5sMrVSA+KN7ydckvaTCh0HiqX9IVl0L5/ZoXg5M7w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/node/-/node-17.0.25.tgz}
+  registry.npmmirror.com/@types/node/16.11.27:
+    resolution: {integrity: sha512-C1pD3kgLoZ56Uuy5lhfOxie4aZlA3UMGLX9rXteq4WitEZH6Rl80mwactt9QG0w0gLFlN/kLBTFnGXtDVWvWQw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/node/-/node-16.11.27.tgz}
     name: '@types/node'
-    version: 17.0.25
-    dev: false
+    version: 16.11.27
+    dev: true
+
+  registry.npmmirror.com/@types/node/17.0.29:
+    resolution: {integrity: sha512-tx5jMmMFwx7wBwq/V7OohKDVb/JwJU5qCVkeLMh1//xycAJ/ESuw9aJ9SEtlCZDYi2pBfe4JkisSoAtbOsBNAA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/node/-/node-17.0.29.tgz}
+    name: '@types/node'
+    version: 17.0.29
 
   registry.npmmirror.com/ansi-regex/5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/ansi-regex/-/ansi-regex-5.0.1.tgz}
@@ -2920,7 +2919,7 @@ packages:
       '@protobufjs/pool': registry.npmmirror.com/@protobufjs/pool/1.1.0
       '@protobufjs/utf8': registry.npmmirror.com/@protobufjs/utf8/1.1.0
       '@types/long': registry.npmmirror.com/@types/long/4.0.2
-      '@types/node': registry.npmmirror.com/@types/node/17.0.25
+      '@types/node': registry.npmmirror.com/@types/node/17.0.29
       long: registry.npmmirror.com/long/4.0.0
     dev: false
 

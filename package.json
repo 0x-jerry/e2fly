@@ -33,6 +33,7 @@
     "vue": "^3.2.33"
   },
   "devDependencies": {
+    "@types/node": "^17.0.29",
     "@vitejs/plugin-vue": "^2.3.1",
     "electron": "^18.0.4",
     "electron-builder": "^23.0.3",

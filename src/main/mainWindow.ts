@@ -1,6 +1,6 @@
-import { app, BrowserWindow } from 'electron'
-import { join } from 'path'
+import { BrowserWindow } from 'electron'
 import { isDev } from './config'
+import { getResourcePath } from './utils'
 
 export async function createWindow() {
   const win = new BrowserWindow({
@@ -11,7 +11,7 @@ export async function createWindow() {
     autoHideMenuBar: true,
     center: true,
     webPreferences: {
-      preload: join(app.getAppPath(), 'dist/preload/index.js'),
+      preload: getResourcePath('dist/preload/index.js'),
       devTools: isDev,
     },
   })
@@ -20,7 +20,7 @@ export async function createWindow() {
 
   const URL = isDev
     ? process.env.DEV_SERVER_URL!
-    : `file://${join(app.getAppPath(), 'dist/render/index.html')}`
+    : 'file://' + getResourcePath('dist/render/index.html')
 
   win.loadURL(URL)
 
