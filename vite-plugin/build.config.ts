@@ -2,14 +2,14 @@ import { Configuration } from 'electron-builder'
 
 export const buildConfig: Configuration = {
   directories: {
-    output: 'dist/electron',
+    output: 'out',
   },
-  npmRebuild: false,
-  buildDependenciesFromSource: true,
+  // npmRebuild: false,
+  // buildDependenciesFromSource: true,
   electronDownload: {
-    mirror: 'https://npm.taobao.org/mirrors/electron/',
+    // mirror: 'https://cdn.npmmirror.com/binaries/electron/',
   },
-  files: ['dist/main/**/*', 'dist/render/**/*'],
+  files: ['dist/**/*'],
   nsis: {
     oneClick: false,
     allowElevation: true,

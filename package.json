@@ -1,6 +1,19 @@
 {
   "name": "e2fly",
   "version": "0.0.0",
+  "main": "dist/main/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0x-jerry/e2fly.git"
+  },
+  "keywords": [
+    "v2fly"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/0x-jerry/e2fly/issues"
+  },
+  "homepage": "https://github.com/0x-jerry/e2fly#readme",
   "scripts": {
     "dev": "rimraf dist && vite",
     "build": "rimraf dist && vite build",

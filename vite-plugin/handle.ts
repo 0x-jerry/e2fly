@@ -25,7 +25,7 @@ export async function handleBuild(options: ResolvedViteElectronBuilderOptions) {
 
   try {
     for (const entry of toArray(options.entry)) {
-      await buildWithESBuild(esbuildOptions, entry, true)
+      await buildWithESBuild(esbuildOptions, entry, false)
     }
 
     await electronBuilder({
