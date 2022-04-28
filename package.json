@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@0x-jerry/utils": "^1.7.1",
+    "@0x-jerry/v2ray-schema": "^0.2.6",
     "@0x-jerry/vue-kit": "^1.2.0",
     "vue": "^3.2.33"
   },
