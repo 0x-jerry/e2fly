@@ -1,5 +1,5 @@
 syntax = "proto3";
-//source: https://github.com/v2fly/v2ray-core/blob/master/app/stats/command/command.proto
+// source: https://github.com/v2fly/v2ray-core/blob/master/app/stats/command/command.proto
 
 package v2ray.core.app.stats.command;
 option csharp_namespace = "V2Ray.Core.App.Stats.Command";

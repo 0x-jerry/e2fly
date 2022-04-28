@@ -12,7 +12,7 @@ const StatsService = pkg.v2ray.core.app.stats.command.StatsService
 
 // todo: change host at runtime
 const host = 'localhost:10086'
-var client = new StatsService(host, grpc.credentials.createInsecure())
+const client = new StatsService(host, grpc.credentials.createInsecure())
 
 client.queryStats(
   {

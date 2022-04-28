@@ -1,4 +1,4 @@
-# https://github.com/grpc/grpc-node/tree/master/packages/proto-loader#example-usage
+# https://github.com/grpc/grpc-node/tree/master/packages/proto-loader#generating-typescript-types
 
 # clean src/proto
 [ -d src/proto ] && rm -rf src/proto
