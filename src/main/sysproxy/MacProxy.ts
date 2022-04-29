@@ -17,30 +17,22 @@ export class MacProxy implements SysProxy {
     })
   }
 
-  enable(type: SysProxyType, conf: SysProxyConfig): boolean {
+  enable(type: SysProxyType, conf: SysProxyConfig) {
     const availableNetworkTypes = this.getAvailableNetworkTypes()
     if (type === 'http') {
       for (const netType of availableNetworkTypes) {
         this.enableHttpProxy(conf, netType)
       }
-
-      return true
     }
-
-    return false
   }
 
-  disable(type: SysProxyType): boolean | Promise<boolean> {
+  disable(type: SysProxyType) {
     const availableNetworkTypes = this.getAvailableNetworkTypes()
     if (type === 'http') {
       for (const netType of availableNetworkTypes) {
         this.disableHttpProxy(netType)
       }
-
-      return true
     }
-
-    return false
   }
 
   enableHttpProxy(conf: SysProxyConfig, networkType: MacNetworkType) {

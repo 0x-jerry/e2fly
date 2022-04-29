@@ -9,8 +9,21 @@ export interface SysProxyConfig {
 }
 
 export interface SysProxy {
-  enable(type: SysProxyType, conf: SysProxyConfig): Promise<boolean> | boolean
-  disable(type: SysProxyType): boolean | Promise<boolean>
+  /**
+   * Will throw error when enable failed.
+   * @param type
+   * @param conf
+   * @throws {Error}
+   */
+  enable(type: SysProxyType, conf: SysProxyConfig): void | Promise<void>
+
+  /**
+   *
+   * Will throw error when disable failed.
+   * @param type
+   * @throws {Error}
+   */
+  disable(type: SysProxyType): void | Promise<void>
 }
 
 function createProxyInstance(): SysProxy | null {
