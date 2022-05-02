@@ -5,11 +5,12 @@ import '@vue/runtime-core'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    AppSidebar: typeof import('./components/AppSidebar.vue')['default']
+    E2flyConfCard: typeof import('./components/E2flyConfCard.vue')['default']
     'IEp:plus': typeof import('~icons/ep/plus')['default']
     IEpExpand: typeof import('~icons/ep/expand')['default']
     IEpFold: typeof import('~icons/ep/fold')['default']
     KButton: typeof import('@0x-jerry/vue-kit')['KButton']
+    KDrawer: typeof import('@0x-jerry/vue-kit')['KDrawer']
     KRow: typeof import('@0x-jerry/vue-kit')['KRow']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

@@ -13,8 +13,8 @@ const activeMenu = computed(() => menus.find((n) => n.route === route.path))
         {{ activeMenu?.text }}
       </h1>
     </div>
-    <div>
-      <k-button> 日志 </k-button>
+    <div id="app-head--append">
+      <!--  -->
     </div>
   </div>
 </template>

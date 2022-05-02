@@ -1,16 +1,31 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import AppHeadAppend from '../components/AppHeadAppend.vue'
+const data = reactive({
+  showConfig: false,
+})
+
+function showConfigDrawer() {
+  data.showConfig = true
+}
+</script>
 
 <template>
   <div>
-    <div class="cards" grid="~" style="grid-template-columns: repeat(auto-fit, 200px)">
-      <div class="add-card">
-        <div>
-          <i-ep:plus></i-ep:plus>
-        </div>
-        <div>添加配置</div>
-        <!--  -->
-      </div>
+    <AppHeadAppend>
+      <k-button @click="showConfigDrawer">添加配置</k-button>
+    </AppHeadAppend>
+    <div
+      class="cards"
+      grid="~"
+      style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))"
+      gap="x-2 y-1"
+    >
+      <!--  -->
     </div>
+
+    <k-drawer v-model="data.showConfig" title="添加配置">
+      <div>Hello</div>
+    </k-drawer>
   </div>
 </template>
 

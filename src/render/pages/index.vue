@@ -16,9 +16,3 @@ import AppSidebar from './components/AppSidebar.vue'
     </div>
   </div>
 </template>
-
-<style lang="less">
-hr {
-  @apply border-gray-200 !my-3;
-}
-</style>
