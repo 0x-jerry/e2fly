@@ -5,9 +5,10 @@ import '@vue/runtime-core'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AppSidebar: typeof import('./components/AppSidebar.vue')['default']
+    IEpExpand: typeof import('~icons/ep/expand')['default']
+    IEpFold: typeof import('~icons/ep/fold')['default']
     KButton: typeof import('@0x-jerry/vue-kit')['KButton']
-    KCol: typeof import('@0x-jerry/vue-kit')['KCol']
-    KFlex: typeof import('@0x-jerry/vue-kit')['KFlex']
     KRow: typeof import('@0x-jerry/vue-kit')['KRow']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

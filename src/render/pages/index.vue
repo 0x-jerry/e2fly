@@ -1,14 +1,13 @@
 <script lang="ts" setup>
+import AppSidebar from './components/AppSidebar.vue'
+
 //
 </script>
 
 <template>
   <div flex="~" h="100vh">
-    <div w="60px" bg="light-500" flex="~ col" justify="end">
-      <div>hello</div>
-      <!--  -->
-    </div>
-    <div flex="1" overflow="auto" border="~ solid red">
+    <app-sidebar></app-sidebar>
+    <div flex="1" overflow="auto" p="x-6 y-4">
       <router-view></router-view>
     </div>
   </div>

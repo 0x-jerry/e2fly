@@ -7,6 +7,7 @@ import Pages from 'vite-plugin-pages'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Icons from 'unplugin-icons/vite'
+import IconsResolver from 'unplugin-icons/resolver'
 import Unocss from 'unocss/vite'
 import { presetAttributify, presetWind } from 'unocss'
 import transformerDirective from '@unocss/transformer-directives'
@@ -53,13 +54,14 @@ export default defineConfig({
     // https://github.com/antfu/vite-plugin-components
     Components({
       dts: 'auto-components.d.ts',
-      resolvers: [VueKitResolver()],
+      dirs: ['components'],
+      resolvers: [VueKitResolver(), IconsResolver()],
     }),
 
     // https://github.com/hannoeru/vite-plugin-pages
     Pages({
       dirs: ['pages'],
-      exclude: ['**/components/*.vue', '**/*.ts'],
+      exclude: ['**/components/*.vue'],
     }),
   ],
   resolve: {
