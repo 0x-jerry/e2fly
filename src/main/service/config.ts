@@ -15,6 +15,7 @@ export class ConfigService {
 
   async save(config: E2FlyConfig = this.config) {
     this.config = config
+
     await fs.ensureDir(configDir)
 
     await fs.writeFile(configPath, JSON.stringify(config, null, 2))

@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@0x-jerry/utils': ^1.7.1
   '@0x-jerry/v2ray-schema': ^0.2.6
-  '@0x-jerry/vue-kit': ^1.4.0
+  '@0x-jerry/vue-kit': ^1.4.3
   '@grpc/grpc-js': ^1.6.7
   '@grpc/proto-loader': ^0.6.9
   '@iconify/json': ^2.1.34
@@ -33,7 +33,7 @@ specifiers:
 dependencies:
   '@0x-jerry/utils': 1.7.1
   '@0x-jerry/v2ray-schema': 0.2.6
-  '@0x-jerry/vue-kit': registry.npmjs.org/@0x-jerry/vue-kit/1.4.0
+  '@0x-jerry/vue-kit': registry.npmjs.org/@0x-jerry/vue-kit/1.4.3
   '@grpc/grpc-js': 1.6.7
   '@grpc/proto-loader': 0.6.9
   '@vueuse/core': 8.3.1_vue@3.2.33
@@ -3995,10 +3995,10 @@ packages:
       nanoid: 3.3.3
     dev: false
 
-  registry.npmjs.org/@0x-jerry/vue-kit/1.4.0:
-    resolution: {integrity: sha512-DQVeoWaC3wIOeSmbF3gF58vnkVqFZWu/F7guiqGEK4BBpYacAT6wUwSLD9StpU+pm0X4PLXXetMau+ecqxyzXA==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@0x-jerry/vue-kit/-/vue-kit-1.4.0.tgz}
+  registry.npmjs.org/@0x-jerry/vue-kit/1.4.3:
+    resolution: {integrity: sha512-zs10QvNCMToPobcPfVnroNcleAKfUsiE1y0WoNpcwSn1WscX2UjalBQWtKxgGyOjeud9fPWVwOJADulnd7tmBg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@0x-jerry/vue-kit/-/vue-kit-1.4.3.tgz}
     name: '@0x-jerry/vue-kit'
-    version: 1.4.0
+    version: 1.4.3
     dependencies:
       '@0x-jerry/utils': registry.npmjs.org/@0x-jerry/utils/1.7.1
       '@floating-ui/dom': 0.4.5
