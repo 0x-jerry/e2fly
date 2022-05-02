@@ -1,7 +1,14 @@
+import { E2FlyConfig } from '../config'
+import { services } from '../service'
+
 export type MainThreadMethods = typeof methods
 
 export const methods = {
-  ping() {
-    return 'pong'
+  async getConfig() {
+    return services.config.read()
+  },
+
+  async saveConfig(config: E2FlyConfig) {
+    await services.config.save(config)
   },
 }

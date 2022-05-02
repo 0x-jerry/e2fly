@@ -7,6 +7,7 @@ specifiers:
   '@grpc/grpc-js': ^1.6.7
   '@grpc/proto-loader': ^0.6.9
   '@iconify/json': ^2.1.34
+  '@types/fs-extra': ^9.0.13
   '@types/node': ^17.0.31
   '@unocss/transformer-directives': ^0.32.8
   '@vitejs/plugin-vue': ^2.3.1
@@ -14,6 +15,7 @@ specifiers:
   electron: ^18.2.0
   electron-builder: ^23.0.3
   esbuild: ^0.14.38
+  fs-extra: ^10.1.0
   less: ^4.1.2
   picocolors: ^1.0.0
   rimraf: ^3.0.2
@@ -35,11 +37,13 @@ dependencies:
   '@grpc/grpc-js': 1.6.7
   '@grpc/proto-loader': 0.6.9
   '@vueuse/core': 8.3.1_vue@3.2.33
+  fs-extra: 10.1.0
   vue: 3.2.33
   vue-router: 4.0.14_vue@3.2.33
 
 devDependencies:
   '@iconify/json': 2.1.34
+  '@types/fs-extra': 9.0.13
   '@types/node': 17.0.31
   '@unocss/transformer-directives': 0.32.8
   '@vitejs/plugin-vue': 2.3.1_vite@2.9.6+vue@3.2.33
@@ -316,7 +320,7 @@ packages:
     dev: true
 
   /@types/fs-extra/9.0.13:
-    resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/@types/fs-extra/-/fs-extra-9.0.13.tgz}
+    resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
     dependencies:
       '@types/node': 17.0.31
     dev: true
@@ -1828,16 +1832,15 @@ packages:
     dev: true
 
   /fs-extra/10.1.0:
-    resolution: {integrity: sha512-oRXApq54ETRj4eMiFzGnHWGy+zo5raudjuxN0b8H7s/RU2oW0Wvsx9O0ACRN/kRq9E8Vu/ReskGB5o3ji+FzHQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/fs-extra/-/fs-extra-10.1.0.tgz}
+    resolution: {integrity: sha512-oRXApq54ETRj4eMiFzGnHWGy+zo5raudjuxN0b8H7s/RU2oW0Wvsx9O0ACRN/kRq9E8Vu/ReskGB5o3ji+FzHQ==}
     engines: {node: '>=12'}
     dependencies:
       graceful-fs: 4.2.10
       jsonfile: 6.1.0
       universalify: 2.0.0
-    dev: true
 
   /fs-extra/8.1.0:
-    resolution: {integrity: sha512-yhlQgA6mnOJUKOsRUFsgJdQCvkKhcz8tlZG5HBQfReYZy46OwLcY+Zia0mtdHsOo9y/hP+CxMN0TU9QxoOtG4g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/fs-extra/-/fs-extra-8.1.0.tgz}
+    resolution: {integrity: sha512-yhlQgA6mnOJUKOsRUFsgJdQCvkKhcz8tlZG5HBQfReYZy46OwLcY+Zia0mtdHsOo9y/hP+CxMN0TU9QxoOtG4g==}
     engines: {node: '>=6 <7 || >=8'}
     dependencies:
       graceful-fs: 4.2.10
@@ -1846,7 +1849,7 @@ packages:
     dev: true
 
   /fs-extra/9.1.0:
-    resolution: {integrity: sha512-hcg3ZmepS30/7BSFqRvoo3DOMQu7IjqxO5nCDt+zM9XWjb33Wg7ziNT+Qvqbuc3+gWpzO02JubVyk2G4Zvo1OQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/fs-extra/-/fs-extra-9.1.0.tgz}
+    resolution: {integrity: sha512-hcg3ZmepS30/7BSFqRvoo3DOMQu7IjqxO5nCDt+zM9XWjb33Wg7ziNT+Qvqbuc3+gWpzO02JubVyk2G4Zvo1OQ==}
     engines: {node: '>=10'}
     dependencies:
       at-least-node: 1.0.0
@@ -1996,7 +1999,6 @@ packages:
 
   /graceful-fs/4.2.10:
     resolution: {integrity: sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==}
-    dev: true
 
   /graceful-readlink/1.0.1:
     resolution: {integrity: sha512-8tLu60LgxF6XpdbK8OW3FA+IfTNBn1ZHGHKF4KQbEeSkajYw5PlYJcKluntgegDPTg8UkHjpet1T82vk6TQ68w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/graceful-readlink/-/graceful-readlink-1.0.1.tgz}
@@ -2427,18 +2429,17 @@ packages:
     dev: true
 
   /jsonfile/4.0.0:
-    resolution: {integrity: sha512-m6F1R3z8jjlf2imQHS2Qez5sjKWQzbuuhuJ/FKYFRZvPE3PuHcSMVZzfsLhGVOkfd20obL5SWEBew5ShlquNxg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/jsonfile/-/jsonfile-4.0.0.tgz}
+    resolution: {integrity: sha512-m6F1R3z8jjlf2imQHS2Qez5sjKWQzbuuhuJ/FKYFRZvPE3PuHcSMVZzfsLhGVOkfd20obL5SWEBew5ShlquNxg==}
     optionalDependencies:
       graceful-fs: 4.2.10
     dev: true
 
   /jsonfile/6.1.0:
-    resolution: {integrity: sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/jsonfile/-/jsonfile-6.1.0.tgz}
+    resolution: {integrity: sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==}
     dependencies:
       universalify: 2.0.0
     optionalDependencies:
       graceful-fs: 4.2.10
-    dev: true
 
   /keyv/3.1.0:
     resolution: {integrity: sha512-9ykJ/46SN/9KPM/sichzQ7OvXyGDYKGTaDlKMGCAlg2UK8KRy4jb0d8sFc+0Tt0YYnThq8X2RZgCg74RPxgcVA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/keyv/-/keyv-3.1.0.tgz}
@@ -3449,14 +3450,13 @@ packages:
     dev: true
 
   /universalify/0.1.2:
-    resolution: {integrity: sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/universalify/-/universalify-0.1.2.tgz}
+    resolution: {integrity: sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==}
     engines: {node: '>= 4.0.0'}
     dev: true
 
   /universalify/2.0.0:
-    resolution: {integrity: sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/universalify/-/universalify-2.0.0.tgz}
+    resolution: {integrity: sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==}
     engines: {node: '>= 10.0.0'}
-    dev: true
 
   /unocss/0.32.8_vite@2.9.6:
     resolution: {integrity: sha512-9/GSqbT7lgvzJXf2mq+ghz/HPtuZflgJ9RnBhQqn3y/cGuyqsDsms2uCNJXDmsB3iNf0p24KAET5Lnjkt8OgAQ==}

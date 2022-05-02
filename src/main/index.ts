@@ -2,6 +2,7 @@ import { app } from 'electron'
 import { isDev } from './config'
 import './rpc'
 import { createWindow, restoreOrCreateWindow } from './mainWindow'
+import { initServices } from './service'
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
@@ -21,6 +22,7 @@ app.on('activate', async () => {
 
 app.on('ready', async () => {
   try {
+    await initServices()
     await createWindow()
   } catch (error) {
     app.quit()
