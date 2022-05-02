@@ -4,7 +4,6 @@ import { createApp } from 'vue'
 import App from './App.vue'
 
 import '@0x-jerry/vue-kit/dist/style.css'
-// import '@unocss/reset/tailwind.css'
 import 'uno.css'
 
 const app = createApp(App)
