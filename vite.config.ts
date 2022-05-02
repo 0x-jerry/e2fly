@@ -1,9 +1,16 @@
 /// <reference types="vitest/config" />
-
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { join } from 'path'
 import { VitePluginElectronBuilder } from './vite-plugin'
+import Pages from 'vite-plugin-pages'
+import Components from 'unplugin-vue-components/vite'
+import AutoImport from 'unplugin-auto-import/vite'
+import Icons from 'unplugin-icons/vite'
+import Unocss from 'unocss/vite'
+import { presetAttributify, presetWind } from 'unocss'
+import transformerDirective from '@unocss/transformer-directives'
+import { VueKitResolver } from '@0x-jerry/vue-kit/resolver'
 
 const r = (...path: string[]) => join(__dirname, ...path)
 
@@ -27,6 +34,32 @@ export default defineConfig({
           electron: true,
         },
       ],
+    }),
+
+    Icons(),
+
+    // https://github.com/unocss/unocss
+    Unocss({
+      presets: [presetAttributify(), presetWind()],
+      transformers: [transformerDirective()],
+    }),
+
+    // https://github.com/antfu/unplugin-auto-import
+    AutoImport({
+      dts: 'auto-imports.d.ts',
+      imports: ['vue', 'vue-router', '@vueuse/core'],
+    }),
+
+    // https://github.com/antfu/vite-plugin-components
+    Components({
+      dts: 'auto-components.d.ts',
+      resolvers: [VueKitResolver()],
+    }),
+
+    // https://github.com/hannoeru/vite-plugin-pages
+    Pages({
+      dirs: ['pages'],
+      exclude: ['**/components/*.vue', '**/*.ts'],
     }),
   ],
   resolve: {

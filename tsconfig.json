@@ -13,7 +13,12 @@
     "emitDecoratorMetadata": true,
     "baseUrl": ".",
     "lib": ["esnext", "dom"],
-    "types": ["vite/client", "vitest/globals"],
+    "types": [
+      "vite/client",
+      "vitest/globals",
+      "vite-plugin-pages/client",
+      "unplugin-icons/types/vue"
+    ],
     "paths": {
       "@/*": ["src/*"]
     }
