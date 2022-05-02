@@ -6,6 +6,7 @@ import '@vue/runtime-core'
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AppSidebar: typeof import('./components/AppSidebar.vue')['default']
+    'IEp:plus': typeof import('~icons/ep/plus')['default']
     IEpExpand: typeof import('~icons/ep/expand')['default']
     IEpFold: typeof import('~icons/ep/fold')['default']
     KButton: typeof import('@0x-jerry/vue-kit')['KButton']
