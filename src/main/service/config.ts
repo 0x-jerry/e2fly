@@ -9,6 +9,7 @@ export const configPath = join(configDir, 'config.json')
 async function createDefaultConfig() {
   const conf: E2FlyConfig = {
     proxy: {},
+    activeOutboundId: '',
     v2fly: {
       bin: 'v2ray',
       http: {

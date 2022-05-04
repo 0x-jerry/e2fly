@@ -3,6 +3,7 @@ import { IV2RayOutbound } from '@0x-jerry/v2ray-schema'
 export interface E2FlyConfig {
   proxy: ProxyConfig
   v2fly: V2FlyConfig
+  activeOutboundId: ''
   outbound: {
     id: string
     label: string
