@@ -9,6 +9,7 @@ declare module '@vue/runtime-core' {
     IEpExpand: typeof import('~icons/ep/expand')['default']
     IEpFold: typeof import('~icons/ep/fold')['default']
     KButton: typeof import('@0x-jerry/vue-kit')['KButton']
+    KCheckbox: typeof import('@0x-jerry/vue-kit')['KCheckbox']
     KCol: typeof import('@0x-jerry/vue-kit')['KCol']
     KDrawer: typeof import('@0x-jerry/vue-kit')['KDrawer']
     KInput: typeof import('@0x-jerry/vue-kit')['KInput']

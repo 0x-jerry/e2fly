@@ -1,8 +1,9 @@
 import { createSimpleLogger } from '@0x-jerry/utils'
+import { isDev } from '../config'
 
 export const logger = createSimpleLogger('[render]')
 
-if (import.meta.env.DEV) {
+if (isDev) {
   logger.enable()
 } else {
   logger.disable()

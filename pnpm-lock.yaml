@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@0x-jerry/utils': ^1.7.1
-  '@0x-jerry/v2ray-schema': ^0.2.6
+  '@0x-jerry/v2ray-schema': ^0.3.0
   '@0x-jerry/vue-kit': ^1.4.3
   '@grpc/grpc-js': ^1.6.7
   '@grpc/proto-loader': ^0.6.9
@@ -32,7 +32,7 @@ specifiers:
 
 dependencies:
   '@0x-jerry/utils': 1.7.1
-  '@0x-jerry/v2ray-schema': 0.2.6
+  '@0x-jerry/v2ray-schema': registry.npmjs.org/@0x-jerry/v2ray-schema/0.3.0
   '@0x-jerry/vue-kit': registry.npmjs.org/@0x-jerry/vue-kit/1.4.3
   '@grpc/grpc-js': 1.6.7
   '@grpc/proto-loader': 0.6.9
@@ -73,10 +73,6 @@ packages:
     dependencies:
       '@vue/reactivity': 3.2.33
       nanoid: 3.3.3
-    dev: false
-
-  /@0x-jerry/v2ray-schema/0.2.6:
-    resolution: {integrity: sha512-EY4f8As5hufBtl63UVYLsc3lgfdRs7WYfCnfoBEDVxgty9n/+5aSmgJkQ4l+Bne9sthHjF9e933yNmJNRycQIg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/@0x-jerry/v2ray-schema/-/v2ray-schema-0.2.6.tgz}
     dev: false
 
   /@antfu/install-pkg/0.1.0:
@@ -3993,6 +3989,12 @@ packages:
     dependencies:
       '@vue/reactivity': 3.2.33
       nanoid: 3.3.3
+    dev: false
+
+  registry.npmjs.org/@0x-jerry/v2ray-schema/0.3.0:
+    resolution: {integrity: sha512-TOmtXBXMI5K+XOGa4UEo9xeM5E85p78O0zo+cl5VGTsfUPr8p85Rb0/+F0f689edpz7rQH2onySbDOZnmk6lbw==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@0x-jerry/v2ray-schema/-/v2ray-schema-0.3.0.tgz}
+    name: '@0x-jerry/v2ray-schema'
+    version: 0.3.0
     dev: false
 
   registry.npmjs.org/@0x-jerry/vue-kit/1.4.3:

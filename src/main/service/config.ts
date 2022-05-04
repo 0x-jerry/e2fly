@@ -6,6 +6,26 @@ import fs from 'fs-extra'
 export const configDir = join(homedir(), '.e2fly')
 export const configPath = join(configDir, 'config.json')
 
+async function createDefaultConfig() {
+  const conf: E2FlyConfig = {
+    proxy: {},
+    v2fly: {
+      bin: 'v2ray',
+      http: {
+        address: '127.0.0.1',
+        port: 6667,
+      },
+      socks: {
+        address: '127.0.0.1',
+        port: 6666,
+      },
+    },
+    outbound: [],
+  }
+
+  return conf
+}
+
 export class ConfigService {
   config!: E2FlyConfig
 
@@ -22,17 +42,10 @@ export class ConfigService {
   }
 
   async read(): Promise<E2FlyConfig> {
-    const defaultConfig: E2FlyConfig = {
-      proxy: {},
-      v2fly: {
-        bin: '',
-        inbound: [],
-      },
-      outbound: [],
-    }
+    const conf = await createDefaultConfig()
 
     if (!(await fs.pathExists(configPath))) {
-      return defaultConfig
+      return conf
     }
 
     try {
@@ -42,6 +55,6 @@ export class ConfigService {
       //
     }
 
-    return defaultConfig
+    return conf
   }
 }

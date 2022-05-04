@@ -23,11 +23,11 @@ export interface ProxyConfig {
 
 export interface V2FlyConfig {
   bin: string
-  inbound: V2flyConfigInbound[]
+  http: V2flyConfigInbound
+  socks: V2flyConfigInbound
 }
 
 export interface V2flyConfigInbound {
-  type: 'http' | 'socks'
   address: string
   port: number
   auth?: {

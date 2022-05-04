@@ -11,4 +11,8 @@ export const methods = {
   async saveConfig(config: E2FlyConfig) {
     await services.config.save(config)
   },
+
+  async startV2fly(id: string) {
+    await services.v2fly.start(id)
+  },
 }
