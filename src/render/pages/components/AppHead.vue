@@ -22,7 +22,7 @@ const activeMenu = computed(() => menus.find((n) => n.route === route.path))
 <style lang="less" scoped>
 .app-head {
   height: 50px;
-  border-bottom: 1px;
+  border-width: 0 0 1px;
   border-style: solid;
   @apply bg-light-200 border-light-700;
   @apply px-3;

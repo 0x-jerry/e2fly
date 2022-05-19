@@ -32,6 +32,7 @@
     "@grpc/proto-loader": "^0.6.12",
     "@vueuse/core": "^8.5.0",
     "fs-extra": "^10.1.0",
+    "normalize.css": "^8.0.1",
     "vue": "^3.2.34",
     "vue-router": "^4.0.15"
   },

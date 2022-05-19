@@ -21,7 +21,7 @@ const isActive = (menu: MenuItem) => route.path === menu.route
 </script>
 
 <template>
-  <div bg="light-500" flex="~ col" p="y-3 x-4" border="r solid light-800">
+  <div bg="light-500" flex="~ col" p="y-3 x-4" border="x-0 y-0 r solid light-800">
     <div flex="1 ~ col" gap="y-3">
       <k-row
         class="menu-item items-center"
