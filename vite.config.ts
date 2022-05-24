@@ -24,6 +24,10 @@ export default defineConfig({
     VitePluginElectronBuilder({
       root: process.cwd(),
       tsconfig: './tsconfig.main.json',
+      assetsDir: {
+        input: r('src/assets'),
+        output: r('dist/assets'),
+      },
       entry: [
         {
           input: r('src/preload/index.ts'),

@@ -6,14 +6,18 @@ import '@vue/runtime-core'
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     E2flyConfCard: typeof import('./components/E2flyConfCard.vue')['default']
+    E2flyConfig: typeof import('./components/E2flyConfig.vue')['default']
     IEpExpand: typeof import('~icons/ep/expand')['default']
     IEpFold: typeof import('~icons/ep/fold')['default']
     KButton: typeof import('@0x-jerry/vue-kit')['KButton']
-    KCheckbox: typeof import('@0x-jerry/vue-kit')['KCheckbox']
     KCol: typeof import('@0x-jerry/vue-kit')['KCol']
     KDrawer: typeof import('@0x-jerry/vue-kit')['KDrawer']
     KInput: typeof import('@0x-jerry/vue-kit')['KInput']
+    KOption: typeof import('@0x-jerry/vue-kit')['KOption']
+    KRadio: typeof import('@0x-jerry/vue-kit')['KRadio']
+    KRadioGroup: typeof import('@0x-jerry/vue-kit')['KRadioGroup']
     KRow: typeof import('@0x-jerry/vue-kit')['KRow']
+    KSelect: typeof import('@0x-jerry/vue-kit')['KSelect']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

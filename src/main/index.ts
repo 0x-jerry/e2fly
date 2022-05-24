@@ -3,6 +3,7 @@ import { isDev } from './config'
 import './rpc'
 import { createWindow, restoreOrCreateWindow } from './mainWindow'
 import { initServices } from './service'
+import { createTray } from './tray'
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
@@ -22,6 +23,7 @@ app.on('activate', async () => {
 
 app.on('ready', async () => {
   try {
+    createTray()
     await initServices()
     await createWindow()
   } catch (error) {

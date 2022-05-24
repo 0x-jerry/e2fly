@@ -22,12 +22,12 @@ init()
 
 <style lang="less">
 hr {
-  @apply border-gray-200 !my-3;
+  border-width: 0 0 1px;
+  @apply border-light-900 !my-3;
 }
 
 html,
 body {
   @apply font-sans;
-  // @apply font-serif;
 }
 </style>

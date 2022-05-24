@@ -3,7 +3,8 @@ import pc from 'picocolors'
 import { build, BuildOptions } from 'esbuild'
 import electron from 'electron'
 import { build as electronBuilder } from 'electron-builder'
-import { ElectronEntry, ResolvedViteElectronBuilderOptions } from './types'
+import { ElectronEntry, ResolvedViteElectronBuilderOptions, AssetsEntry } from './types'
+import fs from 'fs-extra'
 
 const toArray = <T>(o: T[] | T): T[] => (Array.isArray(o) ? o : [o])
 
@@ -17,6 +18,8 @@ export async function handleDev(options: ResolvedViteElectronBuilderOptions) {
   for (const entry of toArray(options.entry)) {
     await buildWithESBuild(esbuildOptions, entry, true)
   }
+
+  await copyAssets(toArray(options.assetsDir))
 }
 
 export async function handleBuild(options: ResolvedViteElectronBuilderOptions) {
@@ -31,6 +34,8 @@ export async function handleBuild(options: ResolvedViteElectronBuilderOptions) {
     await electronBuilder({
       config: electronBuilderConfig,
     })
+
+    await copyAssets(toArray(options.assetsDir))
 
     console.log(pc.green('Main Process Build Succeeded.'))
   } catch (error) {
@@ -84,5 +89,15 @@ function createEsbuildOptions(options: ResolvedViteElectronBuilderOptions): Buil
     define,
     tsconfig,
     external,
+  }
+}
+
+async function copyAssets(dirs: AssetsEntry[]) {
+  for (const dir of dirs) {
+    await fs.copy(dir.input, dir.output, {
+      overwrite: false,
+      errorOnExist: false,
+      recursive: true,
+    })
   }
 }

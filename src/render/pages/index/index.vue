@@ -78,16 +78,7 @@ async function startV2fly() {
     </div>
 
     <k-drawer v-model="data.showConfig" title="添加配置">
-      <k-col>
-        <div>Label:</div>
-        <k-input v-model="v2flyConf.label"></k-input>
-        <div>Import:</div>
-        <k-input v-model="v2flyConf.b64"></k-input>
-        <!--  -->
-        <k-checkbox v-model="v2flyConf.mux">Enable mux</k-checkbox>
-        <!--  -->
-        <k-button @click="addConfig">确认</k-button>
-      </k-col>
+      <e2fly-config></e2fly-config>
     </k-drawer>
   </div>
 </template>

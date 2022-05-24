@@ -19,6 +19,7 @@ export function resolveOptions(options: ViteElectronBuilderOptions, viteConfig: 
     tsconfig = join(root, 'tsconfig.json'),
     electronBuilderConfig = buildConfig,
     afterEsbuildBuild = async () => {},
+    assetsDir = [],
   } = options
 
   const { env, command } = viteConfig
@@ -28,7 +29,8 @@ export function resolveOptions(options: ViteElectronBuilderOptions, viteConfig: 
     entry,
     tsconfig,
     electronBuilderConfig,
-    env,
+    assetsDir,
+    env: env as any,
     command,
     external,
     afterEsbuildBuild,

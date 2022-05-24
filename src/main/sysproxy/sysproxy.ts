@@ -1,4 +1,5 @@
 import { platform } from 'os'
+import { isMac } from '../utils'
 import { MacProxy } from './MacProxy'
 
 export type SysProxyType = 'http' | 'socks'
@@ -27,7 +28,7 @@ export interface SysProxy {
 }
 
 function createProxyInstance(): SysProxy | null {
-  if (platform() === 'darwin') {
+  if (isMac()) {
     return new MacProxy()
   }
 
