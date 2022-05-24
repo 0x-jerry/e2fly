@@ -4,18 +4,17 @@ import { getResourcePath } from './utils'
 
 export async function createWindow() {
   const win = new BrowserWindow({
-    width: 1000,
+    width: 350,
     height: 640,
-    minHeight: 640,
-    minWidth: 1000,
-    autoHideMenuBar: true,
+    resizable: false,
     center: true,
+    show: false,
+    autoHideMenuBar: true,
+    frame: false,
     webPreferences: {
       preload: getResourcePath('dist/preload/index.js'),
     },
   })
-
-  win.maximize()
 
   const URL = isDev
     ? process.env.DEV_SERVER_URL!
@@ -32,6 +31,8 @@ export async function createWindow() {
   win.on('closed', () => {
     win.destroy()
   })
+
+  win.on('blur', () => win.hide())
 
   return win
 }

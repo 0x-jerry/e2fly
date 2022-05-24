@@ -1,5 +1,5 @@
-import { app, Tray, Menu, nativeImage } from 'electron'
-import { getResourcePath, isMac } from './utils'
+import { Tray, nativeImage, BrowserWindow, Menu, app } from 'electron'
+import { getResourcePath, isMac, isWin } from './utils'
 
 let tray: Tray
 
@@ -8,15 +8,41 @@ export function createTray() {
 
   const icon = nativeImage.createFromPath(getResourcePath(iconPath))
   tray = new Tray(icon)
+  tray.setIgnoreDoubleClickEvents(true)
 
-  const contextMenu = Menu.buildFromTemplate([
-    { label: 'Item1', type: 'radio' },
-    { label: 'Item2', type: 'radio' },
-    { label: 'Item3', type: 'radio', checked: true },
-    { label: 'Item4', type: 'radio' },
+  const menu = Menu.buildFromTemplate([
+    {
+      label: 'quit',
+      type: 'normal',
+      click() {
+        app.exit()
+      },
+    },
   ])
 
-  tray.setContextMenu(contextMenu)
+  tray.on('right-click', () => {
+    tray.popUpContextMenu(menu)
+  })
 
-  tray.setToolTip('This is my application')
+  tray.on('click', async (_e, bounds) => {
+    BrowserWindow.getAllWindows().forEach((n) => {
+      if (n.isDestroyed()) return
+
+      toggle(n)
+    })
+
+    function toggle(n: BrowserWindow) {
+      if (n.isVisible()) {
+        n.hide()
+      } else {
+        if (!isWin()) {
+          const width = n.getSize()[0] / 2
+          n.setPosition(bounds.x - width, bounds.y)
+        }
+
+        n.show()
+        n.moveTop()
+      }
+    }
+  })
 }
