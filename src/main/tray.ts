@@ -1,10 +1,10 @@
 import { Tray, nativeImage, BrowserWindow, Menu, app } from 'electron'
-import { getResourcePath, isMac, isWin } from './utils'
+import { getResourcePath, isWin } from './utils'
 
 let tray: Tray
 
 export function createTray() {
-  const iconPath = isMac() ? 'dist/assets/menu.png' : 'dist/assets/favicon/favicon-16x16.png'
+  const iconPath = 'dist/assets/logoTemplate.png'
 
   const icon = nativeImage.createFromPath(getResourcePath(iconPath))
   tray = new Tray(icon)
@@ -12,7 +12,7 @@ export function createTray() {
 
   const menu = Menu.buildFromTemplate([
     {
-      label: 'quit',
+      label: 'Quit',
       type: 'normal',
       click() {
         app.exit()

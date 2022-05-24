@@ -22,7 +22,8 @@
     "test:main": "vitest run -r src/main --passWithNoTests",
     "test:e2e": "vitest run",
     "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps"
+    "postuninstall": "electron-builder install-app-deps",
+    "gen:icon": "ts-node scripts/make-icon.ts"
   },
   "dependencies": {
     "@0x-jerry/utils": "^1.8.0",
@@ -40,6 +41,7 @@
     "@iconify/json": "^2.1.47",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^17.0.31",
+    "@types/sharp": "^0.30.2",
     "@unocss/transformer-directives": "^0.34.1",
     "@vitejs/plugin-vue": "^2.3.3",
     "electron": "^18.3.0",
@@ -48,6 +50,8 @@
     "less": "^4.1.2",
     "picocolors": "^1.0.0",
     "rimraf": "^3.0.2",
+    "sharp": "^0.30.5",
+    "ts-node": "^10.8.0",
     "typescript": "^4.6.4",
     "unocss": "^0.34.1",
     "unplugin-auto-import": "^0.7.2",

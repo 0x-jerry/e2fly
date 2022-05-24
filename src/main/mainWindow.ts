@@ -8,7 +8,7 @@ export async function createWindow() {
     height: 640,
     resizable: false,
     center: true,
-    show: false,
+    show: isDev,
     autoHideMenuBar: true,
     frame: false,
     webPreferences: {
@@ -32,7 +32,9 @@ export async function createWindow() {
     win.destroy()
   })
 
-  win.on('blur', () => win.hide())
+  if (!isDev) {
+    win.on('blur', () => win.hide())
+  }
 
   return win
 }
