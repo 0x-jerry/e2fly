@@ -10,13 +10,13 @@ export const store = reactive({
 export const actions = {
   async startV2fly(id: string) {
     store.config.activeOutboundId = id
-    store.enabled = true
 
     await rpcProxy.saveConfig(toRaw(store.config))
     await rpcProxy.startV2fly(id)
+    store.enabled = true
   },
   async stopV2fly() {
-    store.enabled = false
     await rpcProxy.stopV2fly()
+    store.enabled = false
   },
 }

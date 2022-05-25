@@ -1,4 +1,3 @@
-import { isTracerEnabled } from '@grpc/grpc-js/build/src/logging'
 import { E2FlyConfig } from '../config'
 import { services } from '../service'
 

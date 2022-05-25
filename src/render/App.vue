@@ -30,7 +30,7 @@ hr {
 
 html,
 body {
-  @apply font-sans;
+  @apply font-sans text-base;
 }
 
 body,
@@ -38,5 +38,9 @@ div {
   &::-webkit-scrollbar {
     height: 6px;
   }
+}
+
+* {
+  user-select: none;
 }
 </style>

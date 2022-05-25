@@ -27,9 +27,11 @@ pre {
   padding: 0;
   width: fit-content;
   height: fit-content;
+  user-select: text;
 }
 
 code {
   @apply font-mono;
+  user-select: text;
 }
 </style>

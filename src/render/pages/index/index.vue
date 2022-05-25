@@ -1,12 +1,14 @@
 <script lang="ts" setup>
+import { E2FlyConfigOutbound } from '@/main/config'
 import { getOutboundConfFromBase64 } from '@/render/logic/v2fly'
 import { rpcProxy } from '@/render/rpc'
 import { actions, store } from '@/render/store'
 import { uuid } from '@0x-jerry/utils'
+import { IV2RayOutbound } from '@0x-jerry/v2ray-schema'
+import CircleIcon from '~icons/carbon/circle-filled'
 
 const data = reactive({
   showConfig: false,
-  activeId: store.config.activeOutboundId,
 })
 
 const v2flyConf = reactive({
@@ -38,19 +40,43 @@ async function toggleV2fly() {
   if (store.enabled) {
     await actions.stopV2fly()
   } else {
-    await actions.startV2fly(data.activeId)
+    await actions.startV2fly(store.config.activeOutboundId)
   }
+}
+
+async function switchConfig(item: E2FlyConfigOutbound) {
+  if (store.enabled && item.id === store.config.activeOutboundId) return
+
+  await actions.startV2fly(item.id)
+}
+
+function getLabel(item: IV2RayOutbound) {
+  const protocol = item.protocol
+
+  if (protocol === 'vmess') {
+    const address = item.settings?.vnext?.[0].address
+    const port = item.settings?.vnext?.[0].port
+
+    return `${protocol}://${address}:${port}`
+  }
+}
+
+function isActiveOutboundConfig(item: E2FlyConfigOutbound) {
+  return store.enabled && store.config.activeOutboundId === item.id
 }
 </script>
 
 <template>
   <div>
-    <AppHeadAppend>
-      <k-row>
-        <k-button @click="showConfigDrawer">添加配置</k-button>
-        <k-button @click="toggleV2fly">{{ store.enabled ? 'disable' : 'enable' }}</k-button>
-      </k-row>
-    </AppHeadAppend>
+    <div
+      @click="toggleV2fly"
+      p="y-1"
+      class="connection-btn bg-red-400 text-white text-center cursor-pointer"
+      bg="hover:red-500"
+      :class="{ 'is-disabled': !store.enabled }"
+    >
+      {{ store.enabled ? '断开连接' : '重新连接' }}
+    </div>
     <div
       class="cards"
       grid="~"
@@ -62,24 +88,16 @@ async function toggleV2fly() {
         :key="item.id"
         class="v2fly-card"
         :class="{
-          'is-active': store.config.activeOutboundId === item.id,
-          'is-selected': data.activeId === item.id,
+          'is-active': isActiveOutboundConfig(item),
         }"
-        @click="data.activeId = item.id"
+        @click="switchConfig(item)"
       >
-        <div>
-          {{ item.label }}
+        <div flex="1">{{ getLabel(item.config) }}</div>
+        <div v-if="isActiveOutboundConfig(item)" class="text-xs items-center" flex="~">
+          <CircleIcon />
         </div>
-        <div class="truncate">{{ item.id }}</div>
       </div>
-
-      <!-- Empty div, as placeholder -->
-      <div v-for="o in 3"></div>
     </div>
-
-    <k-drawer v-model="data.showConfig" title="添加配置">
-      <e2fly-config></e2fly-config>
-    </k-drawer>
   </div>
 </template>
 
@@ -96,17 +114,29 @@ async function toggleV2fly() {
   @apply hover:border-blue-500;
 }
 
+.cards {
+  @apply my-1;
+}
+
 .v2fly-card {
-  border: 1px solid;
-  @apply p-5 border-gray-500;
+  @apply px-3 py-1;
+  @apply bg-gray-100 text-gray-700;
+  @apply text-sm;
+  @apply flex;
   cursor: pointer;
 
   &.is-selected {
-    @apply border-blue-300;
+    //
   }
 
   &.is-active {
-    @apply border-blue-500;
+    @apply text-green-600;
+  }
+}
+
+.connection-btn {
+  &.is-disabled {
+    @apply bg-green-500;
   }
 }
 </style>

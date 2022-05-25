@@ -4,11 +4,13 @@ export interface E2FlyConfig {
   proxy: ProxyConfig
   v2fly: V2FlyConfig
   activeOutboundId: string
-  outbound: {
-    id: string
-    label: string
-    config: IV2RayOutbound
-  }[]
+  outbound: E2FlyConfigOutbound[]
+}
+
+export interface E2FlyConfigOutbound {
+  id: string
+  label: string
+  config: IV2RayOutbound
 }
 
 export interface ProxyConfig {
