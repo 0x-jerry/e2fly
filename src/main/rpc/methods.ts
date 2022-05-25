@@ -1,3 +1,4 @@
+import { isTracerEnabled } from '@grpc/grpc-js/build/src/logging'
 import { E2FlyConfig } from '../config'
 import { services } from '../service'
 
@@ -14,5 +15,17 @@ export const methods = {
 
   async startV2fly(id: string) {
     await services.v2fly.start(id)
+  },
+
+  stopV2fly() {
+    services.v2fly.stop()
+  },
+
+  started() {
+    services.v2fly.confService
+  },
+
+  isEnabled() {
+    return services.v2fly.isEnabled
   },
 }

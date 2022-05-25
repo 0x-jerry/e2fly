@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { getOutboundConfFromBase64 } from '@/render/logic/v2fly'
 import { rpcProxy } from '@/render/rpc'
-import { store } from '@/render/store'
+import { actions, store } from '@/render/store'
 import { uuid } from '@0x-jerry/utils'
 
 const data = reactive({
@@ -34,11 +34,12 @@ async function addConfig() {
   data.showConfig = false
 }
 
-async function startV2fly() {
-  store.config.activeOutboundId = data.activeId
-  await rpcProxy.saveConfig(toRaw(store.config))
-
-  await rpcProxy.startV2fly(data.activeId)
+async function toggleV2fly() {
+  if (store.enabled) {
+    await actions.stopV2fly()
+  } else {
+    await actions.startV2fly(data.activeId)
+  }
 }
 </script>
 
@@ -47,7 +48,7 @@ async function startV2fly() {
     <AppHeadAppend>
       <k-row>
         <k-button @click="showConfigDrawer">添加配置</k-button>
-        <k-button @click="startV2fly">启动</k-button>
+        <k-button @click="toggleV2fly">{{ store.enabled ? 'disable' : 'enable' }}</k-button>
       </k-row>
     </AppHeadAppend>
     <div

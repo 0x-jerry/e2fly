@@ -17,8 +17,9 @@ import { store } from '@/render/store'
   margin: 0;
   @apply px-3;
   @apply text-gray-700;
-  line-height: 1.5em;
   overflow: auto;
+  @apply text-xs;
+  line-height: 1.7em;
 }
 
 pre {

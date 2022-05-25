@@ -6,7 +6,6 @@ import { configDir, ConfigService } from '../config'
 import fs from 'fs-extra'
 import { E2FlyConfig } from '../../config'
 import { getV2rayConfig } from './gen-conf'
-import { logger } from '@/main/utils'
 
 const v2flyConfPath = join(configDir, 'v2fly.conf.json')
 
@@ -14,6 +13,10 @@ export class V2flyService {
   progress?: ChildProcess
 
   constructor(public confService: ConfigService) {}
+
+  get isEnabled() {
+    return !this.progress?.killed
+  }
 
   get v2fly() {
     return this.confService.config.v2fly

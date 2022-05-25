@@ -11,6 +11,8 @@ async function init() {
 
   store.config = conf
   initialized.value = true
+
+  store.enabled = await rpcProxy.isEnabled()
 }
 
 init()

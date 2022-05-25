@@ -1,7 +1,5 @@
 <script lang="ts" setup>
 import AppHead from './components/AppHead.vue'
-
-//
 </script>
 
 <template>
