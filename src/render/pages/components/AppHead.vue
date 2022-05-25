@@ -1,27 +1,42 @@
 <script lang="ts" setup>
-import { menus } from './menuConf'
+import { MenuItem, menus } from './menuConf'
 
+const router = useRouter()
 const route = useRoute()
 
 const activeMenu = computed(() => menus.find((n) => n.route === route.path))
+
+function handleMenu(menu: MenuItem) {
+  router.push(menu.route)
+}
 </script>
 
 <template>
   <div class="app-head">
     <div flex="~ 1">
-      <h1 text="xl">
+      <span>
         {{ activeMenu?.text }}
-      </h1>
+      </span>
     </div>
-    <div id="app-head--append">
-      <!--  -->
-    </div>
+    <k-row gap="8px">
+      <div
+        v-for="menu in menus"
+        :key="menu.route"
+        class="cursor-pointer"
+        :class="{ 'text-blue-500': activeMenu?.route === menu.route }"
+        @click="handleMenu(menu)"
+      >
+        <component :is="menu.icon"></component>
+      </div>
+    </k-row>
   </div>
 </template>
 
 <style lang="less" scoped>
 .app-head {
-  height: 50px;
+  -webkit-app-region: drag;
+
+  height: 40px;
   border-width: 0 0 1px;
   border-style: solid;
   @apply bg-light-200 border-light-700;

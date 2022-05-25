@@ -3,7 +3,6 @@ import { getOutboundConfFromBase64 } from '@/render/logic/v2fly'
 import { rpcProxy } from '@/render/rpc'
 import { store } from '@/render/store'
 import { uuid } from '@0x-jerry/utils'
-import AppHeadAppend from '../components/AppHeadAppend.vue'
 
 const data = reactive({
   showConfig: false,

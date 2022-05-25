@@ -30,4 +30,11 @@ html,
 body {
   @apply font-sans;
 }
+
+body,
+div {
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+}
 </style>
