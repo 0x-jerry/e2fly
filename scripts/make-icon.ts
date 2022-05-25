@@ -1,12 +1,14 @@
 import sharp from 'sharp'
 import path from 'path'
+import { fileURLToPath } from 'url'
 
 const config = {
   resolutions: [1, 2, 3, 4, 5],
   baseSize: 16,
 }
 
-const r = (...args: string[]) => path.join(__dirname, '..', ...args)
+const dir = fileURLToPath(import.meta.url)
+const r = (...args: string[]) => path.join(dir, '..', '..', ...args)
 
 main()
 
