@@ -10,6 +10,10 @@ async function saveConfig() {
   const conf = toRaw(store.config)
   logger.log('save config:', conf)
   await rpcProxy.saveConfig(conf)
+
+  if (store.enabled) {
+    await rpcProxy.startV2fly(conf.activeOutboundId)
+  }
 }
 </script>
 

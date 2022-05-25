@@ -1,3 +1,4 @@
+import { E2FlyConfig } from '@/main/config'
 import {
   IStrategy,
   IV2Ray,
@@ -65,21 +66,7 @@ function getSocksInbound(host: string, port: number): IV2RayInbound {
   }
 }
 
-export interface V2rayConfigOption {
-  proxy: {
-    http: {
-      host: string
-      port: number
-    }
-    socks: {
-      host: string
-      port: number
-    }
-  }
-  rules?: IV2rayRouting['rules']
-}
-
-function getRoutingConf(rules: IV2rayRouting['rules']): IV2rayRouting {
+function getRoutingConf(rules?: IV2rayRouting['rules']): IV2rayRouting {
   const extraRules = rules || []
 
   return {
@@ -114,13 +101,22 @@ function getRoutingConf(rules: IV2rayRouting['rules']): IV2rayRouting {
   }
 }
 
-export function getV2rayConfig(opt: V2rayConfigOption, ...outbounds: IV2RayOutbound[]): IV2Ray {
+export function getV2rayConfig(opt: E2FlyConfig, ...outbounds: IV2RayOutbound[]): IV2Ray {
+  const { v2fly } = opt
+
+  const inbounds: IV2RayInbound[] = []
+
+  if (v2fly.http.enabled) {
+    inbounds.push(getHttpInbound(v2fly.http.address, v2fly.http.port))
+  }
+
+  if (v2fly.socks.enabled) {
+    inbounds.push(getSocksInbound(v2fly.socks.address, v2fly.socks.port))
+  }
+
   return {
     log: getLogConf(),
-    inbounds: [
-      getHttpInbound(opt.proxy.http.host, opt.proxy.http.port),
-      getSocksInbound(opt.proxy.socks.host, opt.proxy.socks.port),
-    ],
+    inbounds,
     outbounds: [
       ...outbounds.map((outbound) => {
         return {
@@ -131,6 +127,6 @@ export function getV2rayConfig(opt: V2rayConfigOption, ...outbounds: IV2RayOutbo
       getOutboundDirectConf(),
       getOutboundBlockConf(),
     ],
-    routing: getRoutingConf(opt.rules),
+    routing: getRoutingConf(),
   }
 }

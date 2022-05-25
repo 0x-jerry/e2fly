@@ -56,25 +56,12 @@ export class V2flyService {
 
 async function generateV2flyConfig(config: E2FlyConfig, enableOutboundId: string): Promise<IV2Ray> {
   const outbound = config.outbound.find((n) => n.id === enableOutboundId)
+
   if (!outbound) {
     throw new Error('Not found id: ' + enableOutboundId)
   }
 
-  const conf = getV2rayConfig(
-    {
-      proxy: {
-        http: {
-          host: config.v2fly.http.address,
-          port: config.v2fly.http.port,
-        },
-        socks: {
-          host: config.v2fly.socks.address,
-          port: config.v2fly.socks.port,
-        },
-      },
-    },
-    outbound.config
-  )
+  const conf = getV2rayConfig(config, outbound.config)
 
   return conf
 }
