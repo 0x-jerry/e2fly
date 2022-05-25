@@ -12,7 +12,11 @@ const v2flyConfPath = join(configDir, 'v2fly.conf.json')
 export class V2flyService {
   progress?: ChildProcess
 
-  constructor(public confService: ConfigService) {}
+  constructor(public confService: ConfigService) {
+    if (confService.config.activeOutboundId) {
+      this.start(confService.config.activeOutboundId)
+    }
+  }
 
   get isEnabled() {
     return !this.progress?.killed
