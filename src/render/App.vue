@@ -42,5 +42,6 @@ div {
 
 * {
   user-select: none;
+  box-sizing: border-box;
 }
 </style>

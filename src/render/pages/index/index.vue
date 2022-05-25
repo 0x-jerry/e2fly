@@ -3,37 +3,28 @@ import { E2FlyConfigOutbound } from '@/main/config'
 import { getOutboundConfFromBase64 } from '@/render/logic/v2fly'
 import { rpcProxy } from '@/render/rpc'
 import { actions, store } from '@/render/store'
-import { uuid } from '@0x-jerry/utils'
+import { remove, uuid } from '@0x-jerry/utils'
 import { IV2RayOutbound } from '@0x-jerry/v2ray-schema'
 import CircleIcon from '~icons/carbon/circle-filled'
-
-const data = reactive({
-  showConfig: false,
-})
+import TrashCanIcon from '~icons/carbon/trash-can'
 
 const v2flyConf = reactive({
   b64: '',
-  mux: false,
-  label: '',
 })
-
-function showConfigDrawer() {
-  v2flyConf.label = 'conf' + (store.config.outbound.length + 1)
-  data.showConfig = true
-}
 
 async function addConfig() {
   store.config.outbound.push({
     id: uuid(),
-    label: v2flyConf.label,
+    label: 'default',
     config: getOutboundConfFromBase64({
       b64: v2flyConf.b64,
-      mux: v2flyConf.mux,
+      mux: true,
     }),
   })
 
   await rpcProxy.saveConfig(toRaw(store.config))
-  data.showConfig = false
+
+  v2flyConf.b64 = ''
 }
 
 async function toggleV2fly() {
@@ -64,19 +55,15 @@ function getLabel(item: IV2RayOutbound) {
 function isActiveOutboundConfig(item: E2FlyConfigOutbound) {
   return store.enabled && store.config.activeOutboundId === item.id
 }
+
+function removeOutbound(item: E2FlyConfigOutbound) {
+  remove(store.config.outbound, (n) => n.id === item.id)
+  rpcProxy.saveConfig(toRaw(store.config))
+}
 </script>
 
 <template>
-  <div>
-    <div
-      @click="toggleV2fly"
-      p="y-1"
-      class="connection-btn bg-red-400 text-white text-center cursor-pointer"
-      bg="hover:red-500"
-      :class="{ 'is-disabled': !store.enabled }"
-    >
-      {{ store.enabled ? '断开连接' : '重新连接' }}
-    </div>
+  <k-col>
     <div
       class="cards"
       grid="~"
@@ -93,12 +80,34 @@ function isActiveOutboundConfig(item: E2FlyConfigOutbound) {
         @click="switchConfig(item)"
       >
         <div flex="1">{{ getLabel(item.config) }}</div>
-        <div v-if="isActiveOutboundConfig(item)" class="text-xs items-center" flex="~">
-          <CircleIcon />
-        </div>
+        <k-row class="icons text-xs items-center" flex="~">
+          <TrashCanIcon
+            class="delete-icon"
+            v-if="!isActiveOutboundConfig(item)"
+            @click.stop="removeOutbound(item)"
+          />
+          <CircleIcon class="text-green-500" v-if="isActiveOutboundConfig(item)" />
+        </k-row>
       </div>
     </div>
-  </div>
+
+    <div
+      @click="toggleV2fly"
+      p="y-1"
+      class="connection-btn bg-red-400 text-white text-center cursor-pointer"
+      bg="hover:red-500"
+      :class="{ 'is-disabled': !store.enabled }"
+    >
+      {{ store.enabled ? '断开连接' : '重新连接' }}
+    </div>
+    <textarea
+      class="w-full border-gray-300 bg-gray-100 resize-y outline-none border-x-0 text-sm px-3"
+      rows="6"
+      placeholder="请输入分享的链接"
+      v-model="v2flyConf.b64"
+    ></textarea>
+    <k-button class="w-full" block @click="addConfig">添加</k-button>
+  </k-col>
 </template>
 
 <style lang="less" scoped>
@@ -115,7 +124,7 @@ function isActiveOutboundConfig(item: E2FlyConfigOutbound) {
 }
 
 .cards {
-  @apply my-1;
+  // @apply my-1;
 }
 
 .v2fly-card {
@@ -130,7 +139,22 @@ function isActiveOutboundConfig(item: E2FlyConfigOutbound) {
   }
 
   &.is-active {
-    @apply text-green-600;
+    //
+  }
+
+  .delete-icon {
+    opacity: 0;
+    @apply transition transition-opacity;
+
+    &:hover {
+      @apply text-blue-500;
+    }
+  }
+
+  &:hover {
+    .delete-icon {
+      opacity: 1;
+    }
   }
 }
 
