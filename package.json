@@ -26,7 +26,7 @@
     "gen:icon": "tsx scripts/make-icon.ts"
   },
   "dependencies": {
-    "@0x-jerry/utils": "^1.8.0",
+    "@0x-jerry/utils": "^1.8.1",
     "@0x-jerry/v2ray-schema": "^0.3.0",
     "@0x-jerry/vue-kit": "^1.6.4",
     "@grpc/grpc-js": "^1.6.7",
@@ -52,7 +52,7 @@
     "rimraf": "^3.0.2",
     "sharp": "^0.30.5",
     "tsx": "^3.4.1",
-    "typescript": "^4.6.4",
+    "typescript": "^4.7.2",
     "unocss": "^0.34.1",
     "unplugin-auto-import": "^0.7.2",
     "unplugin-icons": "^0.14.3",

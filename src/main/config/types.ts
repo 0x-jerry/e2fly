@@ -28,9 +28,14 @@ export interface V2FlyConfig {
   bin: string
   http: V2flyConfigInbound
   socks: V2flyConfigInbound
+  stream: {
+    udp: boolean
+    tcp: boolean
+  }
 }
 
 export interface V2flyConfigInbound {
+  enabled: boolean
   address: string
   port: number
   auth?: {

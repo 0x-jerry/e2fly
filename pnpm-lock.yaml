@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@0x-jerry/utils': ^1.8.0
+  '@0x-jerry/utils': ^1.8.1
   '@0x-jerry/v2ray-schema': ^0.3.0
   '@0x-jerry/vue-kit': ^1.6.4
   '@grpc/grpc-js': ^1.6.7
@@ -23,7 +23,7 @@ specifiers:
   rimraf: ^3.0.2
   sharp: ^0.30.5
   tsx: ^3.4.1
-  typescript: ^4.6.4
+  typescript: ^4.7.2
   unocss: ^0.34.1
   unplugin-auto-import: ^0.7.2
   unplugin-icons: ^0.14.3
@@ -35,7 +35,7 @@ specifiers:
   vue-router: ^4.0.15
 
 dependencies:
-  '@0x-jerry/utils': registry.npmjs.org/@0x-jerry/utils/1.8.0
+  '@0x-jerry/utils': registry.npmjs.org/@0x-jerry/utils/1.8.1
   '@0x-jerry/v2ray-schema': registry.npmjs.org/@0x-jerry/v2ray-schema/0.3.0
   '@0x-jerry/vue-kit': registry.npmjs.org/@0x-jerry/vue-kit/1.6.4
   '@grpc/grpc-js': 1.6.7
@@ -61,7 +61,7 @@ devDependencies:
   rimraf: 3.0.2
   sharp: 0.30.5
   tsx: 3.4.1
-  typescript: 4.6.4
+  typescript: 4.7.2
   unocss: 0.34.1_vite@2.9.9
   unplugin-auto-import: 0.7.2_hqm27dnm5k3uqhmn4wt4qvlh5a
   unplugin-icons: 0.14.3_esbuild@0.14.39+vite@2.9.9
@@ -618,12 +618,6 @@ packages:
       estree-walker: 2.0.2
       magic-string: 0.25.9
 
-  /@vue/reactivity/3.2.34:
-    resolution: {integrity: sha512-xbRIOPqxdNOr0zS47moRS6zf4BKd0z+55R85UJlo4r5ezqCktk6fYy1atY4tGzo7Maqh6QoKw3LtIKvpz8d7WA==}
-    dependencies:
-      '@vue/shared': 3.2.34
-    dev: false
-
   /@vue/reactivity/3.2.36:
     resolution: {integrity: sha512-c2qvopo0crh9A4GXi2/2kfGYMxsJW4tVILrqRPydVGZHhq0fnzy6qmclWOhBFckEhmyxmpHpdJtIRYGeKcuhnA==}
     dependencies:
@@ -650,10 +644,6 @@ packages:
       '@vue/compiler-ssr': 3.2.36
       '@vue/shared': 3.2.36
       vue: 3.2.36
-
-  /@vue/shared/3.2.34:
-    resolution: {integrity: sha512-zhEeB8TrFmTXmTXmu/wcjEhgrjO4xqdDQrCdPhjX7NxfoLqoBVKguOm8qyihWNLbP+41svYY4za9mqXyqFLzNg==}
-    dev: false
 
   /@vue/shared/3.2.36:
     resolution: {integrity: sha512-JtB41wXl7Au3+Nl3gD16Cfpj7k/6aCroZ6BbOiCMFCMvrOpkg/qQUXTso2XowaNqBbnkuGHurLAqkLBxNGc1hQ==}
@@ -1264,6 +1254,12 @@ packages:
 
   /csstype/2.6.20:
     resolution: {integrity: sha512-/WwNkdXfckNgw6S5R125rrW8ez139lBHWouiBvX8dfMFtcn6V81REDqnH7+CRpRipfYlyU1CmOnOxrmGcFOjeA==}
+
+  /data-uri-to-buffer/4.0.0:
+    resolution: {integrity: sha512-Vr3mLBA8qWmcuschSLAOogKgQ/Jwxulv3RNE4FXnYWRGujzrRWQI4m12fQqRkwX06C0KanhLr4hK+GydchZsaA==}
+    engines: {node: '>= 12'}
+    dev: false
+    optional: true
 
   /debug/2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
@@ -2126,6 +2122,15 @@ packages:
       pend: 1.2.0
     dev: true
 
+  /fetch-blob/3.1.5:
+    resolution: {integrity: sha512-N64ZpKqoLejlrwkIAnb9iLSA3Vx/kjgzpcDhygcqJ2KKjky8nCgUQ+dzXtbrLaWZGZNmNfQTsiQ0weZ1svglHg==}
+    engines: {node: ^12.20 || >= 14.13}
+    dependencies:
+      node-domexception: 1.0.0
+      web-streams-polyfill: 3.2.1
+    dev: false
+    optional: true
+
   /filelist/1.0.3:
     resolution: {integrity: sha512-LwjCsruLWQULGYKy7TX0OPtrL9kLpojOFKc5VCTxdFTV7w5zbsgqVKfnkKG7Qgjtq50gKfO56hJv88OfcGb70Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/filelist/-/filelist-1.0.3.tgz}
     dependencies:
@@ -2167,6 +2172,14 @@ packages:
       combined-stream: 1.0.8
       mime-types: 2.1.35
     dev: true
+
+  /formdata-polyfill/4.0.10:
+    resolution: {integrity: sha512-buewHzMvYL29jdeQTVILecSaZKnt/RJWjoZCF5OW60Z67/GmSLBkOFM7qh1PI3zFNtJbaZL5eQu1vLfazOwj4g==}
+    engines: {node: '>=12.20.0'}
+    dependencies:
+      fetch-blob: 3.1.5
+    dev: false
+    optional: true
 
   /fs-constants/1.0.0:
     resolution: {integrity: sha512-y6OAwoSIf7FyjMIv94u+b5rdheZEjzR63GTyZJm5qh4Bi+2YgwLCcI/fPFZkL5PSixOt6ZNKm+w+Hfp/Bciwow==}
@@ -3104,9 +3117,26 @@ packages:
     resolution: {integrity: sha512-CvkDw2OEnme7ybCykJpVcKH+uAOLV2qLqiyla128dN9TkEWfrYmxG6C2boDe5KcNQqZF3orkqzGgOMvZ/JNekA==}
     dev: true
 
+  /node-domexception/1.0.0:
+    resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
+    engines: {node: '>=10.5.0'}
+    dev: false
+    optional: true
+
   /node-fetch-native/0.1.3:
     resolution: {integrity: sha512-Jf1IQZdovUIv9E+5avmN6Sf+bND+rnMlODnBQhdE2VRyuWP9WgqZb/KEgPekh19DAN1X2C4vbS1VCOaz2OH19g==}
     dev: true
+
+  /node-fetch/3.2.4:
+    resolution: {integrity: sha512-WvYJRN7mMyOLurFR2YpysQGuwYrJN+qrrpHjJDuKMcSPdfFccRUla/kng2mz6HWSBxJcqPbvatS6Gb4RhOzCJw==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    requiresBuild: true
+    dependencies:
+      data-uri-to-buffer: 4.0.0
+      fetch-blob: 3.1.5
+      formdata-polyfill: 4.0.10
+    dev: false
+    optional: true
 
   /normalize-path/3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
@@ -3951,8 +3981,8 @@ packages:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
     dev: true
 
-  /typescript/4.6.4:
-    resolution: {integrity: sha512-9ia/jWHIEbo49HfjrLGfKbZSuWo9iTMwXO+Ca3pRsSpbsMbc7/IU8NKdCZVRRBafVPGnoJeFL76ZOAA84I9fEg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/typescript/-/typescript-4.6.4.tgz}
+  /typescript/4.7.2:
+    resolution: {integrity: sha512-Mamb1iX2FDUpcTRzltPxgWMKy3fhg0TN378ylbktPGPK/99KbDtMQ4W1hwgsbPAsG3a0xKa1vmw4VKZQbkvz5A==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
@@ -4297,6 +4327,12 @@ packages:
       '@vue/server-renderer': 3.2.36_vue@3.2.36
       '@vue/shared': 3.2.36
 
+  /web-streams-polyfill/3.2.1:
+    resolution: {integrity: sha512-e0MO3wdXWKrLbL0DgGnUV7WHVuw9OUvL4hjgnPkIeEvESk74gAITi5G606JtZPp39cd8HA9VQzCIvA49LpPN5Q==}
+    engines: {node: '>= 8'}
+    dev: false
+    optional: true
+
   /webpack-sources/3.2.3:
     resolution: {integrity: sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==}
     engines: {node: '>=10.13.0'}
@@ -4505,13 +4541,15 @@ packages:
     engines: {node: '>=0.1.90'}
     dev: true
 
-  registry.npmjs.org/@0x-jerry/utils/1.8.0:
-    resolution: {integrity: sha512-feKqTauinSfBqTg+2ueYTgUIgow13FHJfhJ81tuU91xnXFQu42iUw8sPOJo6DIhsvDfo9xkGn+3Iwp0f8Cmxqg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@0x-jerry/utils/-/utils-1.8.0.tgz}
+  registry.npmjs.org/@0x-jerry/utils/1.8.1:
+    resolution: {integrity: sha512-HSHS4Rv5rspmWh55DWWxRzj0k/ielYSBqdiF5QvpQDWhJKEA6O1lcRQ1NseaBZmOxtg2Q+FJzez4DjF9gl5fAg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@0x-jerry/utils/-/utils-1.8.1.tgz}
     name: '@0x-jerry/utils'
-    version: 1.8.0
+    version: 1.8.1
     dependencies:
-      '@vue/reactivity': 3.2.34
+      '@vue/reactivity': 3.2.36
       nanoid: 3.3.4
+    optionalDependencies:
+      node-fetch: 3.2.4
     dev: false
 
   registry.npmjs.org/@0x-jerry/v2ray-schema/0.3.0:
@@ -4525,7 +4563,7 @@ packages:
     name: '@0x-jerry/vue-kit'
     version: 1.6.4
     dependencies:
-      '@0x-jerry/utils': registry.npmjs.org/@0x-jerry/utils/1.8.0
+      '@0x-jerry/utils': registry.npmjs.org/@0x-jerry/utils/1.8.1
       '@floating-ui/dom': 0.4.5
       '@unocss/reset': 0.32.13
       '@vueuse/core': 8.5.0_vue@3.2.36

@@ -8,6 +8,7 @@ declare module '@vue/runtime-core' {
     E2flyConfCard: typeof import('./components/E2flyConfCard.vue')['default']
     E2flyConfig: typeof import('./components/E2flyConfig.vue')['default']
     KButton: typeof import('@0x-jerry/vue-kit')['KButton']
+    KCheckbox: typeof import('@0x-jerry/vue-kit')['KCheckbox']
     KCol: typeof import('@0x-jerry/vue-kit')['KCol']
     KInput: typeof import('@0x-jerry/vue-kit')['KInput']
     KRow: typeof import('@0x-jerry/vue-kit')['KRow']
