@@ -44,7 +44,7 @@ async function saveConfig() {
       </div>
     </div>
     <k-row>
-      <k-button @click="saveConfig" class="w-full" block> 保存</k-button>
+      <k-button @click="saveConfig" class="w-full" block> {{ $t('page.setting.save') }}</k-button>
     </k-row>
   </k-col>
 </template>

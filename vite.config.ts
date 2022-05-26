@@ -13,6 +13,7 @@ import { presetAttributify, presetWind } from 'unocss'
 import transformerDirective from '@unocss/transformer-directives'
 import { VueKitResolver } from '@0x-jerry/vue-kit/resolver'
 import { Configuration as ElectronBuilderConfiguration } from 'electron-builder'
+import vueI18n from '@intlify/vite-plugin-vue-i18n'
 
 const r = (...path: string[]) => join(__dirname, ...path)
 
@@ -40,6 +41,9 @@ export default defineConfig({
   root: r('src/render'),
   plugins: [
     vue(),
+    vueI18n({
+      include: r('src/locales/**'),
+    }),
     VitePluginElectronBuilder({
       root: process.cwd(),
       tsconfig: './tsconfig.main.json',

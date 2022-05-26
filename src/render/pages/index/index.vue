@@ -98,15 +98,15 @@ function removeOutbound(item: E2FlyConfigOutbound) {
       bg="hover:red-500"
       :class="{ 'is-disabled': !store.enabled }"
     >
-      {{ store.enabled ? '断开连接' : '重新连接' }}
+      {{ store.enabled ? $t('page.server.disconnect') : $t('page.server.reconnect') }}
     </div>
     <textarea
       class="w-full border-gray-300 bg-gray-100 resize-y outline-none border-x-0 text-sm px-3"
       rows="6"
-      placeholder="请输入分享的链接"
+      :placeholder="$t('page.server.link-placeholder')"
       v-model="v2flyConf.b64"
     ></textarea>
-    <k-button class="w-full" block @click="addConfig">添加</k-button>
+    <k-button class="w-full" block @click="addConfig">{{ $t('page.server.add') }}</k-button>
   </k-col>
 </template>
 
