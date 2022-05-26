@@ -12,7 +12,7 @@ export function createTray() {
 
   const menu = Menu.buildFromTemplate([
     {
-      label: 'Quit',
+      label: 'Quit E2Fly',
       type: 'normal',
       click() {
         app.exit()
@@ -28,21 +28,17 @@ export function createTray() {
     BrowserWindow.getAllWindows().forEach((n) => {
       if (n.isDestroyed()) return
 
-      toggle(n)
+      show(n)
     })
 
-    function toggle(n: BrowserWindow) {
-      if (n.isVisible()) {
-        n.hide()
-      } else {
-        if (!isWin()) {
-          const width = n.getSize()[0] / 2
-          n.setPosition(bounds.x - width, bounds.y)
-        }
-
-        n.show()
-        n.moveTop()
+    function show(n: BrowserWindow) {
+      if (!isWin()) {
+        const width = n.getSize()[0] / 2
+        n.setPosition(bounds.x - width, bounds.y)
       }
+
+      n.show()
+      n.moveTop()
     }
   })
 }
