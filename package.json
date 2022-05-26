@@ -23,7 +23,8 @@
     "test:e2e": "vitest run",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
-    "gen:icon": "tsx scripts/make-icon.ts"
+    "gen:icon": "tsx scripts/make-icon.ts",
+    "release": "x-release"
   },
   "dependencies": {
     "@0x-jerry/utils": "^1.8.1",
@@ -38,6 +39,7 @@
     "vue-router": "^4.0.15"
   },
   "devDependencies": {
+    "@0x-jerry/x-release": "^0.3.6",
     "@iconify/json": "^2.1.47",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^17.0.31",
