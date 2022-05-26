@@ -6,3 +6,7 @@ page:
     link-placeholder: Please input shared link, only support vmess for now.
   setting:
     save: Save
+menu:
+  log: Log
+  setting: Setting
+  server: Server

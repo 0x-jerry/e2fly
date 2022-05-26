@@ -6,3 +6,7 @@ page:
     reconnect: 重新连接
   setting:
     save: 保存
+menu:
+  log: 日志
+  setting: 设置
+  server: 服务器

@@ -3,6 +3,9 @@ import ServerIcon from '~icons/carbon/bare-metal-server'
 import DebugIcon from '~icons/carbon/debug'
 
 import { Component } from 'vue'
+import { i18n } from '@/render/i18n'
+
+const { t } = i18n.global
 
 export interface MenuItem {
   icon: Component
@@ -14,17 +17,17 @@ export interface MenuItem {
 export const menus: MenuItem[] = [
   {
     icon: DebugIcon,
-    text: '日志',
+    text: t('menu.log'),
     route: '/log',
   },
   {
     icon: SettingIcon,
-    text: '设置',
+    text: t('menu.setting'),
     route: '/setting',
   },
   {
     icon: ServerIcon,
-    text: '服务器',
+    text: t('menu.server'),
     route: '/',
   },
 ]
