@@ -28,6 +28,6 @@ export const menus: MenuItem[] = [
   {
     icon: ServerIcon,
     text: t('menu.server'),
-    route: '/',
+    route: '/server',
   },
 ]
