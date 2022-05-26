@@ -37,6 +37,12 @@ async function saveConfig() {
         <k-input v-model.number="data.socks.port" class="w-full" block></k-input>
       </div>
     </div>
+    <div class="items-center gap-x-1" flex="~">
+      <div w="7em" text="right">V2Ray Bin：</div>
+      <div flex="1">
+        <k-input v-model.number="data.bin" class="w-full" block></k-input>
+      </div>
+    </div>
     <k-row>
       <k-button @click="saveConfig" class="w-full" block> 保存</k-button>
     </k-row>
