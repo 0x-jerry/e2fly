@@ -27,7 +27,9 @@ async function resolve(input: string, output: string) {
   const suffix = path.parse(input).ext
 
   for (const resolution of config.resolutions) {
-    const outputPath = path.join(output, `${name}@${resolution}x${suffix}`)
+    const size = resolution === 1 ? '' : `@${resolution}x`
+
+    const outputPath = path.join(output, `${name}${size}${suffix}`)
 
     await img.resize(config.baseSize * resolution).toFile(outputPath)
     console.log('generate: ', outputPath)

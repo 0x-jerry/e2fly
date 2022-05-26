@@ -31,11 +31,11 @@ export async function handleBuild(options: ResolvedViteElectronBuilderOptions) {
       await buildWithESBuild(esbuildOptions, entry, false)
     }
 
+    await copyAssets(toArray(options.assetsDir))
+
     await electronBuilder({
       config: electronBuilderConfig,
     })
-
-    await copyAssets(toArray(options.assetsDir))
 
     console.log(pc.green('Main Process Build Succeeded.'))
   } catch (error) {

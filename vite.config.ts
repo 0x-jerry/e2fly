@@ -12,8 +12,27 @@ import Unocss from 'unocss/vite'
 import { presetAttributify, presetWind } from 'unocss'
 import transformerDirective from '@unocss/transformer-directives'
 import { VueKitResolver } from '@0x-jerry/vue-kit/resolver'
+import { Configuration as ElectronBuilderConfiguration } from 'electron-builder'
 
 const r = (...path: string[]) => join(__dirname, ...path)
+
+const electronConfig: ElectronBuilderConfiguration = {
+  icon: r('assets', 'logo.icns'),
+  directories: {
+    output: 'out',
+  },
+  files: ['dist/**/*'],
+  electronDownload: {
+    // mirror: 'https://cdn.npmmirror.com/binaries/electron/',
+  },
+  nsis: {
+    oneClick: false,
+    allowElevation: true,
+    allowToChangeInstallationDirectory: true,
+    createDesktopShortcut: true,
+    createStartMenuShortcut: true,
+  },
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -24,6 +43,7 @@ export default defineConfig({
     VitePluginElectronBuilder({
       root: process.cwd(),
       tsconfig: './tsconfig.main.json',
+      electronBuilderConfig: electronConfig,
       assetsDir: {
         input: r('src/assets'),
         output: r('dist/assets'),
