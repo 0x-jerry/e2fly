@@ -2,7 +2,7 @@ import { app } from 'electron'
 import { isDev } from './config'
 import './rpc'
 import { createWindow, restoreOrCreateWindow } from './mainWindow'
-import { initServices } from './service'
+import { initServices, services } from './service'
 import { createTray } from './tray'
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
@@ -38,6 +38,10 @@ function createInstance() {
     } catch (error) {
       app.quit()
     }
+  })
+
+  app.on('before-quit', () => {
+    services.v2fly?.stop()
   })
 
   if (isDev) {
