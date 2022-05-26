@@ -18,7 +18,7 @@ Any kinds of contribution are welcome.
 
 Yeah, I know there are a lot of exists v2ray gui clients, so, why anther one?
 
-No reason, I just have some spare time, and I want to leaning build app. then I just do it.
+No reason, I just have some spare time, and I want to leaning how to build an app. Then I just pick this one, and do it.
 
 [v2ray]: https://www.v2fly.org/
 [xray]: https://xtls.github.io/
