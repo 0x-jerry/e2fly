@@ -34,9 +34,11 @@ export class V2flyService {
 
     const bin = this.v2fly.bin
 
-    this.progress = spawn(bin, ['-c', v2flyConfPath], {
-      env: process.env,
-    })
+    if (!(await fs.pathExists(bin))) {
+      throw new Error('v2fly path not found: ' + bin)
+    }
+
+    this.progress = spawn(bin, ['-c', v2flyConfPath])
 
     this.progress.stdout?.on('data', (message) => {
       const str = message.toString()
