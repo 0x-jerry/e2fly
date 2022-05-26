@@ -28,17 +28,22 @@ export function createTray() {
     BrowserWindow.getAllWindows().forEach((n) => {
       if (n.isDestroyed()) return
 
-      show(n)
+      toggle(n)
     })
 
-    function show(n: BrowserWindow) {
-      if (!isWin()) {
-        const width = n.getSize()[0] / 2
-        n.setPosition(bounds.x - width, bounds.y)
+    function toggle(win: BrowserWindow) {
+      if (win.isVisible()) {
+        win.hide()
+        return
       }
 
-      n.show()
-      n.moveTop()
+      if (!isWin()) {
+        const width = win.getSize()[0] / 2
+        win.setPosition(bounds.x - width, bounds.y)
+      }
+
+      win.show()
+      win.moveTop()
     }
   })
 }
