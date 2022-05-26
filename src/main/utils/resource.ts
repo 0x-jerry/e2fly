@@ -5,7 +5,7 @@ import { isDev } from '../config'
 /**
  * @example
  * ```ts
- * loadResource('dist/preload/index.js') // => <appRootDir>/dist/preload/index.js
+ * getResourcePath('dist/preload/index.js') // => <appRootDir>/dist/preload/index.js
  * ```
  * @param resourceRelativePath
  */
