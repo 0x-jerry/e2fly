@@ -1,8 +1,8 @@
 import { isMac } from '@/main/utils'
 import { MacProxy } from './MacProxy'
-import { SysProxy, SysProxyOption } from './sysproxy'
+import { SysProxy, SysProxyOption } from './SysProx'
 
-export { SysProxy } from './sysproxy'
+export { SysProxy } from './SysProx'
 
 export type SysProxyService = SysProxy
 

@@ -1,5 +1,5 @@
 import { execSync } from 'child_process'
-import { SysProxy, SysProxyType, SysProxyConfig } from './sysproxy'
+import { SysProxy, SysProxyType, SysProxyConfig } from './SysProx'
 
 type MacNetworkType = 'Ethernet' | 'Thunderbolt Ethernet' | 'Wi-Fi'
 
