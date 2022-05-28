@@ -17,6 +17,8 @@ async function saveConfig() {
 
   if (store.enabled) {
     await rpcProxy.startV2fly(conf.activeOutboundId)
+  } else {
+    await rpcProxy.stopV2fly()
   }
 }
 </script>

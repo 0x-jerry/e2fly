@@ -50,6 +50,7 @@ async function buildWithESBuild(esbuildOpt: BuildOptions, entry: ElectronEntry, 
     ...esbuildOpt,
     entryPoints: [entry.input],
     outfile: entry.output,
+    sourcemap: isDev ? 'inline' : undefined,
     watch: isDev
       ? {
           onRebuild(error) {

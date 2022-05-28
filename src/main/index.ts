@@ -5,6 +5,10 @@ import { createWindow, restoreOrCreateWindow } from './mainWindow'
 import { initServices, services } from './service'
 import { createTray } from './tray'
 
+if (isDev) {
+  require('source-map-support').install()
+}
+
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
 const gotTheLock = app.requestSingleInstanceLock()

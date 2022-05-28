@@ -36,9 +36,7 @@ export abstract class SysProxy {
     const conf = this.conf.config
 
     if (!conf.proxy.system) {
-      await this._disable('http')
-      await this._disable('socks')
-
+      await this.stop()
       return
     }
 
@@ -63,5 +61,10 @@ export abstract class SysProxy {
     } else {
       await this._disable('socks')
     }
+  }
+
+  async stop() {
+    await this._disable('http')
+    await this._disable('socks')
   }
 }
