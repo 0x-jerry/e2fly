@@ -3,7 +3,7 @@ import { SysProxy, SysProxyType, SysProxyConfig } from './sysproxy'
 
 type MacNetworkType = 'Ethernet' | 'Thunderbolt Ethernet' | 'Wi-Fi'
 
-export class MacProxy implements SysProxy {
+export class MacProxy extends SysProxy {
   networkTypes: MacNetworkType[] = ['Ethernet', 'Thunderbolt Ethernet', 'Wi-Fi']
 
   getAvailableNetworkTypes() {
@@ -17,31 +17,36 @@ export class MacProxy implements SysProxy {
     })
   }
 
-  enable(type: SysProxyType, conf: SysProxyConfig) {
+  _enable(type: SysProxyType, conf: SysProxyConfig) {
     const availableNetworkTypes = this.getAvailableNetworkTypes()
-    if (type === 'http') {
-      for (const netType of availableNetworkTypes) {
+
+    for (const netType of availableNetworkTypes) {
+      if (type === 'http') {
         this.enableHttpProxy(conf, netType)
+      } else if (type === 'socks') {
+        this.enableSocksProxy(conf, netType)
       }
     }
   }
 
-  disable(type: SysProxyType) {
+  _disable(type: SysProxyType) {
     const availableNetworkTypes = this.getAvailableNetworkTypes()
-    if (type === 'http') {
-      for (const netType of availableNetworkTypes) {
+    for (const netType of availableNetworkTypes) {
+      if (type === 'http') {
         this.disableHttpProxy(netType)
+      } else if (type === 'socks') {
+        this.disableSocksProxy(netType)
       }
     }
   }
 
   enableHttpProxy(conf: SysProxyConfig, networkType: MacNetworkType) {
     // set http proxy
-    const http = `networksetup -setwebproxy ${networkType} ${conf.ip} ${conf.port} && networksetup -setproxybypassdomains ${networkType} 127.0.0.1 localhost`
+    const http = `networksetup -setwebproxy ${networkType} ${conf.addr} ${conf.port}`
     execSync(http)
 
     // set https proxy
-    const https = `networksetup -setsecurewebproxy ${networkType} ${conf.ip} ${conf.port} && networksetup -setproxybypassdomains ${networkType} 127.0.0.1 localhost`
+    const https = `networksetup -setsecurewebproxy ${networkType} ${conf.addr} ${conf.port}`
     execSync(https)
   }
 
@@ -53,5 +58,17 @@ export class MacProxy implements SysProxy {
     // set https proxy
     const https = `networksetup -setsecurewebproxystate ${networkType} off`
     execSync(https)
+  }
+
+  enableSocksProxy(conf: SysProxyConfig, networkType: MacNetworkType) {
+    // set socks proxy
+    const http = `networksetup -setsocksfirewallproxy ${networkType} ${conf.addr} ${conf.port}`
+    execSync(http)
+  }
+
+  disableSocksProxy(networkType: MacNetworkType) {
+    // set socks proxy
+    const http = `networksetup -setsocksfirewallproxystate ${networkType} off`
+    execSync(http)
   }
 }

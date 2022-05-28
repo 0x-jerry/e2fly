@@ -24,6 +24,7 @@ specifiers:
   picocolors: ^1.0.0
   rimraf: ^3.0.2
   sharp: ^0.30.5
+  source-map-support: ^0.5.21
   tsx: ^3.4.1
   typescript: ^4.7.2
   unocss: ^0.34.1
@@ -66,6 +67,7 @@ devDependencies:
   picocolors: 1.0.0
   rimraf: 3.0.2
   sharp: 0.30.5
+  source-map-support: 0.5.21
   tsx: 3.4.1
   typescript: 4.7.2
   unocss: 0.34.1_vite@2.9.9
@@ -1061,7 +1063,7 @@ packages:
     dev: true
 
   /buffer-from/1.1.2:
-    resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/buffer-from/-/buffer-from-1.1.2.tgz}
+    resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
     dev: true
 
   /buffer/5.7.1:
@@ -3872,7 +3874,7 @@ packages:
     engines: {node: '>=0.10.0'}
 
   /source-map-support/0.5.21:
-    resolution: {integrity: sha512-uBHU3L3czsIyYXKX88fdrGovxdSCoTGDRZ6SYXtSRxLZUzHg5P/66Ht6uoUlHu9EZod+inXhKo3qQgwXUT/y1w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/source-map-support/-/source-map-support-0.5.21.tgz}
+    resolution: {integrity: sha512-uBHU3L3czsIyYXKX88fdrGovxdSCoTGDRZ6SYXtSRxLZUzHg5P/66Ht6uoUlHu9EZod+inXhKo3qQgwXUT/y1w==}
     dependencies:
       buffer-from: 1.1.2
       source-map: 0.6.1

@@ -14,6 +14,7 @@ export const methods = {
 
   async startV2fly(id: string) {
     await services.v2fly.start(id)
+    await services.sysProxy?.start()
   },
 
   stopV2fly() {
