@@ -2,6 +2,10 @@
 
 Another cross-platform [V2Ray] GUI client, support [xray]. WIP
 
+## Screenshot
+
+![](docs/app.png)
+
 ## TODO
 
 - [x] System proxy
