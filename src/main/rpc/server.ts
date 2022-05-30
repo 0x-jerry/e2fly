@@ -11,6 +11,7 @@ process.env.E2FLY_RPC_PROTOCOL_ID = rpcID
 const rpc = createRPC<RendererThreadMethods>(methods, {
   id: rpcID,
   verbose: isDev,
+  timeout: 10,
   send(data) {
     BrowserWindow.getAllWindows()
       .filter((n) => !n.isDestroyed())

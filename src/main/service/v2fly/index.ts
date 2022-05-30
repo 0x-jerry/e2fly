@@ -6,6 +6,8 @@ import { configDir, ConfigService } from '../config'
 import fs from 'fs-extra'
 import { E2FlyConfig } from '../../config'
 import { getV2rayConfig } from './gen-conf'
+import { throttle } from 'lodash'
+import { RPCTimeoutError } from '@0x-jerry/utils'
 
 const v2flyConfPath = join(configDir, 'v2fly.conf.json')
 
@@ -26,6 +28,23 @@ export class V2flyService {
     return this.confService.config.v2fly
   }
 
+  logs: string[] = []
+  logHandler?: any
+
+  sendLogs = throttle(async () => {
+    const logs = this.logs.splice(0)
+
+    try {
+      await rpcMainProxy.v2flyLog(logs)
+    } catch (error) {
+      if (!(error instanceof RPCTimeoutError)) {
+        console.warn('log error:', error)
+      }
+
+      this.logs.push(...logs)
+    }
+  }, 100)
+
   async start(enableId: string) {
     this.stop()
 
@@ -42,13 +61,18 @@ export class V2flyService {
 
     this.progress.stdout?.on('data', (message) => {
       const str = message.toString()
-      rpcMainProxy.v2flyLog(str)
+      this.log(str)
     })
 
     this.progress.stderr?.on('data', (message) => {
       const str = message.toString()
-      rpcMainProxy.v2flyLog(str)
+      this.log(str)
     })
+  }
+
+  log(str: string) {
+    this.logs.unshift(str)
+    this.sendLogs()
   }
 
   stop() {
