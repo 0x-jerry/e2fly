@@ -95,7 +95,7 @@ function getRoutingConf(rules?: IV2rayRouting['rules']): IV2rayRouting {
   }
 }
 
-export function getV2rayConfig(opt: E2FlyConfig, ...outbounds: IV2RayOutbound[]): IV2Ray {
+export function getV2rayConfig(opt: E2FlyConfig, outbound: IV2RayOutbound): IV2Ray {
   const { v2fly } = opt
 
   const inbounds: IV2RayInbound[] = []
@@ -132,12 +132,10 @@ export function getV2rayConfig(opt: E2FlyConfig, ...outbounds: IV2RayOutbound[])
     log: getLogConf(),
     inbounds,
     outbounds: [
-      ...outbounds.map((outbound) => {
-        return {
-          ...outbound,
-          tag: OutboundTag.PROXY,
-        }
-      }),
+      {
+        ...outbound,
+        tag: OutboundTag.PROXY,
+      },
       getOutboundDirectConf(),
       getOutboundBlockConf(),
     ],

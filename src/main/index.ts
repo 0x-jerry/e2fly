@@ -4,6 +4,7 @@ import './rpc'
 import { createWindow, restoreOrCreateWindow } from './mainWindow'
 import { initServices, services } from './service'
 import { createTray } from './tray'
+import { isMac } from './utils'
 
 if (isDev) {
   require('source-map-support').install()
@@ -20,6 +21,10 @@ if (!gotTheLock) {
 }
 
 function createInstance() {
+  if (isMac()) {
+    app.dock.hide()
+  }
+
   app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
       app.quit()
