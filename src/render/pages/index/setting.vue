@@ -31,6 +31,11 @@ async function saveConfig() {
       </k-checkbox>
     </div>
     <div flex="~">
+      <k-checkbox v-model="data.proxy.bypassCN" class="flex-1 justify-start">
+        {{ $t('page.setting.bypassCN') }}
+      </k-checkbox>
+    </div>
+    <div flex="~">
       <k-checkbox v-model="e2fly.stream.tcp" class="flex-1 justify-start">TCP</k-checkbox>
       <k-checkbox v-model="e2fly.stream.udp" class="flex-1 justify-start">UDP</k-checkbox>
     </div>

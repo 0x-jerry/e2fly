@@ -19,6 +19,11 @@ export interface ProxyConfig {
    */
   system?: boolean
   /**
+   * Enable bypass CN
+   * @default true
+   */
+  bypassCN?: boolean
+  /**
    * Enable PAC
    */
   pac?: boolean

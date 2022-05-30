@@ -9,6 +9,7 @@ page:
     port: Port
     system-proxy: System Proxy
     v2ray-bin: V2Ray Bin
+    bypassCN: Bypass CN mainland
 menu:
   log: Log
   setting: Setting

@@ -96,7 +96,7 @@ function getRoutingConf(rules?: IV2rayRouting['rules']): IV2rayRouting {
 }
 
 export function getV2rayConfig(opt: E2FlyConfig, outbound: IV2RayOutbound): IV2Ray {
-  const { v2fly } = opt
+  const { v2fly, proxy } = opt
 
   const inbounds: IV2RayInbound[] = []
 
@@ -111,7 +111,7 @@ export function getV2rayConfig(opt: E2FlyConfig, outbound: IV2RayOutbound): IV2R
   const extraRules: IV2rayRouting['rules'] = []
 
   // enable bypass CN mainland
-  if (true) {
+  if (proxy.bypassCN) {
     extraRules.push(
       {
         type: 'field',
