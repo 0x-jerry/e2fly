@@ -75,21 +75,15 @@ function getRoutingConf(rules?: IV2rayRouting['rules']): IV2rayRouting {
     rules: [
       {
         type: 'field',
-        domain: ['geosite:google'],
+        domain: ['geosite:github'],
         outboundTag: OutboundTag.PROXY,
       },
       {
         type: 'field',
         outboundTag: OutboundTag.DIRECT,
         ip: [
-          'geoip:cn', // 中国大陆的 IP
           'geoip:private', // 私有地址 IP，如路由器等
         ],
-      },
-      {
-        type: 'field',
-        outboundTag: OutboundTag.DIRECT,
-        domain: ['geosite:cn'],
       },
       {
         type: 'field',
@@ -114,6 +108,26 @@ export function getV2rayConfig(opt: E2FlyConfig, ...outbounds: IV2RayOutbound[])
     inbounds.push(getSocksInbound(v2fly.socks.address, v2fly.socks.port))
   }
 
+  const extraRules: IV2rayRouting['rules'] = []
+
+  // enable bypass CN mainland
+  if (true) {
+    extraRules.push(
+      {
+        type: 'field',
+        outboundTag: OutboundTag.DIRECT,
+        ip: [
+          'geoip:cn', // 中国大陆的 IP
+        ],
+      },
+      {
+        type: 'field',
+        outboundTag: OutboundTag.DIRECT,
+        domain: ['geosite:cn'],
+      }
+    )
+  }
+
   return {
     log: getLogConf(),
     inbounds,
@@ -127,6 +141,6 @@ export function getV2rayConfig(opt: E2FlyConfig, ...outbounds: IV2RayOutbound[])
       getOutboundDirectConf(),
       getOutboundBlockConf(),
     ],
-    routing: getRoutingConf(),
+    routing: getRoutingConf(extraRules),
   }
 }
