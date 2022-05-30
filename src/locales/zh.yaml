@@ -6,6 +6,9 @@ page:
     reconnect: 重新连接
   setting:
     save: 保存
+    port: 端口
+    system-proxy: 系统代理
+    v2ray-bin: V2ray 路径
 menu:
   log: 日志
   setting: 设置

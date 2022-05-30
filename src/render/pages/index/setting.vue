@@ -26,7 +26,9 @@ async function saveConfig() {
 <template>
   <k-col class="px-3 py-2" gap="0.5rem">
     <div flex="~">
-      <k-checkbox v-model="data.proxy.system" class="flex-1 justify-start">System Proxy</k-checkbox>
+      <k-checkbox v-model="data.proxy.system" class="flex-1 justify-start">
+        {{ $t('page.setting.system-proxy') }}
+      </k-checkbox>
     </div>
     <div flex="~">
       <k-checkbox v-model="e2fly.stream.tcp" class="flex-1 justify-start">TCP</k-checkbox>
@@ -34,20 +36,20 @@ async function saveConfig() {
     </div>
     <div class="items-center gap-x-1" flex="~">
       <k-checkbox v-model="e2fly.http.enabled"></k-checkbox>
-      <div w="6em" text="right">Http Port：</div>
+      <div w="6em" text="right">Http {{ $t('page.setting.port') }}：</div>
       <div flex="1">
         <k-input class="w-full" v-model.number="e2fly.http.port" block></k-input>
       </div>
     </div>
     <div class="items-center gap-x-1" flex="~">
       <k-checkbox v-model="e2fly.socks.enabled"></k-checkbox>
-      <div w="6em" text="right">Socks Port：</div>
+      <div w="6em" text="right">Socks {{ $t('page.setting.port') }}：</div>
       <div flex="1">
         <k-input v-model.number="e2fly.socks.port" class="w-full" block></k-input>
       </div>
     </div>
     <div class="items-center gap-x-1" flex="~">
-      <div w="7em" text="right">V2Ray Bin：</div>
+      <div w="7em" text="right">{{ $t('page.setting.v2ray-bin') }}：</div>
       <div flex="1">
         <k-input v-model.number="e2fly.bin" class="w-full" block></k-input>
       </div>
