@@ -3,7 +3,7 @@ import { rpcProxy } from '../rpc'
 
 export const store = reactive({
   config: {} as E2FlyConfig,
-  logs: [] as string[],
+  logs: [] as { id: string; content: string }[],
   enabled: false,
 })
 

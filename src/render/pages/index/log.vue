@@ -6,7 +6,7 @@ import { store } from '@/render/store'
 
 <template>
   <div class="log-page">
-    <pre><code v-for="o in store.logs" >{{o}}</code></pre>
+    <pre><code v-for="o in store.logs" :key="o.id" >{{o.content}}</code></pre>
   </div>
 </template>
 
