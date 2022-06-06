@@ -4,7 +4,7 @@ Another cross-platform [V2Ray] GUI client, support [xray]. WIP
 
 ## Feature
 
-Em..., There are no exited features. It just works as expected.
+Em..., There are no excited features. It just works as expected.
 
 There are a few setting options, and trust me, you don't need more.
 
