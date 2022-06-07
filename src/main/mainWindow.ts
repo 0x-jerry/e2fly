@@ -2,6 +2,10 @@ import { BrowserWindow } from 'electron'
 import { isDev } from './config'
 import { getResourcePath } from './utils'
 
+export const wins = {
+  float: null as null | BrowserWindow,
+}
+
 export async function createWindow() {
   const win = new BrowserWindow({
     width: 350,
@@ -15,6 +19,7 @@ export async function createWindow() {
       preload: getResourcePath('dist/preload/index.js'),
     },
   })
+  wins.float = win
 
   const URL = isDev
     ? process.env.DEV_SERVER_URL!

@@ -3,7 +3,7 @@ import { isDev } from './config'
 import './rpc'
 import { createWindow, restoreOrCreateWindow } from './mainWindow'
 import { initServices, services } from './service'
-import { createTray } from './tray'
+import { createTray, initAppMenu } from './tray'
 import { isMac } from './utils'
 
 if (isDev) {
@@ -42,6 +42,7 @@ function createInstance() {
   app.on('ready', async () => {
     try {
       createTray()
+      initAppMenu()
       await initServices()
       await createWindow()
     } catch (error) {

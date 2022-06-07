@@ -1,4 +1,5 @@
 import { Tray, nativeImage, BrowserWindow, Menu, app } from 'electron'
+import { wins } from './mainWindow'
 import { getResourcePath, isWin } from './utils'
 
 let tray: Tray
@@ -13,10 +14,8 @@ export function createTray() {
   const menu = Menu.buildFromTemplate([
     {
       label: 'Quit E2Fly',
-      type: 'normal',
-      click() {
-        app.exit()
-      },
+      role: 'quit',
+      accelerator: 'CommandOrControl+Q',
     },
   ])
 
@@ -46,4 +45,27 @@ export function createTray() {
       win.moveTop()
     }
   })
+}
+
+export function initAppMenu() {
+  const menu = Menu.buildFromTemplate([
+    {
+      label: 'E2fly',
+      submenu: [
+        {
+          label: 'Close',
+          accelerator: 'CommandOrControl+W',
+          click() {
+            wins.float?.hide()
+          },
+        },
+        {
+          label: 'Quit',
+          role: 'quit',
+        },
+      ],
+    },
+  ])
+
+  Menu.setApplicationMenu(menu)
 }
