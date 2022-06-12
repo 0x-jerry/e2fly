@@ -85,18 +85,15 @@ function getRoutingConf(rules?: IV2rayRouting['rules']): IV2rayRouting {
           'geoip:private', // 私有地址 IP，如路由器等
         ],
       },
-      {
-        type: 'field',
-        outboundTag: OutboundTag.BLOCK,
-        domain: ['geosite:category-ads-all'],
-      },
       ...extraRules,
     ],
   }
 }
 
 export function getV2rayConfig(opt: E2FlyConfig, outbound: IV2RayOutbound): IV2Ray {
-  const { v2fly, proxy } = opt
+  const { v2fly } = opt
+
+  const { routes } = v2fly
 
   const inbounds: IV2RayInbound[] = []
 
@@ -111,7 +108,7 @@ export function getV2rayConfig(opt: E2FlyConfig, outbound: IV2RayOutbound): IV2R
   const extraRules: IV2rayRouting['rules'] = []
 
   // enable bypass CN mainland
-  if (proxy.bypassCN) {
+  if (routes.bypassCN) {
     extraRules.push(
       {
         type: 'field',
@@ -126,6 +123,15 @@ export function getV2rayConfig(opt: E2FlyConfig, outbound: IV2RayOutbound): IV2R
         domain: ['geosite:cn'],
       }
     )
+  }
+
+  // block ads
+  if (routes.blockAds) {
+    extraRules.push({
+      type: 'field',
+      outboundTag: OutboundTag.BLOCK,
+      domain: ['geosite:category-ads-all'],
+    })
   }
 
   return {

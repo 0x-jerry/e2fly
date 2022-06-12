@@ -19,11 +19,6 @@ export interface ProxyConfig {
    */
   system?: boolean
   /**
-   * Enable bypass CN
-   * @default true
-   */
-  bypassCN?: boolean
-  /**
    * Enable PAC
    */
   pac?: boolean
@@ -36,6 +31,17 @@ export interface V2FlyConfig {
   stream: {
     udp: boolean
     tcp: boolean
+  }
+  routes: {
+    /**
+     * @default true
+     */
+    blockAds: boolean
+    /**
+     * Enable bypass CN
+     * @default true
+     */
+    bypassCN: boolean
   }
 }
 

@@ -10,6 +10,7 @@ page:
     system-proxy: 系统代理
     v2ray-bin: V2ray 路径
     bypassCN: 绕过中国大陆
+    blockAds: 屏蔽广告
 menu:
   log: 日志
   setting: 设置

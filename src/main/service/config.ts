@@ -11,7 +11,6 @@ async function createDefaultConfig() {
   const conf: E2FlyConfig = {
     proxy: {
       system: false,
-      bypassCN: true,
       pac: false,
     },
     activeOutboundId: '',
@@ -30,6 +29,10 @@ async function createDefaultConfig() {
       stream: {
         udp: true,
         tcp: true,
+      },
+      routes: {
+        bypassCN: true,
+        blockAds: true,
       },
     },
     outbound: [],

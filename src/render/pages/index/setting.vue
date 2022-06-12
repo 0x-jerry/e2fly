@@ -31,8 +31,13 @@ async function saveConfig() {
       </k-checkbox>
     </div>
     <div flex="~">
-      <k-checkbox v-model="data.proxy.bypassCN" class="flex-1 justify-start">
+      <k-checkbox v-model="e2fly.routes.bypassCN" class="flex-1 justify-start">
         {{ $t('page.setting.bypassCN') }}
+      </k-checkbox>
+    </div>
+    <div flex="~">
+      <k-checkbox v-model="e2fly.routes.blockAds" class="flex-1 justify-start">
+        {{ $t('page.setting.blockAds') }}
       </k-checkbox>
     </div>
     <div flex="~">
