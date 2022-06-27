@@ -1,5 +1,8 @@
 use config::Config;
-use std::path::PathBuf;
+use std::{
+    fs::{self, OpenOptions},
+    path::PathBuf,
+};
 
 use model::AppConfig;
 
@@ -8,7 +11,9 @@ pub mod model;
 pub const APP_NAME: &str = "e2fly";
 const CONFIG_NAME: &str = "config.json";
 
-fn get_config_path(dir: Option<PathBuf>) -> PathBuf {
+fn get_config_path(dir: &Option<PathBuf>) -> PathBuf {
+    let dir = dir.clone();
+
     let config_dir = match dir {
         Some(d) => d,
         None => {
@@ -23,11 +28,16 @@ fn get_config_path(dir: Option<PathBuf>) -> PathBuf {
         }
     };
 
+    // ensure config folder
+    if !config_dir.exists() {
+        fs::create_dir_all(config_dir.clone()).expect("Create config folder failed!");
+    }
+
     return config_dir.join(CONFIG_NAME);
 }
 
 pub fn read(config_dir: Option<PathBuf>) -> AppConfig {
-    let config_path = get_config_path(config_dir);
+    let config_path = get_config_path(&config_dir);
 
     let config_path_str = config_path
         .as_path()
@@ -37,10 +47,15 @@ pub fn read(config_dir: Option<PathBuf>) -> AppConfig {
 
     let settings = Config::builder()
         .add_source(config::File::with_name(config_path_str))
-        .build()
-        .unwrap();
+        .build();
 
-    let conf = settings.try_deserialize::<AppConfig>();
+    if settings.is_err() {
+        println!("Build app config failed");
+
+        return AppConfig::new();
+    }
+
+    let conf = settings.unwrap().try_deserialize::<AppConfig>();
 
     match conf {
         Ok(c) => c,
@@ -48,12 +63,22 @@ pub fn read(config_dir: Option<PathBuf>) -> AppConfig {
     }
 }
 
-pub fn save() {}
+pub fn save(config_dir: Option<PathBuf>, conf: &AppConfig) {
+    let conf_path = get_config_path(&config_dir);
+
+    let file = OpenOptions::new()
+        .write(true)
+        // ensure config file
+        .create_new(!conf_path.exists())
+        .open(conf_path)
+        .expect("Create config file failed!");
+
+    serde_json::to_writer(file, conf).expect("Save config file failed!");
+}
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use model::*;
 
     use std::path::Path;
 
