@@ -1,0 +1,32 @@
+{
+    "proxy": {
+        "system": false,
+        "pac": false
+    },
+    "activeOutboundId": "rxqccXmHFI41VA7ArI8j0",
+    "v2fly": {
+        "bin": "/usr/local/bin/v2ray",
+        "http": {
+            "enabled": true,
+            "address": "127.0.0.1",
+            "port": 7778
+        },
+        "socks": {
+            "enabled": true,
+            "address": "127.0.0.1",
+            "port": 7777
+        },
+        "stream": {
+            "udp": true,
+            "tcp": true
+        },
+        "routes": {
+            "bypassCN": true,
+            "blockAds": true
+        }
+    },
+    "outbound": [
+        "v2fly outbound config 1",
+        "v2fly outbound config 2"
+    ]
+}
