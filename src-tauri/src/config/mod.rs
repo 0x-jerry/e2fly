@@ -1,6 +1,8 @@
 use config::Config;
 use std::path::PathBuf;
 
+use model::AppConfig;
+
 pub mod model;
 
 pub const APP_NAME: &str = "e2fly";
@@ -24,7 +26,7 @@ fn get_config_path(dir: Option<PathBuf>) -> PathBuf {
     return config_dir.join(CONFIG_NAME);
 }
 
-pub fn read(config_dir: Option<PathBuf>) -> Config {
+pub fn read(config_dir: Option<PathBuf>) -> AppConfig {
     let config_path = get_config_path(config_dir);
 
     let config_path_str = config_path
@@ -38,7 +40,12 @@ pub fn read(config_dir: Option<PathBuf>) -> Config {
         .build()
         .unwrap();
 
-    return settings;
+    let conf = settings.try_deserialize::<AppConfig>();
+
+    match conf {
+        Ok(c) => c,
+        Err(_err) => AppConfig::new(),
+    }
 }
 
 pub fn save() {}
@@ -54,12 +61,8 @@ mod tests {
     fn read_config() {
         let dir = Some(Path::new("../test-conf").to_path_buf());
 
-        let settings = read(dir);
+        let conf = read(dir);
 
-        let config = settings
-            .try_deserialize::<AppConfig>()
-            .expect("Parse app config failed!");
-
-        println!("{:?}", config);
+        println!("{:?}", conf);
     }
 }
