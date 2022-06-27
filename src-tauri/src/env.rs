@@ -1,3 +1,14 @@
+use std::env::{self};
+
+use dotenv::dotenv;
+
 pub fn is_dev() -> bool {
-    return dotenv!("E2FLY_DEVELOPMENT") == "true";
+    dotenv().ok();
+
+    let dev = match env::var("E2FLY_DEVELOPMENT") {
+        Ok(v) => v,
+        Err(_e) => String::from(""),
+    };
+
+    return dev == "true";
 }
