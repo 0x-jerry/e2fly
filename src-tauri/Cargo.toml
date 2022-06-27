@@ -19,6 +19,7 @@ serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 tauri = { version = "1.0.0", features = ["api-all"] }
 dotenv = "0.15.0"
+dotenv_codegen = "0.15.0"
 config = "0.13.1"
 dirs = "4.0"
 

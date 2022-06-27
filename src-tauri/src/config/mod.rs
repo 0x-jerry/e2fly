@@ -41,7 +41,7 @@ pub fn read(config_dir: Option<PathBuf>) -> Config {
     return settings;
 }
 
-fn save() {}
+pub fn save() {}
 
 #[cfg(test)]
 mod tests {

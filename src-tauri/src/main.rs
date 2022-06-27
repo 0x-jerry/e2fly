@@ -3,22 +3,18 @@
     windows_subsystem = "windows"
 )]
 
-use dotenv::dotenv;
-use std::env;
+#[macro_use]
+extern crate dotenv_codegen;
+
 mod config;
+mod env;
 
 fn main() {
-    dotenv().ok();
+    println!("DEV: {}", env::is_dev());
 
-    for (key, value) in env::vars() {
-        println!("{}: {}", key, value);
-    }
-
-    config::read(None);
-
-    // let context = tauri::generate_context!();
-    // tauri::Builder::default()
-    //   .menu(tauri::Menu::os_default(&context.package_info().name))
-    //   .run(context)
-    //   .expect("error while running tauri application");
+    let context = tauri::generate_context!();
+    tauri::Builder::default()
+        .menu(tauri::Menu::os_default(&context.package_info().name))
+        .run(context)
+        .expect("error while running tauri application");
 }
