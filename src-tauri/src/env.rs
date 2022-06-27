@@ -10,5 +10,5 @@ pub fn is_dev() -> bool {
         Err(_e) => String::from(""),
     };
 
-    return dev == "true";
+    dev == "true"
 }

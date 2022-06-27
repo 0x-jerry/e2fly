@@ -3,27 +3,40 @@
     windows_subsystem = "windows"
 )]
 
-use std::path::Path;
-
 mod config;
 mod env;
 
+use std::path::Path;
+
 #[tauri::command]
 fn is_dev() -> bool {
-    return env::is_dev();
+    env::is_dev()
+}
+
+#[tauri::command]
+fn save_conf(conf: config::model::AppConfig) {
+    config::save(get_config_dir(), &conf);
 }
 
 fn main() {
     println!("DEV: {}", env::is_dev());
 
-    let dir = (env::is_dev()).then(|| Path::new("../test-conf").to_path_buf());
+    let dir = get_config_dir();
     let app_conf = config::read(dir.clone());
+
     config::save(dir.clone(), &app_conf);
 
     let context = tauri::generate_context!();
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![is_dev])
+        .invoke_handler(tauri::generate_handler![save_conf])
         .menu(tauri::Menu::os_default(&context.package_info().name))
         .run(context)
         .expect("error while running tauri application");
+}
+
+fn get_config_dir() -> Option<std::path::PathBuf> {
+    let dir = (env::is_dev()).then(|| Path::new("../test-conf").to_path_buf());
+
+    dir
 }

@@ -33,7 +33,7 @@ fn get_config_path(dir: &Option<PathBuf>) -> PathBuf {
         fs::create_dir_all(config_dir.clone()).expect("Create config folder failed!");
     }
 
-    return config_dir.join(CONFIG_NAME);
+    config_dir.join(CONFIG_NAME)
 }
 
 pub fn read(config_dir: Option<PathBuf>) -> AppConfig {
