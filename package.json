@@ -6,13 +6,15 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "gen:icons": "imger ./assets/logo.png src-tauri/icons -p ./scripts/icons.preset.json"
   },
   "dependencies": {
     "@tauri-apps/api": "^1.0.1",
-    "vue": "^3.2.25"
+    "vue": "^3.2.37"
   },
   "devDependencies": {
+    "@0x-jerry/imger": "^0.1.7",
     "@tauri-apps/cli": "^1.0.0",
     "@types/fs-extra": "^9.0.13",
     "@types/sharp": "^0.30.4",
@@ -20,8 +22,8 @@
     "fs-extra": "^10.1.0",
     "png2icons": "^2.0.1",
     "sharp": "^0.30.7",
-    "typescript": "^4.5.4",
-    "vite": "^2.9.9",
-    "vue-tsc": "^0.34.7"
+    "typescript": "^4.7.4",
+    "vite": "^2.9.13",
+    "vue-tsc": "^0.38.2"
   }
 }
