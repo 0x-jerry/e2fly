@@ -53,12 +53,16 @@
     "updater": {
       "active": false
     },
+    "systemTray": {
+      "iconPath": "../assets/logoTemplate.png",
+      "iconAsTemplate": true
+    },
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
         "resizable": true,
         "title": "E2Fly",
+        "height": 600,
         "width": 800
       }
     ]

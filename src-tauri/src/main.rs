@@ -8,6 +8,8 @@ mod env;
 
 use std::path::Path;
 
+use tauri::{SystemTray, SystemTrayMenu};
+
 #[tauri::command]
 fn is_dev() -> bool {
     env::is_dev()
@@ -26,8 +28,13 @@ fn main() {
 
     config::save(dir.clone(), &app_conf);
 
+    let tray_menu = SystemTrayMenu::new(); // insert the menu items here
+    let system_tray = SystemTray::new().with_menu(tray_menu);
+
     let context = tauri::generate_context!();
+
     tauri::Builder::default()
+        .system_tray(system_tray)
         .invoke_handler(tauri::generate_handler![is_dev])
         .invoke_handler(tauri::generate_handler![save_conf])
         .menu(tauri::Menu::os_default(&context.package_info().name))
