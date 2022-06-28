@@ -63,6 +63,10 @@ export function initAppMenu() {
           label: 'Quit',
           role: 'quit',
         },
+        {
+          label: 'Edit',
+          role: 'editMenu',
+        },
       ],
     },
   ])
