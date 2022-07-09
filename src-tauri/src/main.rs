@@ -5,10 +5,11 @@
 
 mod config;
 mod env;
-
-use std::path::Path;
+mod program;
 
 use tauri::{SystemTray, SystemTrayMenu};
+
+use crate::{config::get_v2fly_conf_path, program::Program};
 
 #[tauri::command]
 fn is_dev() -> bool {
@@ -17,21 +18,25 @@ fn is_dev() -> bool {
 
 #[tauri::command]
 fn save_conf(conf: config::model::AppConfig) {
-    config::save(get_config_dir(), &conf);
+    config::save(&conf);
 }
 
 fn main() {
     println!("DEV: {}", env::is_dev());
 
-    let dir = get_config_dir();
-    let app_conf = config::read(dir.clone());
+    let app_conf = config::read();
 
-    config::save(dir.clone(), &app_conf);
+    config::save(&app_conf);
 
     let tray_menu = SystemTrayMenu::new(); // insert the menu items here
     let system_tray = SystemTray::new().with_menu(tray_menu);
 
     let context = tauri::generate_context!();
+
+    let mut program = Program::run(
+        app_conf.v2fly.bin.as_str(),
+        ["-c", get_v2fly_conf_path().to_str().unwrap()],
+    );
 
     tauri::Builder::default()
         .system_tray(system_tray)
@@ -40,10 +45,4 @@ fn main() {
         .menu(tauri::Menu::os_default(&context.package_info().name))
         .run(context)
         .expect("error while running tauri application");
-}
-
-fn get_config_dir() -> Option<std::path::PathBuf> {
-    let dir = (env::is_dev()).then(|| Path::new("../test-conf").to_path_buf());
-
-    dir
 }

@@ -1,18 +1,20 @@
 use config::Config;
 use std::{
     fs::{self, OpenOptions},
-    path::PathBuf,
+    path::{Path, PathBuf},
 };
 
 use model::AppConfig;
+
+use crate::env;
 
 pub mod model;
 
 pub const APP_NAME: &str = "e2fly";
 const CONFIG_NAME: &str = "config.json";
 
-fn get_config_path(dir: &Option<PathBuf>) -> PathBuf {
-    let dir = dir.clone();
+fn get_config_dir() -> PathBuf {
+    let dir = (env::is_dev()).then(|| Path::new("../test-conf").to_path_buf());
 
     let config_dir = match dir {
         Some(d) => d,
@@ -28,18 +30,28 @@ fn get_config_path(dir: &Option<PathBuf>) -> PathBuf {
         }
     };
 
+    config_dir.canonicalize().ok().unwrap()
+}
+
+pub fn get_v2fly_conf_path() -> PathBuf {
+    get_config_dir().join("v2fly.conf.json")
+}
+
+pub fn get_config_path() -> PathBuf {
+    let config_dir = get_config_dir();
+
     // ensure config folder
     if !config_dir.exists() {
-        fs::create_dir_all(config_dir.clone()).expect("Create config folder failed!");
+        fs::create_dir_all(&config_dir).expect("Create config folder failed!");
     }
 
     config_dir.join(CONFIG_NAME)
 }
 
-pub fn read(config_dir: Option<PathBuf>) -> AppConfig {
-    let config_path = get_config_path(&config_dir);
+pub fn read() -> AppConfig {
+    let conf_path = get_config_path();
 
-    let config_path_str = config_path
+    let config_path_str = conf_path
         .as_path()
         .as_os_str()
         .to_str()
@@ -63,8 +75,8 @@ pub fn read(config_dir: Option<PathBuf>) -> AppConfig {
     }
 }
 
-pub fn save(config_dir: Option<PathBuf>, conf: &AppConfig) {
-    let conf_path = get_config_path(&config_dir);
+pub fn save(conf: &AppConfig) {
+    let conf_path = get_config_path();
 
     let file = OpenOptions::new()
         .write(true)
@@ -80,13 +92,14 @@ pub fn save(config_dir: Option<PathBuf>, conf: &AppConfig) {
 mod tests {
     use super::*;
 
-    use std::path::Path;
+    #[test]
+    fn test_path() {
+        println!("{:?}", get_config_dir());
+    }
 
     #[test]
     fn read_config() {
-        let dir = Some(Path::new("../test-conf").to_path_buf());
-
-        let conf = read(dir);
+        let conf = read();
 
         println!("{:?}", conf);
     }
