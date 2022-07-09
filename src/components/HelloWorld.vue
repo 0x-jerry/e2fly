@@ -1,36 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { invoke } from '@tauri-apps/api/tauri'
 
-defineProps<{ msg: string }>()
+async function startV2ray() {
+  await invoke('start_v2ray')
+}
 
-const count = ref(0)
+async function log() {
+  const r: any = await invoke('get_v2ray_log')
+  console.log(r)
+}
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
-
-  <p>
-    Recommended IDE setup:
-    <a href="https://code.visualstudio.com/" target="_blank">VS Code</a>
-    +
-    <a href="https://github.com/johnsoncodehk/volar" target="_blank">Volar</a>
-  </p>
-
-  <p>See <code>README.md</code> for more information.</p>
-
-  <p>
-    <a href="https://vitejs.dev/guide/features.html" target="_blank">
-      Vite Docs
-    </a>
-    |
-    <a href="https://v3.vuejs.org/" target="_blank">Vue 3 Docs</a>
-  </p>
-
-  <button type="button" @click="count++">count is: {{ count }}</button>
-  <p>
-    Edit
-    <code>components/HelloWorld.vue</code> to test hot module replacement.
-  </p>
+  <div>
+    <button type="button" @click="startV2ray">start v2ray</button>
+    <button type="button" @click="log">get log</button>
+  </div>
 </template>
 
 <style scoped>

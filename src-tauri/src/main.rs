@@ -3,13 +3,13 @@
     windows_subsystem = "windows"
 )]
 
+use crate::config::get_v2fly_conf_path;
+use tauri::{SystemTray, SystemTrayMenu};
+use v2fly::get_v2ray_instance;
+
 mod config;
 mod env;
-mod program;
-
-use tauri::{SystemTray, SystemTrayMenu};
-
-use crate::{config::get_v2fly_conf_path, program::Program};
+mod v2fly;
 
 #[tauri::command]
 fn is_dev() -> bool {
@@ -19,6 +19,28 @@ fn is_dev() -> bool {
 #[tauri::command]
 fn save_conf(conf: config::model::AppConfig) {
     config::save(&conf);
+}
+
+#[tauri::command]
+fn start_v2ray() {
+    println!("call start_v2ray");
+    let v2ray = get_v2ray_instance();
+
+    let app_conf = config::read();
+
+    v2ray.run(
+        app_conf.v2fly.bin.as_str(),
+        ["-c", get_v2fly_conf_path().to_str().unwrap()],
+    );
+}
+
+#[tauri::command]
+fn get_v2ray_log() -> Box<Vec<String>> {
+    let v2ray = get_v2ray_instance();
+
+    let log = v2ray.read_all();
+
+    log
 }
 
 fn main() {
@@ -33,15 +55,14 @@ fn main() {
 
     let context = tauri::generate_context!();
 
-    let mut program = Program::run(
-        app_conf.v2fly.bin.as_str(),
-        ["-c", get_v2fly_conf_path().to_str().unwrap()],
-    );
-
     tauri::Builder::default()
+        .invoke_handler(tauri::generate_handler![
+            start_v2ray,
+            is_dev,
+            get_v2ray_log,
+            save_conf
+        ])
         .system_tray(system_tray)
-        .invoke_handler(tauri::generate_handler![is_dev])
-        .invoke_handler(tauri::generate_handler![save_conf])
         .menu(tauri::Menu::os_default(&context.package_info().name))
         .run(context)
         .expect("error while running tauri application");
