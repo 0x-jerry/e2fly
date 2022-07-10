@@ -10,7 +10,7 @@ use model::AppConfig;
 pub mod model;
 pub mod model_impl;
 
-pub const APP_NAME: &str = "e2fly";
+pub const APP_NAME: &str = "e2fly.beta";
 const CONFIG_NAME: &str = "config.json";
 
 fn get_config_dir() -> PathBuf {
