@@ -4,11 +4,11 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use crate::env;
 use model::AppConfig;
 
-use crate::env;
-
 pub mod model;
+pub mod model_impl;
 
 pub const APP_NAME: &str = "e2fly";
 const CONFIG_NAME: &str = "config.json";

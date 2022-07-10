@@ -2,9 +2,13 @@
     all(not(debug_assertions), target_os = "windows"),
     windows_subsystem = "windows"
 )]
+#[macro_use]
+extern crate serde_derive;
+extern crate serde_json;
 
 use crate::config::get_v2fly_conf_path;
 use crate::config::model::AppConfig;
+
 use tauri::{SystemTray, SystemTrayMenu};
 use v2fly::get_v2ray_instance;
 
@@ -34,7 +38,7 @@ fn start_v2ray() {
     let app_conf = config::read();
 
     v2ray.run(
-        app_conf.v2fly.bin.as_str(),
+        app_conf.v2_fly.bin.as_str(),
         ["-c", get_v2fly_conf_path().to_str().unwrap()],
     );
 }
