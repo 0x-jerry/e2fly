@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { getOutboundConfFromBase64 } from '@/logic/v2fly'
-import { rpcProxy } from '@/rpc'
+import { rpcProxy } from '@/ipc'
 import { actions, store } from '@/store'
 import { remove, uuid } from '@0x-jerry/utils'
 import { IV2RayOutbound } from '@0x-jerry/v2ray-schema'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { rpcProxy } from './rpc'
+import { rpcProxy } from './ipc'
 import { store } from './store'
 import { logger } from './utils'
 

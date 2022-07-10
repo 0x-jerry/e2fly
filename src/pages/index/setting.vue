@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { rpcProxy } from '@/rpc'
+import { rpcProxy } from '@/ipc'
 import { store } from '@/store'
 
 const e2fly = reactive(structuredClone(toRaw(store.config.v2fly)))

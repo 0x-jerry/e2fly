@@ -4,6 +4,7 @@
 )]
 
 use crate::config::get_v2fly_conf_path;
+use crate::config::model::AppConfig;
 use tauri::{SystemTray, SystemTrayMenu};
 use v2fly::get_v2ray_instance;
 
@@ -19,6 +20,11 @@ fn is_dev() -> bool {
 #[tauri::command]
 fn save_conf(conf: config::model::AppConfig) {
     config::save(&conf);
+}
+
+#[tauri::command]
+fn read_conf() -> AppConfig {
+    config::read()
 }
 
 #[tauri::command]
@@ -60,7 +66,8 @@ fn main() {
             start_v2ray,
             is_dev,
             get_v2ray_log,
-            save_conf
+            save_conf,
+            read_conf,
         ])
         .system_tray(system_tray)
         .menu(tauri::Menu::os_default(&context.package_info().name))

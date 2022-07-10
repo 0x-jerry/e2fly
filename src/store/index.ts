@@ -1,5 +1,5 @@
 import { AppConfig } from '../config'
-import { rpcProxy } from '../rpc'
+import { rpcProxy } from '../ipc'
 
 export const store = reactive({
   config: {} as AppConfig,
