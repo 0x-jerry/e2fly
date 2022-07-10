@@ -15,10 +15,12 @@ async function addConfig() {
   store.config.outbound.push({
     id: uuid(),
     label: 'default',
-    config: getOutboundConfFromBase64({
-      b64: v2flyConf.b64,
-      mux: true
-    })
+    config: JSON.stringify(
+      getOutboundConfFromBase64({
+        b64: v2flyConf.b64,
+        mux: true
+      })
+    )
   })
 
   await rpcProxy.saveConfig(toRaw(store.config))
@@ -42,7 +44,8 @@ async function switchConfig(item: E2FlyConfigOutbound) {
   await actions.startV2fly(item.id)
 }
 
-function getLabel(item: IV2RayOutbound) {
+function getLabel(itemConf: string) {
+  const item: IV2RayOutbound = JSON.parse(itemConf)
   const protocol = item.protocol
 
   if (protocol === 'vmess') {

@@ -64,6 +64,7 @@ pub struct Routes {
 pub struct Outbound {
     pub id: String,
     pub config: String,
+    pub label: String,
 }
 
 // ------------
@@ -75,6 +76,16 @@ impl AppConfig {
             active_outbound_id: String::from(""),
             v2fly: V2fly::new(),
             outbound: vec![],
+        }
+    }
+}
+
+impl Outbound {
+    pub fn new() -> Self {
+        Self {
+            id: String::from(""),
+            config: String::from(""),
+            label: String::from(""),
         }
     }
 }

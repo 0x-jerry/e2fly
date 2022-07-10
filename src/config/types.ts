@@ -44,5 +44,6 @@ export interface Routes {
 
 export interface Outbound {
   id: string
+  label: string
   config: string
 }
