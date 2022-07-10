@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { rpcProxy } from './ipc'
+import { ipc } from './ipc'
 import { store } from './store'
 import { logger } from './utils'
 
 const initialized = ref(false)
 
 async function init() {
-  const conf = await rpcProxy.getConfig()
+  const conf = await ipc.getConfig()
   logger.log('load config:', conf)
 
   store.config = conf

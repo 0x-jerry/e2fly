@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { rpcProxy } from '@/ipc'
+import { ipc } from '@/ipc'
 import { store } from '@/store'
 
 const e2fly = reactive(structuredClone(toRaw(store.config.v2fly)))
@@ -13,12 +13,12 @@ async function saveConfig() {
   store.config.proxy = structuredClone(toRaw(data.proxy))
 
   const conf = toRaw(store.config)
-  await rpcProxy.saveConfig(conf)
+  await ipc.saveConfig(conf)
 
   if (store.enabled) {
-    await rpcProxy.startV2fly(conf.activeOutboundId)
+    await ipc.startV2fly(conf.activeOutboundId)
   } else {
-    await rpcProxy.stopV2fly()
+    await ipc.stopV2fly()
   }
 }
 </script>

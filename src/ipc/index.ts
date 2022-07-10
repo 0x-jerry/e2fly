@@ -4,7 +4,7 @@ import { AppConfig } from '../config'
 /**
  * @todo implement methods
  */
-export const rpcProxy = {
+export const ipc = {
   async getConfig(): Promise<AppConfig> {
     return invoke('read_conf')
   },
@@ -17,5 +17,8 @@ export const rpcProxy = {
   },
   async stopV2fly() {
     return invoke('stop_v2ray')
+  },
+  async getV2flyLogs(): Promise<string[]> {
+    return invoke('get_v2ray_log')
   }
 }

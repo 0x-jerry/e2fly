@@ -19,6 +19,11 @@ const r = (...path: string[]) => join(__dirname, ...path)
 export default defineConfig({
   base: './',
   root: '.',
+  server: {
+    watch: {
+      ignored: ['**/test-conf/**/*']
+    }
+  },
   plugins: [
     vue(),
     vueI18n({

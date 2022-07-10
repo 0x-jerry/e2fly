@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { getOutboundConfFromBase64 } from '@/logic/v2fly'
-import { rpcProxy } from '@/ipc'
+import { ipc } from '@/ipc'
 import { actions, store } from '@/store'
 import { remove, uuid } from '@0x-jerry/utils'
 import { IV2RayOutbound } from '@0x-jerry/v2ray-schema'
@@ -23,7 +23,7 @@ async function addConfig() {
     )
   })
 
-  await rpcProxy.saveConfig(toRaw(store.config))
+  await ipc.saveConfig(toRaw(store.config))
 
   v2flyConf.b64 = ''
 }
@@ -62,7 +62,7 @@ function isActiveOutboundConfig(item: E2FlyConfigOutbound) {
 
 function removeOutbound(item: E2FlyConfigOutbound) {
   remove(store.config.outbound, (n) => n.id === item.id)
-  rpcProxy.saveConfig(toRaw(store.config))
+  ipc.saveConfig(toRaw(store.config))
 }
 </script>
 

@@ -1,7 +1,21 @@
 <script lang="ts" setup>
+import { ipc } from '@/ipc'
+import { useInterval } from '@/hooks'
 import { store } from '@/store'
 
-//
+async function getLogs() {
+  const logs = await ipc.getV2flyLogs()
+  store.logs.unshift(
+    ...logs
+      .map((x) => ({
+        id: x,
+        content: x
+      }))
+      .reverse()
+  )
+}
+
+useInterval(() => getLogs(), 1000)
 </script>
 
 <template>
