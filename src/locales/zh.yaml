@@ -1,0 +1,17 @@
+page:
+  server:
+    add: 添加
+    disconnect: 断开连接
+    link-placeholder: 请输入分享的链接，目前仅支持 vmess 协议
+    reconnect: 重新连接
+  setting:
+    save: 保存
+    port: 端口
+    system-proxy: 系统代理
+    v2ray-bin: V2ray 路径
+    bypassCN: 绕过中国大陆
+    blockAds: 屏蔽广告
+menu:
+  log: 日志
+  setting: 设置
+  server: 服务器

@@ -1,0 +1,17 @@
+page:
+  server:
+    disconnect: Disconnect
+    reconnect: Reconnect
+    add: Add
+    link-placeholder: Please input shared link, only support vmess for now.
+  setting:
+    save: Save
+    port: Port
+    system-proxy: System Proxy
+    v2ray-bin: V2Ray Bin
+    bypassCN: Bypass CN mainland
+    blockAds: Block Ads
+menu:
+  log: Log
+  setting: Setting
+  server: Server

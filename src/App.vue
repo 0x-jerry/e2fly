@@ -1,32 +1,47 @@
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from './components/HelloWorld.vue'
-import { invoke } from '@tauri-apps/api/tauri'
-import { reactive } from 'vue'
+import { rpcProxy } from './rpc'
+import { store } from './store'
+import { logger } from './utils'
 
-const data = reactive({
-  dev: false
-})
+const initialized = ref(false)
 
-invoke('is_dev').then((v: any) => {
-  data.dev = v
-})
+async function init() {
+  const conf = await rpcProxy.getConfig()
+  logger.log('load config:', conf)
+
+  store.config = conf
+  initialized.value = true
+
+  store.enabled = false
+}
+
+init()
 </script>
 
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <div>Is dev:{{ data.dev }}</div>
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+  <router-view v-if="initialized"></router-view>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="less">
+hr {
+  border-width: 0 0 1px;
+  @apply border-light-900 !my-3;
+}
+
+html,
+body {
+  @apply font-sans text-base;
+}
+
+body,
+div {
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+}
+
+* {
+  user-select: none;
+  box-sizing: border-box;
 }
 </style>
