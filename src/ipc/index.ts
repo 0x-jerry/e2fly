@@ -9,7 +9,9 @@ export const rpcProxy = {
     return invoke('read_conf')
   },
 
-  async saveConfig(conf: AppConfig) {},
+  async saveConfig(conf: AppConfig) {
+    return invoke('save_config', conf)
+  },
   async startV2fly(id: string) {},
   async stopV2fly() {}
 }
