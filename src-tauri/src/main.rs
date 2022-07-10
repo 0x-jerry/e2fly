@@ -29,7 +29,6 @@ fn read_conf() -> AppConfig {
 
 #[tauri::command]
 fn start_v2ray() {
-    println!("call start_v2ray");
     let v2ray = get_v2ray_instance();
 
     let app_conf = config::read();
@@ -38,6 +37,13 @@ fn start_v2ray() {
         app_conf.v2fly.bin.as_str(),
         ["-c", get_v2fly_conf_path().to_str().unwrap()],
     );
+}
+
+#[tauri::command]
+fn stop_v2ray() {
+    let v2ray = get_v2ray_instance();
+
+    v2ray.stop();
 }
 
 #[tauri::command]
@@ -63,9 +69,10 @@ fn main() {
 
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            start_v2ray,
             is_dev,
             get_v2ray_log,
+            start_v2ray,
+            stop_v2ray,
             save_conf,
             read_conf,
         ])

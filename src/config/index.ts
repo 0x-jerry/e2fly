@@ -1,3 +1,3 @@
 export const isDev = import.meta.env.DEV
 
-export type AppConfig = any
+export type { AppConfig } from './types'

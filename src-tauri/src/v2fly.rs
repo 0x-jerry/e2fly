@@ -14,7 +14,7 @@ pub fn get_v2ray_instance() -> Arc<V2Ray> {
 
 #[derive(Default)]
 pub struct V2Ray {
-    pub program: Mutex<Option<Child>>,
+    program: Mutex<Option<Child>>,
 }
 
 impl V2Ray {
@@ -34,6 +34,12 @@ impl V2Ray {
             .expect(format!("Spawn program {:?} failed", program_path.as_ref()).as_str());
 
         *p = Some(program);
+    }
+
+    pub fn stop(&self) {
+        let mut p = self.program.try_lock().unwrap();
+
+        p.as_mut().map(|x| x.kill());
     }
 
     pub fn read_all(&self) -> Box<Vec<String>> {
