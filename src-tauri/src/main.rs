@@ -4,15 +4,14 @@
 )]
 #[macro_use]
 extern crate serde_derive;
-extern crate serde_json;
 
-use crate::config::get_v2fly_conf_path;
-use crate::config::model::AppConfig;
+use conf::get_v2fly_conf_path;
+use conf::model::AppConfig;
 
 use tauri::{SystemTray, SystemTrayMenu};
 use v2fly::get_v2ray_instance;
 
-mod config;
+mod conf;
 mod env;
 mod v2fly;
 
@@ -22,20 +21,20 @@ fn is_dev() -> bool {
 }
 
 #[tauri::command]
-fn save_conf(conf: config::model::AppConfig) {
-    config::save(&conf);
+fn save_conf(conf: conf::model::AppConfig) {
+    conf::save(&conf);
 }
 
 #[tauri::command]
 fn read_conf() -> AppConfig {
-    config::read()
+    conf::read()
 }
 
 #[tauri::command]
 fn start_v2ray() {
     let v2ray = get_v2ray_instance();
 
-    let app_conf = config::read();
+    let app_conf = conf::read();
 
     v2ray.run(
         app_conf.v2_fly.bin.as_str(),
@@ -62,9 +61,9 @@ fn get_v2ray_log() -> Box<Vec<String>> {
 fn main() {
     println!("DEV: {}", env::is_dev());
 
-    let app_conf = config::read();
+    let app_conf = conf::read();
 
-    config::save(&app_conf);
+    conf::save(&app_conf);
 
     let tray_menu = SystemTrayMenu::new(); // insert the menu items here
     let system_tray = SystemTray::new().with_menu(tray_menu);
