@@ -15,8 +15,8 @@ async function saveConfig() {
   const conf = toRaw(store.config)
   await ipc.saveConfig(conf)
 
-  if (store.enabled) {
-    await ipc.startV2fly(conf.activeOutboundId)
+  if (conf.active.enabled) {
+    await ipc.startV2fly(conf.active.outboundId)
   } else {
     await ipc.stopV2fly()
   }

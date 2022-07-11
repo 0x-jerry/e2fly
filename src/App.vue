@@ -11,8 +11,6 @@ async function init() {
 
   store.config = conf
   initialized.value = true
-
-  store.enabled = conf.active.enabled
 }
 
 init()

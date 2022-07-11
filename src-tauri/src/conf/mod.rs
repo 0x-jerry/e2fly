@@ -31,6 +31,11 @@ fn get_config_dir() -> PathBuf {
         }
     };
 
+    // ensure config folder
+    if !config_dir.exists() {
+        fs::create_dir_all(&config_dir).expect("Create config folder failed!");
+    }
+
     config_dir.canonicalize().ok().unwrap()
 }
 
@@ -40,11 +45,6 @@ pub fn get_v2fly_conf_path() -> PathBuf {
 
 pub fn get_config_path() -> PathBuf {
     let config_dir = get_config_dir();
-
-    // ensure config folder
-    if !config_dir.exists() {
-        fs::create_dir_all(&config_dir).expect("Create config folder failed!");
-    }
 
     config_dir.join(CONFIG_NAME)
 }

@@ -21,7 +21,7 @@ export const ipc = {
 
     const v2rayConf = getV2rayConfig(store.config, JSON.parse(outbound))
 
-    await invoke('save_v2ray_conf', { content: v2rayConf })
+    await invoke('save_v2ray_conf', { content: JSON.stringify(v2rayConf) })
 
     return invoke('start_v2ray')
   },

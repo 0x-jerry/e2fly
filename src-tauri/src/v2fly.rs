@@ -23,7 +23,7 @@ impl V2Ray {
         A: IntoIterator<Item = S>,
         S: AsRef<OsStr>,
     {
-        let mut p = self.program.try_lock().unwrap();
+        let mut p = self.program.try_lock().expect("get v2fly instance failed");
 
         p.as_mut().map(|x| x.kill());
 
@@ -37,13 +37,13 @@ impl V2Ray {
     }
 
     pub fn stop(&self) {
-        let mut p = self.program.try_lock().unwrap();
+        let mut p = self.program.try_lock().expect("get v2fly instance failed");
 
         p.as_mut().map(|x| x.kill());
     }
 
     pub fn read_all(&self) -> Box<Vec<String>> {
-        let mut p = self.program.try_lock().unwrap();
+        let mut p = self.program.try_lock().expect("get v2fly instance failed");
         let mut output: Box<Vec<String>> = Box::new(vec![]);
 
         if p.is_none() {
@@ -53,16 +53,16 @@ impl V2Ray {
         let stdout = p.as_mut().unwrap().stdout.as_mut().unwrap();
         let mut reader = BufReader::new(stdout);
 
-        loop {
-            let mut buf = String::new();
+        let mut buf = String::new();
 
+        loop {
             match reader.read_line(&mut buf) {
                 Ok(size) => {
                     if size == 0 {
                         break;
                     }
 
-                    output.push(buf);
+                    output.push(buf.clone());
                 }
                 Err(_) => break,
             }
