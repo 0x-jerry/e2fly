@@ -9,7 +9,7 @@ export const store = reactive({
 
 export const actions = {
   async startV2fly(id: string) {
-    store.config.activeOutboundId = id
+    store.config.active.outboundId = id
 
     await ipc.saveConfig(toRaw(store.config))
     await ipc.startV2fly(id)

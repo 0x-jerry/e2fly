@@ -3,7 +3,10 @@ import { writeFile } from 'fs/promises'
 
 const config = JSON.stringify({
   proxy: { system: false, pac: false },
-  activeOutboundId: '8outt12ADTezpjmRpOtQ-',
+  active: {
+    enabled: false,
+    outboundId: '8outt12ADTezpjmRpOtQ-'
+  },
   v2fly: {
     bin: 'v2ray',
     http: { enabled: true, address: '127.0.0.1', port: 6667 },
@@ -21,7 +24,7 @@ const config = JSON.stringify({
 })
 
 generate(config, 'typescript', 'src/config/config.types.ts')
-generate(config, 'rust', 'src-tauri/src/config/model.rs')
+generate(config, 'rust', 'src-tauri/src/conf/model.rs')
 
 async function generate(json: string, lang: string, dist: string) {
   const url = new URL('https://0x-jerry-dd-api.deno.dev/transform/json')

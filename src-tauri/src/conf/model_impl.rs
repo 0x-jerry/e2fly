@@ -4,14 +4,24 @@ impl AppConfig {
     pub fn new() -> Self {
         Self {
             proxy: Proxy::new(),
-            active_outbound_id: String::from(""),
+            active: Active::new(),
             v2_fly: V2Fly::new(),
             outbound: vec![],
         }
     }
 }
 
+impl Active {
+    pub fn new() -> Self {
+        Self {
+            enabled: false,
+            outbound_id: String::new(),
+        }
+    }
+}
+
 impl Outbound {
+    #[allow(dead_code)]
     pub fn new() -> Self {
         Self {
             id: String::from(""),

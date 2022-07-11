@@ -32,14 +32,14 @@ async function toggleV2fly() {
   if (store.enabled) {
     await actions.stopV2fly()
   } else {
-    await actions.startV2fly(store.config.activeOutboundId)
+    await actions.startV2fly(store.config.active.outboundId)
   }
 }
 
 type E2FlyConfigOutbound = any
 
 async function switchConfig(item: E2FlyConfigOutbound) {
-  if (store.enabled && item.id === store.config.activeOutboundId) return
+  if (store.enabled && item.id === store.config.active.outboundId) return
 
   await actions.startV2fly(item.id)
 }
@@ -57,7 +57,7 @@ function getLabel(itemConf: string) {
 }
 
 function isActiveOutboundConfig(item: E2FlyConfigOutbound) {
-  return store.enabled && store.config.activeOutboundId === item.id
+  return store.enabled && store.config.active.outboundId === item.id
 }
 
 function removeOutbound(item: E2FlyConfigOutbound) {

@@ -1,8 +1,13 @@
 export interface AppConfig {
-    proxy:            Proxy;
-    activeOutboundId: string;
-    v2fly:            V2Fly;
-    outbound:         Outbound[];
+    proxy:    Proxy;
+    active:   Active;
+    v2fly:    V2Fly;
+    outbound: Outbound[];
+}
+
+export interface Active {
+    enabled:    boolean;
+    outboundId: string;
 }
 
 export interface Outbound {

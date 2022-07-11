@@ -1,6 +1,7 @@
 use config::Config;
 use std::{
     fs::{self, OpenOptions},
+    io::Write,
     path::{Path, PathBuf},
 };
 
@@ -46,6 +47,20 @@ pub fn get_config_path() -> PathBuf {
     }
 
     config_dir.join(CONFIG_NAME)
+}
+
+pub fn save_v2fly_config(content: String) {
+    let conf_path = get_v2fly_conf_path();
+
+    let mut file = OpenOptions::new()
+        .write(true)
+        // ensure config file
+        .create_new(!conf_path.exists())
+        .open(conf_path)
+        .expect("Create config file failed!");
+
+    file.write_all(content.as_bytes())
+        .expect("Write v2ray config file failed");
 }
 
 pub fn read() -> AppConfig {

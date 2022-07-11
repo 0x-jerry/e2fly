@@ -18,14 +18,23 @@ pub struct AppConfig {
     #[serde(rename = "proxy")]
     pub proxy: Proxy,
 
-    #[serde(rename = "activeOutboundId")]
-    pub active_outbound_id: String,
+    #[serde(rename = "active")]
+    pub active: Active,
 
     #[serde(rename = "v2fly")]
     pub v2_fly: V2Fly,
 
     #[serde(rename = "outbound")]
     pub outbound: Vec<Outbound>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Active {
+    #[serde(rename = "enabled")]
+    pub enabled: bool,
+
+    #[serde(rename = "outboundId")]
+    pub outbound_id: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
