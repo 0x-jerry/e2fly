@@ -6,6 +6,7 @@ specifiers:
   '@0x-jerry/v2ray-schema': ^0.3.0
   '@0x-jerry/vue-kit': ^1.6.4
   '@0x-jerry/x-release': ^0.3.6
+  '@iarna/toml': ^2.2.5
   '@iconify/json': ^2.1.75
   '@intlify/vite-plugin-vue-i18n': ^3.4.0
   '@tauri-apps/api': ^1.0.2
@@ -45,6 +46,7 @@ devDependencies:
   '@0x-jerry/v2ray-schema': 0.3.0
   '@0x-jerry/vue-kit': 1.6.4
   '@0x-jerry/x-release': 0.3.6
+  '@iarna/toml': 2.2.5
   '@iconify/json': 2.1.75
   '@intlify/vite-plugin-vue-i18n': 3.4.0_xvemjdrs57vyjchkqoyrcwzkya
   '@tauri-apps/cli': 1.0.3
@@ -202,6 +204,10 @@ packages:
     resolution: {integrity: sha512-b+prvQgJt8pieaKYMSJBXHxX/DYwdLsAWxKYqnO5dO2V4oo/TYBZJAUQCVNjTWWsrs6o4VDrNcP9+E70HAhJdw==}
     dependencies:
       '@floating-ui/core': 0.6.2
+    dev: true
+
+  /@iarna/toml/2.2.5:
+    resolution: {integrity: sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==}
     dev: true
 
   /@iconify/json/2.1.75:

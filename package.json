@@ -1,7 +1,19 @@
 {
   "name": "e2fly",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.4",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0x-jerry/e2fly.git"
+  },
+  "keywords": [
+    "v2fly"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/0x-jerry/e2fly/issues"
+  },
+  "homepage": "https://github.com/0x-jerry/e2fly#readme",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
@@ -9,7 +21,8 @@
     "tauri": "tauri dev",
     "tauri:build": "tauri build",
     "gen:icons": "imger ./assets/logo.png src-tauri/icons -p ./scripts/icons.preset.json",
-    "gen:types": "tsx scripts/gen-config-types.ts"
+    "gen:types": "tsx scripts/gen-config-types.ts",
+    "release": "x-release"
   },
   "dependencies": {
     "@tauri-apps/api": "^1.0.2",
@@ -23,6 +36,7 @@
     "@0x-jerry/v2ray-schema": "^0.3.0",
     "@0x-jerry/vue-kit": "^1.6.4",
     "@0x-jerry/x-release": "^0.3.6",
+    "@iarna/toml": "^2.2.5",
     "@iconify/json": "^2.1.75",
     "@intlify/vite-plugin-vue-i18n": "^3.4.0",
     "@tauri-apps/cli": "^1.0.3",
@@ -45,5 +59,8 @@
     "vite-plugin-pages": "^0.25.0",
     "vitest": "^0.18.0",
     "vue-tsc": "^0.38.3"
-  }
+  },
+  "description": "",
+  "main": "index.js",
+  "author": ""
 }
