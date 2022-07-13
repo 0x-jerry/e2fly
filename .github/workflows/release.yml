@@ -65,9 +65,17 @@ jobs:
       - name: Build App
         run: pnpm run tauri:build
 
+      - uses: actions/github-script@v6
+        id: is-prerelease
+        with:
+          script: |
+            const name = context.ref.slice("refs/tags/".length);
+            return name.includes("-");
+
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           body_path: RELEASE-NOTE.md
+          prerelease: ${{steps.is-prerelease.outputs.result}}
           files: |
             src-tauri/target/release/bundle/**/*.dmg
