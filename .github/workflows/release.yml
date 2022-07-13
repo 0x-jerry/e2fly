@@ -60,4 +60,4 @@ jobs:
         with:
           body_path: RELEASE-NOTE.md
           files: |
-            src/target/bundle/**/*.dmg
+            src-tauri/target/release/bundle/**/*.dmg
