@@ -1,0 +1,63 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    strategy:
+      fail-fast: false
+      matrix:
+        # platform: [macos-latest, ubuntu-latest, windows-latest]
+        platform: [macos-latest]
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.2.1
+        with:
+          version: 7
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          registry-url: https://registry.npm.taobao.org
+          cache: 'pnpm'
+
+      - name: install Rust stable
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: install dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
+
+      - name: Install Changelog Tool
+        run: npm install -g conventional-changelog-cli
+
+      - name: Generate Release Note
+        run: conventional-changelog -p angular -i RELEASE-NOTE.md -s -r 2
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Build App
+        run: pnpm run tauri:build
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: RELEASE-NOTE.md
+          files: |
+            src/target/bundle/**/*.dmg
