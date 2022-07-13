@@ -36,7 +36,6 @@
     "@0x-jerry/v2ray-schema": "^0.3.0",
     "@0x-jerry/vue-kit": "^1.6.4",
     "@0x-jerry/x-release": "^0.3.6",
-    "@iarna/toml": "^2.2.5",
     "@iconify/json": "^2.1.75",
     "@intlify/vite-plugin-vue-i18n": "^3.4.0",
     "@tauri-apps/cli": "^1.0.3",
@@ -59,8 +58,5 @@
     "vite-plugin-pages": "^0.25.0",
     "vitest": "^0.18.0",
     "vue-tsc": "^0.38.3"
-  },
-  "description": "",
-  "main": "index.js",
-  "author": ""
+  }
 }
