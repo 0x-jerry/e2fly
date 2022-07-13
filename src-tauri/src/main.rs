@@ -10,6 +10,7 @@ use tauri::{SystemTray, SystemTrayMenu};
 mod conf;
 mod env;
 mod ipc;
+mod lib;
 mod v2fly;
 
 fn main() {

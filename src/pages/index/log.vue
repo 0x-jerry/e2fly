@@ -4,7 +4,13 @@ import { useInterval } from '@/hooks'
 import { store } from '@/store'
 
 async function getLogs() {
-  const logs = await ipc.getV2flyLogs()
+  const log = await ipc.getV2flyLogs()
+
+  const logs = log
+    .split(/\n/g)
+    .filter((n) => !!n.trim())
+    .map((n) => n + '\n')
+
   store.logs.unshift(
     ...logs
       .map((x) => ({
@@ -13,6 +19,8 @@ async function getLogs() {
       }))
       .reverse()
   )
+
+  store.logs = store.logs.splice(0, 2000)
 }
 
 useInterval(() => getLogs(), 1000)

@@ -60,6 +60,7 @@ dependencies = [
  "dirs",
  "dotenv",
  "dotenv_codegen",
+ "libc",
  "serde",
  "serde_derive",
  "serde_json",

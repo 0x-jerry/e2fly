@@ -39,7 +39,7 @@ pub fn stop_v2ray() {
 }
 
 #[tauri::command]
-pub fn get_v2ray_log() -> Box<Vec<String>> {
+pub fn get_v2ray_log() -> String {
     let v2ray = get_v2ray_instance();
 
     let log = v2ray.read_all();
