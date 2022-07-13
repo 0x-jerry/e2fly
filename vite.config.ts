@@ -21,7 +21,7 @@ export default defineConfig({
   root: '.',
   server: {
     watch: {
-      ignored: ['**/test-conf/**/*']
+      ignored: ['**/test-conf/**/*', '**/src-tauri/**/*']
     }
   },
   plugins: [

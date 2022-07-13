@@ -1,7 +1,5 @@
-use config::Config;
 use std::{
-    fs::{self, OpenOptions},
-    io::Write,
+    fs,
     path::{Path, PathBuf},
 };
 
@@ -52,37 +50,21 @@ pub fn get_config_path() -> PathBuf {
 pub fn save_v2fly_config(content: String) {
     let conf_path = get_v2fly_conf_path();
 
-    let mut file = OpenOptions::new()
-        .write(true)
-        // ensure config file
-        .create_new(!conf_path.exists())
-        .open(conf_path)
-        .expect("Create config file failed!");
-
-    file.write_all(content.as_bytes())
-        .expect("Write v2ray config file failed");
+    fs::write(conf_path, content).expect("Write v2ray config file failed");
 }
 
 pub fn read() -> AppConfig {
     let conf_path = get_config_path();
 
-    let config_path_str = conf_path
-        .as_path()
-        .as_os_str()
-        .to_str()
-        .expect("Invalid config path");
+    let setting_file = fs::read_to_string(conf_path);
 
-    let settings = Config::builder()
-        .add_source(config::File::with_name(config_path_str))
-        .build();
-
-    if settings.is_err() {
-        println!("Build app config failed");
+    if setting_file.is_err() {
+        println!("Open config file failed!");
 
         return AppConfig::new();
     }
 
-    let conf = settings.unwrap().try_deserialize::<AppConfig>();
+    let conf = serde_json::from_str(setting_file.unwrap().as_str());
 
     match conf {
         Ok(c) => c,
@@ -93,14 +75,14 @@ pub fn read() -> AppConfig {
 pub fn save(conf: &AppConfig) {
     let conf_path = get_config_path();
 
-    let file = OpenOptions::new()
-        .write(true)
-        // ensure config file
-        .create_new(!conf_path.exists())
-        .open(conf_path)
-        .expect("Create config file failed!");
-
-    serde_json::to_writer(file, conf).expect("Save config file failed!");
+    match serde_json::to_string(conf) {
+        Ok(txt) => {
+            fs::write(conf_path, txt).expect("Write config file failed");
+        }
+        Err(err) => {
+            println!("Build config filed {err}, config is: {conf:?}");
+        }
+    }
 }
 
 #[cfg(test)]
