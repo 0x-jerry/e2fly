@@ -11,6 +11,8 @@ mod conf;
 mod env;
 mod ipc;
 mod lib;
+mod proxy;
+mod utils;
 mod v2fly;
 
 fn main() {

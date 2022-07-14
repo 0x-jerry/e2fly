@@ -1,6 +1,7 @@
 use crate::{
     conf::{self, get_v2fly_conf_path, model::AppConfig, save_v2fly_config},
     env,
+    proxy::set_proxy,
     v2fly::get_v2ray_instance,
 };
 
@@ -10,8 +11,11 @@ pub fn is_dev() -> bool {
 }
 
 #[tauri::command]
-pub fn save_conf(conf: conf::model::AppConfig) {
+pub fn save_conf(conf: AppConfig) {
     conf::save(&conf);
+
+    // set system proxy
+    set_proxy(&conf);
 }
 
 #[tauri::command]
