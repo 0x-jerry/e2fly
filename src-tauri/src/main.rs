@@ -6,12 +6,12 @@
 extern crate serde_derive;
 
 use conf::model::AppConfig;
-use tauri::{CustomMenuItem, SystemTray, SystemTrayEvent::MenuItemClick, SystemTrayMenu};
 
 mod conf;
 mod env;
 mod ipc;
 mod lib;
+mod menu;
 mod proxy;
 mod utils;
 mod v2fly;
@@ -22,38 +22,17 @@ fn main() {
     let app_conf = conf::read();
     start_init(&app_conf);
 
-    let quit = CustomMenuItem::new("quit".to_string(), "Quit E2Fly").accelerator("CmdOrControl+Q");
-    let tray_menu = SystemTrayMenu::new().add_item(quit);
+    let app = tauri::Builder::default();
 
-    let system_tray = SystemTray::new().with_menu(tray_menu);
+    let app = ipc::set_app_ipc_methods(app);
+
+    let app = menu::set_app_tray_menu(app);
+
+    let app = menu::set_app_win_menu(app);
 
     let context = tauri::generate_context!();
 
-    tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![
-            ipc::is_dev,
-            ipc::get_v2ray_log,
-            ipc::start_v2ray,
-            ipc::stop_v2ray,
-            ipc::save_conf,
-            ipc::read_conf,
-            ipc::save_v2ray_conf,
-        ])
-        .system_tray(system_tray)
-        .on_system_tray_event(|_app, event| match event {
-            MenuItemClick { id, .. } => match id.as_str() {
-                "quit" => {
-                    std::process::exit(0);
-                }
-                _ => {}
-            },
-            // LeftClick { position, size, .. } => todo!(),
-            // RightClick { position, size, .. } => todo!(),
-            // DoubleClick { position, size, .. } => todo!(),
-            _ => {}
-        })
-        .menu(tauri::Menu::os_default(&context.package_info().name))
-        .run(context)
+    app.run(context)
         .expect("error while running tauri application");
 }
 

@@ -1,3 +1,5 @@
+use tauri::{Builder, Runtime};
+
 use crate::{
     conf::{self, get_v2fly_conf_path, model::AppConfig, save_v2fly_config},
     env,
@@ -54,4 +56,16 @@ pub fn get_v2ray_log() -> String {
 #[tauri::command]
 pub fn save_v2ray_conf(content: String) {
     save_v2fly_config(content)
+}
+
+pub fn set_app_ipc_methods<R: Runtime>(app: Builder<R>) -> Builder<R> {
+    app.invoke_handler(tauri::generate_handler![
+        is_dev,
+        get_v2ray_log,
+        start_v2ray,
+        stop_v2ray,
+        save_conf,
+        read_conf,
+        save_v2ray_conf,
+    ])
 }
