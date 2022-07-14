@@ -60,10 +60,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "resizable": true,
+        "resizable": false,
         "title": "E2Fly",
-        "height": 600,
-        "width": 800
+        "height": 640,
+        "width": 350
       }
     ]
   }

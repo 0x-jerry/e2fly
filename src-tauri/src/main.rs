@@ -22,15 +22,15 @@ fn main() {
     let app_conf = conf::read();
     start_init(&app_conf);
 
+    let context = tauri::generate_context!();
+
     let app = tauri::Builder::default();
 
     let app = ipc::set_app_ipc_methods(app);
 
     let app = menu::set_app_tray_menu(app);
 
-    let app = menu::set_app_win_menu(app);
-
-    let context = tauri::generate_context!();
+    let app = menu::set_app_win_menu(app, &context);
 
     app.run(context)
         .expect("error while running tauri application");
