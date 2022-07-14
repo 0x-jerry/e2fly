@@ -5,7 +5,7 @@
 #[macro_use]
 extern crate serde_derive;
 
-use tauri::{SystemTray, SystemTrayMenu};
+use tauri::{CustomMenuItem, SystemTray, SystemTrayEvent::MenuItemClick, SystemTrayMenu};
 
 mod conf;
 mod env;
@@ -22,7 +22,9 @@ fn main() {
 
     conf::save(&app_conf);
 
-    let tray_menu = SystemTrayMenu::new(); // insert the menu items here
+    let quit = CustomMenuItem::new("quit".to_string(), "Quit");
+    let tray_menu = SystemTrayMenu::new().add_item(quit);
+
     let system_tray = SystemTray::new().with_menu(tray_menu);
 
     let context = tauri::generate_context!();
@@ -38,6 +40,18 @@ fn main() {
             ipc::save_v2ray_conf,
         ])
         .system_tray(system_tray)
+        .on_system_tray_event(|_app, event| match event {
+            MenuItemClick { id, .. } => match id.as_str() {
+                "quit" => {
+                    std::process::exit(0);
+                }
+                _ => {}
+            },
+            // LeftClick { position, size, .. } => todo!(),
+            // RightClick { position, size, .. } => todo!(),
+            // DoubleClick { position, size, .. } => todo!(),
+            _ => {}
+        })
         .menu(tauri::Menu::os_default(&context.package_info().name))
         .run(context)
         .expect("error while running tauri application");
