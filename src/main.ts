@@ -3,6 +3,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import { createApp } from 'vue'
 import { i18n } from './i18n'
 import App from './App.vue'
+import './logic/win'
 
 import '@0x-jerry/vue-kit/dist/style.css'
 import 'normalize.css'

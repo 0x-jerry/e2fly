@@ -22,6 +22,7 @@ pub fn set_app_tray_menu<R: Runtime>(app: Builder<R>) -> Builder<R> {
                 "show" => {
                     if let Some(win) = _app.get_window("main") {
                         win.show().expect("Show main window failed!");
+                        win.set_focus().expect("Set main window focus failed!");
                     }
                 }
                 _ => {}

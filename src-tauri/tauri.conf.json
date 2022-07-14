@@ -7,7 +7,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "e2fly",
+    "productName": "E2Fly",
     "version": "0.2.0-2"
   },
   "tauri": {
@@ -61,6 +61,7 @@
       {
         "fullscreen": false,
         "resizable": false,
+        "alwaysOnTop": true,
         "title": "E2Fly",
         "height": 640,
         "width": 350
