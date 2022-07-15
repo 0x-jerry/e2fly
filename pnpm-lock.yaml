@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@0x-jerry/imger': ^0.1.7
+  '@0x-jerry/imger': ^0.2.2
   '@0x-jerry/utils': ^1.8.2
   '@0x-jerry/v2ray-schema': ^0.3.0
   '@0x-jerry/vue-kit': ^1.6.4
@@ -40,7 +40,7 @@ dependencies:
   vue-router: 4.1.1_vue@3.2.37
 
 devDependencies:
-  '@0x-jerry/imger': 0.1.7
+  '@0x-jerry/imger': 0.2.2
   '@0x-jerry/utils': 1.8.2
   '@0x-jerry/v2ray-schema': 0.3.0
   '@0x-jerry/vue-kit': 1.6.4
@@ -70,11 +70,12 @@ devDependencies:
 
 packages:
 
-  /@0x-jerry/imger/0.1.7:
-    resolution: {integrity: sha512-R362bzpxOn9bwfTKJobA3kJo8y1/kvMNkTP9fsI8QEHdt0B8HwUUWdX453hrAlVCZuJ7I4N63tMOaVUOgtyOiA==}
+  /@0x-jerry/imger/0.2.2:
+    resolution: {integrity: sha512-cf24jls/wh4HB8sagxEt77dGX6gbUM9L3miQ5m+duDGJzPMs1Y/P1ogpeD05Z8ZtLjA6khHbXwgV+cnKT7eePg==}
     engines: {node: '>=14'}
     hasBin: true
     dependencies:
+      '@0x-jerry/utils': 1.8.2
       cac: 6.7.12
       debug: 4.3.4
       execa: 6.1.0

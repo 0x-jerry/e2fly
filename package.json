@@ -15,12 +15,11 @@
   },
   "homepage": "https://github.com/0x-jerry/e2fly#readme",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview",
-    "tauri": "tauri dev",
-    "tauri:build": "tauri build",
-    "gen:icons": "imger ./assets/logo.png src-tauri/icons -p ./scripts/icons.preset.json",
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "dev:web": "vite",
+    "build:web": "vue-tsc --noEmit && vite build",
+    "gen:icons": "imger -p ./scripts/icons.preset.json",
     "gen:types": "tsx scripts/gen-config-types.ts",
     "release": "x-release"
   },
@@ -31,7 +30,7 @@
     "vue-router": "^4.1.1"
   },
   "devDependencies": {
-    "@0x-jerry/imger": "^0.1.7",
+    "@0x-jerry/imger": "^0.2.2",
     "@0x-jerry/utils": "^1.8.2",
     "@0x-jerry/v2ray-schema": "^0.3.0",
     "@0x-jerry/vue-kit": "^1.6.4",

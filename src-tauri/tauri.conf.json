@@ -1,8 +1,8 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "build": {
-    "beforeBuildCommand": "pnpm build",
-    "beforeDevCommand": "pnpm dev",
+    "beforeBuildCommand": "pnpm build:web",
+    "beforeDevCommand": "pnpm dev:web",
     "devPath": "http://127.0.0.1:5173/",
     "distDir": "../dist"
   },
@@ -54,7 +54,7 @@
       "active": false
     },
     "systemTray": {
-      "iconPath": "../assets/logoTemplate.png",
+      "iconPath": "./icons/logoTemplate.png",
       "iconAsTemplate": true
     },
     "windows": [
