@@ -8,8 +8,6 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Unocss from 'unocss/vite'
-import { presetAttributify, presetWind } from 'unocss'
-import transformerDirective from '@unocss/transformer-directives'
 import { VueKitResolver } from '@0x-jerry/vue-kit/resolver'
 import vueI18n from '@intlify/vite-plugin-vue-i18n'
 
@@ -21,49 +19,46 @@ export default defineConfig({
   root: '.',
   server: {
     watch: {
-      ignored: ['**/test-conf/**/*', '**/src-tauri/**/*']
-    }
+      ignored: ['**/test-conf/**/*', '**/src-tauri/**/*'],
+    },
   },
   plugins: [
     vue(),
     vueI18n({
-      include: r('src/locales/**')
+      include: r('src/locales/**'),
     }),
 
     Icons(),
 
     // https://github.com/unocss/unocss
-    Unocss({
-      presets: [presetAttributify(), presetWind()],
-      transformers: [transformerDirective()]
-    }),
+    Unocss(),
 
     // https://github.com/antfu/unplugin-auto-import
     AutoImport({
       dts: 'auto-imports.d.ts',
-      imports: ['vue', 'vue-router', '@vueuse/core']
+      imports: ['vue', 'vue-router', '@vueuse/core'],
     }),
 
     // https://github.com/antfu/vite-plugin-components
     Components({
       dts: 'auto-components.d.ts',
-      resolvers: [VueKitResolver(), IconsResolver()]
+      resolvers: [VueKitResolver(), IconsResolver()],
     }),
 
     // https://github.com/hannoeru/vite-plugin-pages
     Pages({
-      exclude: ['**/components/*.vue']
-    })
+      exclude: ['**/components/*.vue'],
+    }),
   ],
   resolve: {
     alias: {
-      '@': r('src')
-    }
+      '@': r('src'),
+    },
   },
   build: {
-    emptyOutDir: true
+    emptyOutDir: true,
   },
   test: {
-    globals: true
-  }
+    globals: true,
+  },
 })
