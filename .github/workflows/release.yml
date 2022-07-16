@@ -63,7 +63,7 @@ jobs:
         run: pnpm i
 
       - name: Build App
-        run: pnpm run tauri:build
+        run: pnpm run build
 
       - uses: actions/github-script@v6
         id: is-prerelease
