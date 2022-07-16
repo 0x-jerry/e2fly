@@ -1,7 +1,7 @@
 use tauri::{Builder, Runtime};
 
 use crate::{
-    conf::{self, get_v2fly_conf_path, model::AppConfig, save_v2fly_config},
+    conf::{self, model::AppConfig, save_v2fly_config},
     env,
     proxy::set_proxy,
     v2fly::get_v2ray_instance,
@@ -26,15 +26,16 @@ pub fn read_conf() -> AppConfig {
 }
 
 #[tauri::command]
-pub fn start_v2ray() {
+pub fn start_v2ray() -> String {
     let v2ray = get_v2ray_instance();
 
     let app_conf = conf::read();
 
-    v2ray.run(
-        app_conf.v2_fly.bin.as_str(),
-        ["-c", get_v2fly_conf_path().to_str().unwrap()],
-    );
+    if let Some(err) = v2ray.start(&app_conf).err() {
+        return err.to_string();
+    }
+
+    "".to_string()
 }
 
 #[tauri::command]

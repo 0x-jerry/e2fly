@@ -44,9 +44,8 @@ fn start_init(conf: &AppConfig) {
 
     if conf.active.enabled {
         let v2ray = v2fly::get_v2ray_instance();
-        v2ray.run(
-            conf.v2_fly.bin.as_str(),
-            ["-c", conf::get_v2fly_conf_path().to_str().unwrap()],
-        );
+        if let Some(err) = v2ray.start(&conf).err() {
+            println!("{err:?}");
+        }
     }
 }

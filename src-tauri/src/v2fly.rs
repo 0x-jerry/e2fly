@@ -1,5 +1,8 @@
+use crate::conf::get_v2fly_conf_path;
+use crate::conf::model::AppConfig;
 use crate::lib::nonblock::read_available_to_string;
 use std::ffi::OsStr;
+use std::io;
 use std::process::{Child, Command, Stdio};
 
 use std::sync::{Arc, Mutex};
@@ -18,7 +21,7 @@ pub struct V2Ray {
 }
 
 impl V2Ray {
-    pub fn run<S, A>(&self, program_path: S, args: A)
+    fn run<S, A>(&self, program_path: S, args: A) -> io::Result<()>
     where
         A: IntoIterator<Item = S>,
         S: AsRef<OsStr>,
@@ -30,10 +33,11 @@ impl V2Ray {
         let program = Command::new(&program_path)
             .args(args)
             .stdout(Stdio::piped())
-            .spawn()
-            .expect(format!("Spawn program {:?} failed", program_path.as_ref()).as_str());
+            .spawn()?;
 
         *p = Some(program);
+
+        Ok(())
     }
 
     pub fn stop(&self) {
@@ -52,5 +56,14 @@ impl V2Ray {
         let mut stdout = p.as_mut().unwrap().stdout.as_mut().unwrap();
 
         read_available_to_string(&mut stdout)
+    }
+
+    pub fn start(&self, app_conf: &AppConfig) -> io::Result<()> {
+        let v2ray = get_v2ray_instance();
+
+        v2ray.run(
+            app_conf.v2_fly.bin.as_str(),
+            ["-c", get_v2fly_conf_path().to_str().unwrap()],
+        )
     }
 }
