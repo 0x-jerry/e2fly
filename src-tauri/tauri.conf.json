@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "E2Fly",
-    "version": "0.2.0-3"
+    "version": "0.2.0"
   },
   "tauri": {
     "allowlist": {
