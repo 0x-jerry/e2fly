@@ -1,4 +1,5 @@
 export interface AppConfig {
+    app:      App;
     proxy:    Proxy;
     active:   Active;
     v2fly:    V2Fly;
@@ -8,6 +9,10 @@ export interface AppConfig {
 export interface Active {
     enabled:    boolean;
     outboundId: string;
+}
+
+export interface App {
+    autoHideWhenBlur: boolean;
 }
 
 export interface Outbound {

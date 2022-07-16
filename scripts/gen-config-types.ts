@@ -2,25 +2,28 @@ import fetch from 'node-fetch'
 import { writeFile } from 'fs/promises'
 
 const config = JSON.stringify({
+  app: {
+    autoHideWhenBlur: true,
+  },
   proxy: { system: false, pac: false },
   active: {
     enabled: false,
-    outboundId: '8outt12ADTezpjmRpOtQ-'
+    outboundId: '8outt12ADTezpjmRpOtQ-',
   },
   v2fly: {
     bin: 'v2ray',
     http: { enabled: true, address: '127.0.0.1', port: 6667 },
     socks: { enabled: true, address: '127.0.0.1', port: 6666 },
     stream: { udp: true, tcp: true },
-    routes: { bypassCN: true, blockAds: true }
+    routes: { bypassCN: true, blockAds: true },
   },
   outbound: [
     {
       id: '8outt12ADTezpjmRpOtQ-',
       label: 'default',
-      config: ''
-    }
-  ]
+      config: '',
+    },
+  ],
 })
 
 generate(config, 'typescript', 'src/config/config.types.ts')

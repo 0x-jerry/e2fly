@@ -15,6 +15,9 @@ extern crate serde_derive;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AppConfig {
+    #[serde(rename = "app", default)]
+    pub app: App,
+
     #[serde(rename = "proxy")]
     pub proxy: Proxy,
 
@@ -35,6 +38,12 @@ pub struct Active {
 
     #[serde(rename = "outboundId")]
     pub outbound_id: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct App {
+    #[serde(rename = "autoHideWhenBlur")]
+    pub auto_hide_when_blur: bool,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

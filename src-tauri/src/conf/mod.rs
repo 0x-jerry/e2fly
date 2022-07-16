@@ -68,7 +68,10 @@ pub fn read() -> AppConfig {
 
     match conf {
         Ok(c) => c,
-        Err(_err) => AppConfig::new(),
+        Err(err) => {
+            println!("Parse app config failed! {err:?}");
+            AppConfig::new()
+        }
     }
 }
 

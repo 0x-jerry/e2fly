@@ -3,11 +3,26 @@ use super::model::*;
 impl AppConfig {
     pub fn new() -> Self {
         Self {
+            app: App::new(),
             proxy: Proxy::new(),
             active: Active::new(),
             v2_fly: V2Fly::new(),
             outbound: vec![],
         }
+    }
+}
+
+impl App {
+    pub fn new() -> Self {
+        Self {
+            auto_hide_when_blur: true,
+        }
+    }
+}
+
+impl Default for App {
+    fn default() -> Self {
+        App::new()
     }
 }
 

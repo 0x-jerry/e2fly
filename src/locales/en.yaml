@@ -11,6 +11,7 @@ page:
     v2ray-bin: V2Ray Bin
     bypassCN: Bypass CN mainland
     blockAds: Block Ads
+    auto-hide-when-blur: Auto hide window when blur
 menu:
   log: Log
   setting: Setting
