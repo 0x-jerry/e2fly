@@ -6,13 +6,11 @@ Another cross-platform [V2Ray] GUI client, support [xray]. WIP
 
 Em..., There are no excited features. It just works as expected.
 
-There are a few setting options, and trust me, you don't need more.
-
 ## TODO
 
 - [x] System proxy
 - [ ] Support more protocol, current only support vmess protocol
-- [ ] Auto update, [docs](https://www.electron.build/auto-update.html)
+- [ ] Auto update, [docs](https://tauri.app/v1/guides/distribution/updater)
 - [ ] Test on Windows platform
 - [ ] Test on Linux platform
 
