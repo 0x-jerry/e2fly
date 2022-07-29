@@ -40,7 +40,7 @@
     "@tauri-apps/cli": "^1.0.4",
     "@types/fs-extra": "^9.0.13",
     "@types/sharp": "^0.30.4",
-    "@unocss/transformer-directives": "^0.44.2",
+    "@unocss/transformer-directives": "^0.45.0",
     "@vitejs/plugin-vue": "^3.0.0",
     "@vueuse/core": "^8.9.3",
     "less": "^4.1.3",
