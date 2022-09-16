@@ -17,7 +17,7 @@ tauri-build = { version = "1.0.3", features = [] }
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.0.3", features = ["api-all", "system-tray"] }
+tauri = { version = "1.0.6", features = ["api-all", "system-tray"] }
 dotenv = "0.15.0"
 dotenv_codegen = "0.15.0"
 dirs = "4.0"
