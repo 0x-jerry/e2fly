@@ -36,7 +36,7 @@
     "@0x-jerry/vue-kit": "^1.6.4",
     "@0x-jerry/x-release": "^0.3.6",
     "@iconify/json": "^2.1.77",
-    "@intlify/vite-plugin-vue-i18n": "^5.0.0",
+    "@intlify/vite-plugin-vue-i18n": "^6.0.0",
     "@tauri-apps/cli": "^1.0.4",
     "@types/fs-extra": "^9.0.13",
     "@types/sharp": "^0.30.4",
