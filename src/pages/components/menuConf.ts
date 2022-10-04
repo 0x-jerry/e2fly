@@ -5,6 +5,7 @@ import DebugIcon from '~icons/carbon/debug'
 import { Component } from 'vue'
 import { i18n } from '@/i18n'
 
+// @ts-ignore
 const { t } = i18n.global
 
 export interface MenuItem {
@@ -18,16 +19,16 @@ export const menus: MenuItem[] = [
   {
     icon: DebugIcon,
     text: t('menu.log'),
-    route: '/log'
+    route: '/log',
   },
   {
     icon: SettingIcon,
     text: t('menu.setting'),
-    route: '/setting'
+    route: '/setting',
   },
   {
     icon: ServerIcon,
     text: t('menu.server'),
-    route: '/server'
-  }
+    route: '/server',
+  },
 ]

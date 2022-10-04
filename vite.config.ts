@@ -28,7 +28,7 @@ export default defineConfig({
       include: r('src/locales/**'),
     }),
 
-    Icons(),
+    Icons({}),
 
     // https://github.com/unocss/unocss
     Unocss(),

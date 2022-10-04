@@ -1,8 +1,7 @@
-import { defineConfig, presetAttributify, presetWind } from 'unocss'
-import transformerDirective from '@unocss/transformer-directives'
+import { defineConfig, presetAttributify, presetWind, transformerDirectives } from 'unocss'
 
 // https://github.com/unocss/unocss
 export default defineConfig({
   presets: [presetAttributify(), presetWind()],
-  transformers: [transformerDirective()],
+  transformers: [transformerDirectives()],
 })
