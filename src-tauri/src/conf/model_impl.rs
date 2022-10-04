@@ -16,6 +16,7 @@ impl App {
     pub fn new() -> Self {
         Self {
             auto_hide_when_blur: true,
+            auto_startup: true,
         }
     }
 }

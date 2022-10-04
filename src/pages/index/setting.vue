@@ -32,6 +32,11 @@ async function saveConfig() {
       </k-checkbox>
     </div>
     <div flex="~">
+      <k-checkbox v-model="appConf.app.autoStartup" class="flex-1 justify-start">
+        {{ $t('page.setting.auto-startup') }}
+      </k-checkbox>
+    </div>
+    <div flex="~">
       <k-checkbox v-model="appConf.v2fly.routes.bypassCN" class="flex-1 justify-start">
         {{ $t('page.setting.bypassCN') }}
       </k-checkbox>

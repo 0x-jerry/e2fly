@@ -23,6 +23,7 @@ dotenv_codegen = "0.15.0"
 dirs = "4.0"
 serde_derive = "1.0.138"
 libc = "0.2.126"
+auto-launch = "0.4.0"
 
 [features]
 # by default Tauri runs in production mode

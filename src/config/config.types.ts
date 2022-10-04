@@ -13,6 +13,7 @@ export interface Active {
 
 export interface App {
     autoHideWhenBlur: boolean;
+    autoStartup:      boolean;
 }
 
 export interface Outbound {

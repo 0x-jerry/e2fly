@@ -4,6 +4,7 @@ import { writeFile } from 'fs/promises'
 const config = JSON.stringify({
   app: {
     autoHideWhenBlur: true,
+    autoStartup: false,
   },
   proxy: { system: false, pac: false },
   active: {
@@ -30,7 +31,7 @@ generate(config, 'typescript', 'src/config/config.types.ts')
 generate(config, 'rust', 'src-tauri/src/conf/model.rs')
 
 async function generate(json: string, lang: string, dist: string) {
-  const url = new URL('https://0x-jerry-dd-api.deno.dev/transform/json')
+  const url = new URL('https:/dd-api.deno.dev/transform/json')
 
   url.searchParams.set('json', json)
   url.searchParams.set('lang', lang)

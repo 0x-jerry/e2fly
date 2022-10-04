@@ -5,7 +5,9 @@
 #[macro_use]
 extern crate serde_derive;
 
+use auto_launch::AutoLaunchBuilder;
 use conf::model::AppConfig;
+use std::env::current_exe;
 
 mod conf;
 mod env;
@@ -31,6 +33,28 @@ fn main() {
     let app = menu::set_app_tray_menu(app);
 
     let app = menu::set_app_win_menu(app, &context);
+
+    let app = app.setup(move |app| {
+        let app_name = &app.package_info().name;
+        let current_exe = current_exe().unwrap();
+
+        let auto_start = AutoLaunchBuilder::new()
+            .set_app_name(&app_name)
+            .set_app_path(&current_exe.to_str().unwrap())
+            .set_use_launch_agent(true)
+            .build()
+            .unwrap();
+
+        if app_conf.app.auto_startup {
+            auto_start.enable().unwrap();
+            auto_start.is_enabled().unwrap();
+        } else {
+            auto_start.disable().unwrap();
+            auto_start.is_enabled().unwrap();
+        }
+
+        Ok(())
+    });
 
     app.run(context)
         .expect("error while running tauri application");

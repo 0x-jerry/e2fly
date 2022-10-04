@@ -12,6 +12,7 @@ page:
     bypassCN: 绕过中国大陆
     blockAds: 屏蔽广告
     auto-hide-when-blur: 失焦时自动隐藏窗口
+    auto-startup: 开机自启动
 menu:
   log: 日志
   setting: 设置

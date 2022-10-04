@@ -12,6 +12,7 @@ page:
     bypassCN: Bypass CN mainland
     blockAds: Block Ads
     auto-hide-when-blur: Auto hide window when blur
+    auto-startup: Auto startup
 menu:
   log: Log
   setting: Setting

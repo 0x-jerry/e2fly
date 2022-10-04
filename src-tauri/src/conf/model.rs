@@ -44,6 +44,9 @@ pub struct Active {
 pub struct App {
     #[serde(rename = "autoHideWhenBlur")]
     pub auto_hide_when_blur: bool,
+
+    #[serde(rename = "autoStartup")]
+    pub auto_startup: bool,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
