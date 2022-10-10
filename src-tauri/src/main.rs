@@ -8,6 +8,7 @@ extern crate serde_derive;
 use auto_launch::AutoLaunchBuilder;
 use conf::model::AppConfig;
 use std::env::current_exe;
+use tauri::RunEvent;
 
 mod conf;
 mod env;
@@ -56,8 +57,16 @@ fn main() {
         Ok(())
     });
 
-    app.run(context)
-        .expect("error while running tauri application");
+    let app = app
+        .build(context)
+        .expect("error while building tauri application");
+
+    app.run(|_app_handle, e| match e {
+        RunEvent::ExitRequested { api, .. } => {
+            api.prevent_exit();
+        }
+        _ => (),
+    })
 }
 
 /// 1. autostart v2ray
