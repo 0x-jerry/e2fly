@@ -14,13 +14,13 @@ pub fn set_app_tray_menu<R: Runtime>(app: Builder<R>) -> Builder<R> {
     let system_tray = SystemTray::new().with_menu(tray_menu);
 
     app.system_tray(system_tray)
-        .on_system_tray_event(|_app, event| match event {
+        .on_system_tray_event(|app_handler, event| match event {
             MenuItemClick { id, .. } => match id.as_str() {
                 "quit" => {
-                    _app.exit(0);
+                    app_handler.exit(0);
                 }
                 "show" => {
-                    if let Some(win) = _app.get_window("main") {
+                    if let Some(win) = app_handler.get_window("main") {
                         win.show().expect("Show main window failed!");
                         win.set_focus().expect("Set main window focus failed!");
                     }

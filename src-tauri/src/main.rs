@@ -8,7 +8,7 @@ extern crate serde_derive;
 use auto_launch::AutoLaunchBuilder;
 use conf::model::AppConfig;
 use std::env::current_exe;
-use tauri::RunEvent;
+use tauri::{Manager, RunEvent, WindowEvent};
 
 mod conf;
 mod env;
@@ -61,7 +61,21 @@ fn main() {
         .build(context)
         .expect("error while building tauri application");
 
-    app.run(|_app_handle, e| match e {
+    app.run(|app_handle, e| match e {
+        // Triggered when a window is trying to close
+        RunEvent::WindowEvent {
+            label: _, event, ..
+        } => match event {
+            WindowEvent::CloseRequested { api, .. } => {
+                api.prevent_close();
+
+                if let Some(win) = app_handle.get_window("main") {
+                    win.hide().unwrap();
+                }
+            }
+            _ => (),
+        },
+
         RunEvent::ExitRequested { api, .. } => {
             api.prevent_exit();
         }
