@@ -20,15 +20,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/cache@v3
+      - name: install Rust stable
+        uses: actions-rs/toolchain@v1
         with:
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            src-tauri/target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          toolchain: stable
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2.2.2
@@ -42,10 +37,16 @@ jobs:
           registry-url: https://registry.npm.taobao.org
           cache: 'pnpm'
 
-      - name: install Rust stable
-        uses: actions-rs/toolchain@v1
+      - name: Cache rust
+        uses: actions/cache@v3
         with:
-          toolchain: stable
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            src-tauri/target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-latest'
