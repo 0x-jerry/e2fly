@@ -6,7 +6,7 @@ Another cross-platform [V2Ray] GUI client, support [xray]. WIP
 
 Em..., There are no excited features. It just works as expected.
 
-## screenshot
+## Screenshot
 
 |                              |                              |                              |
 | ---------------------------- | ---------------------------- | ---------------------------- |
