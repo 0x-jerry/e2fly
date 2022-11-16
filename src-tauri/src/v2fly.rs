@@ -1,6 +1,9 @@
+#[path = "lib/mod.rs"]
+mod lib;
+
 use crate::conf::get_v2fly_conf_path;
 use crate::conf::model::AppConfig;
-use crate::lib::nonblock::read_available_to_string;
+use lib::nonblock::read_available_to_string;
 use std::ffi::OsStr;
 use std::io;
 use std::process::{Child, Command, Stdio};
