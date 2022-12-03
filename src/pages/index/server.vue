@@ -111,7 +111,9 @@ function removeOutbound(item: E2FlyConfigOutbound) {
       :placeholder="$t('page.server.link-placeholder')"
       v-model="v2flyConf.b64"
     ></textarea>
-    <k-checkbox v-model="v2flyConf.mux">Mux</k-checkbox>
+    <k-row class="px-4">
+      <k-checkbox v-model="v2flyConf.mux">Mux</k-checkbox>
+    </k-row>
     <k-button class="w-full" block @click="addConfig">{{ $t('page.server.add') }}</k-button>
   </k-col>
 </template>
