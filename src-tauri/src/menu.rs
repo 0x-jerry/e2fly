@@ -61,6 +61,9 @@ pub fn set_app_win_menu<R: Runtime, A: Assets>(
                 MenuItem::Copy.into(),
                 MenuItem::Paste.into(),
                 MenuItem::Cut.into(),
+                MenuItem::SelectAll.into(),
+                MenuItem::Redo.into(),
+                MenuItem::Undo.into(),
             ]),
         )), //
         MenuEntry::Submenu(Submenu::new(
