@@ -8,7 +8,8 @@ import CircleIcon from '~icons/carbon/circle-filled'
 import TrashCanIcon from '~icons/carbon/trash-can'
 
 const v2flyConf = reactive({
-  b64: ''
+  b64: '',
+  mux: false,
 })
 
 async function addConfig() {
@@ -18,9 +19,9 @@ async function addConfig() {
     config: JSON.stringify(
       getOutboundConfFromBase64({
         b64: v2flyConf.b64,
-        mux: true
-      })
-    )
+        mux: v2flyConf.mux,
+      }),
+    ),
   })
 
   await ipc.saveConfig(toRaw(store.config))
@@ -39,8 +40,7 @@ async function toggleV2fly() {
 type E2FlyConfigOutbound = any
 
 async function switchConfig(item: E2FlyConfigOutbound) {
-  if (store.config.active.enabled && item.id === store.config.active.outboundId)
-    return
+  if (store.config.active.enabled && item.id === store.config.active.outboundId) return
 
   await actions.startV2fly(item.id)
 }
@@ -58,9 +58,7 @@ function getLabel(itemConf: string) {
 }
 
 function isActiveOutboundConfig(item: E2FlyConfigOutbound) {
-  return (
-    store.config.active.enabled && store.config.active.outboundId === item.id
-  )
+  return store.config.active.enabled && store.config.active.outboundId === item.id
 }
 
 function removeOutbound(item: E2FlyConfigOutbound) {
@@ -82,7 +80,7 @@ function removeOutbound(item: E2FlyConfigOutbound) {
         :key="item.id"
         class="v2fly-card"
         :class="{
-          'is-active': isActiveOutboundConfig(item)
+          'is-active': isActiveOutboundConfig(item),
         }"
         @click="switchConfig(item)"
       >
@@ -93,10 +91,7 @@ function removeOutbound(item: E2FlyConfigOutbound) {
             v-if="!isActiveOutboundConfig(item)"
             @click.stop="removeOutbound(item)"
           />
-          <CircleIcon
-            class="text-green-500"
-            v-if="isActiveOutboundConfig(item)"
-          />
+          <CircleIcon class="text-green-500" v-if="isActiveOutboundConfig(item)" />
         </k-row>
       </div>
     </div>
@@ -108,11 +103,7 @@ function removeOutbound(item: E2FlyConfigOutbound) {
       bg="hover:red-500"
       :class="{ 'is-disabled': !store.config.active.enabled }"
     >
-      {{
-        store.config.active.enabled
-          ? $t('page.server.disconnect')
-          : $t('page.server.reconnect')
-      }}
+      {{ store.config.active.enabled ? $t('page.server.disconnect') : $t('page.server.reconnect') }}
     </div>
     <textarea
       class="w-full border-gray-300 bg-gray-100 resize-y outline-none border-x-0 text-sm px-3"
@@ -120,9 +111,8 @@ function removeOutbound(item: E2FlyConfigOutbound) {
       :placeholder="$t('page.server.link-placeholder')"
       v-model="v2flyConf.b64"
     ></textarea>
-    <k-button class="w-full" block @click="addConfig">{{
-      $t('page.server.add')
-    }}</k-button>
+    <k-checkbox v-model="v2flyConf.mux">Mux</k-checkbox>
+    <k-button class="w-full" block @click="addConfig">{{ $t('page.server.add') }}</k-button>
   </k-col>
 </template>
 
