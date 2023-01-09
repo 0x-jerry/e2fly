@@ -38,7 +38,7 @@
     "@iconify/json": "^2.1.147",
     "@intlify/vite-plugin-vue-i18n": "^6.0.3",
     "@tauri-apps/cli": "^1.2.1",
-    "@types/fs-extra": "^9.0.13",
+    "@types/fs-extra": "^11.0.0",
     "@vitejs/plugin-vue": "^3.2.0",
     "@vueuse/core": "^9.6.0",
     "less": "^4.1.3",
