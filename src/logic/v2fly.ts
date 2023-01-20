@@ -249,5 +249,12 @@ export function getV2rayConfig(opt: AppConfig, outbound: IV2RayOutbound): IV2Ray
       getOutboundBlockConf(),
     ],
     routing: getRoutingConf(extraRules),
+    dns: {
+      servers: [
+        //
+        '1.1.1.1',
+        'localhost',
+      ],
+    },
   }
 }
