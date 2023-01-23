@@ -4,8 +4,8 @@ import { ipc } from '@/ipc'
 import { actions, store } from '@/store'
 import { remove, uuid } from '@0x-jerry/utils'
 import { IV2RayOutbound } from '@0x-jerry/v2ray-schema'
-import CircleIcon from '~icons/carbon/circle-filled'
-import TrashCanIcon from '~icons/carbon/trash-can'
+import { Outbound } from '@/config'
+import CodeHighlight from '../components/CodeHighlight.vue'
 
 const v2flyConf = reactive({
   b64: '',
@@ -65,6 +65,16 @@ function removeOutbound(item: E2FlyConfigOutbound) {
   remove(store.config.outbound, (n) => n.id === item.id)
   ipc.saveConfig(toRaw(store.config))
 }
+
+const preview = reactive({
+  show: false,
+  content: '',
+})
+
+function showConfig(item: Outbound) {
+  preview.content = JSON.stringify(JSON.parse(item.config), null, 2)
+  preview.show = true
+}
 </script>
 
 <template>
@@ -86,12 +96,13 @@ function removeOutbound(item: E2FlyConfigOutbound) {
       >
         <div flex="1">{{ getLabel(item.config) }}</div>
         <k-row class="icons text-xs items-center" flex="~">
-          <TrashCanIcon
-            class="delete-icon"
+          <i-carbon-code class="icon" @click.stop="showConfig(item)" />
+          <i-carbon-trash-can
+            class="icon"
             v-if="!isActiveOutboundConfig(item)"
             @click.stop="removeOutbound(item)"
           />
-          <CircleIcon class="text-green-500" v-if="isActiveOutboundConfig(item)" />
+          <i-carbon-circle-filled class="text-green-500" v-if="isActiveOutboundConfig(item)" />
         </k-row>
       </div>
     </div>
@@ -116,6 +127,9 @@ function removeOutbound(item: E2FlyConfigOutbound) {
     </k-row>
     <k-button class="w-full" block @click="addConfig">{{ $t('page.server.add') }}</k-button>
   </k-col>
+  <k-drawer v-model="preview.show" width="300px" placement="left">
+    <CodeHighlight lang="json" :code="preview.content"> </CodeHighlight>
+  </k-drawer>
 </template>
 
 <style lang="less" scoped>
@@ -150,7 +164,7 @@ function removeOutbound(item: E2FlyConfigOutbound) {
     //
   }
 
-  .delete-icon {
+  .icon {
     opacity: 0;
     @apply transition transition-opacity;
 
@@ -160,7 +174,7 @@ function removeOutbound(item: E2FlyConfigOutbound) {
   }
 
   &:hover {
-    .delete-icon {
+    .icon {
       opacity: 1;
     }
   }

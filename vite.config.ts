@@ -9,7 +9,7 @@ import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Unocss from 'unocss/vite'
 import { VueKitResolver } from '@0x-jerry/vue-kit/resolver'
-import vueI18n from '@intlify/vite-plugin-vue-i18n'
+import vueI18n from '@intlify/unplugin-vue-i18n/vite'
 
 const r = (...path: string[]) => join(__dirname, ...path)
 

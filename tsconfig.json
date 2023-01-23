@@ -17,8 +17,7 @@
       "vite/client",
       "vitest/globals",
       "vite-plugin-pages/client",
-      "unplugin-icons/types/vue",
-      "@intlify/vite-plugin-vue-i18n/client"
+      "unplugin-icons/types/vue"
     ],
     "paths": {
       "@/*": ["src/*"]
