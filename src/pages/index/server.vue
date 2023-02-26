@@ -3,7 +3,7 @@ import { getOutboundConfFromBase64 } from '@/logic/v2fly'
 import { ipc } from '@/ipc'
 import { actions, store } from '@/store'
 import { remove, uuid } from '@0x-jerry/utils'
-import { IV2RayOutbound } from '@0x-jerry/v2ray-schema'
+import type { V4 } from '@0x-jerry/v2ray-schema'
 import { Outbound } from '@/config'
 import CodeHighlight from '../components/CodeHighlight.vue'
 
@@ -46,7 +46,7 @@ async function switchConfig(item: E2FlyConfigOutbound) {
 }
 
 function getLabel(itemConf: string) {
-  const item: IV2RayOutbound = JSON.parse(itemConf)
+  const item: V4.outbounds.OutboundObject = JSON.parse(itemConf)
   const protocol = item.protocol
 
   if (protocol === 'vmess') {

@@ -33,7 +33,7 @@
   "devDependencies": {
     "@0x-jerry/imger": "^0.2.2",
     "@0x-jerry/utils": "^1.13.0",
-    "@0x-jerry/v2ray-schema": "^0.3.0",
+    "@0x-jerry/v2ray-schema": "^1.0.3",
     "@0x-jerry/vue-kit": "^1.7.0",
     "@0x-jerry/x-release": "^0.3.6",
     "@iconify/json": "^2.2.10",
