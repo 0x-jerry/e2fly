@@ -52,7 +52,7 @@
     "unplugin-icons": "^0.15.1",
     "unplugin-vue-components": "^0.22.12",
     "vite": "^4.0.4",
-    "vite-plugin-pages": "^0.28.0",
+    "vite-plugin-pages": "^0.29.0",
     "vitest": "^0.27.3",
     "vue-tsc": "^1.0.24"
   }
