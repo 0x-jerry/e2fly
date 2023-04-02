@@ -66,7 +66,7 @@ impl V2Ray {
 
         v2ray.run(
             app_conf.v2_fly.bin.as_str(),
-            ["-c", get_v2fly_conf_path().to_str().unwrap()],
+            ["run", "-c", get_v2fly_conf_path().to_str().unwrap()],
         )
     }
 }
