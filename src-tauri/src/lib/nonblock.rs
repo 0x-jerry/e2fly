@@ -25,23 +25,43 @@ extern crate libc;
 use libc::{fcntl, F_GETFL, F_SETFL, O_NONBLOCK};
 use std::io::{self, ErrorKind, Read};
 use std::os::unix::io::{AsRawFd, RawFd};
-use std::process::ChildStdout;
 
 /// Simple non-blocking wrapper for reader types that implement AsRawFd
-pub struct NonBlockingReader<'a> {
+pub struct NonBlockingReader<'a, R: AsRawFd + Read> {
     eof: bool,
-    reader: &'a mut ChildStdout,
+    reader: &'a mut R,
 }
 
-impl<'a> NonBlockingReader<'a> {
+impl<'a, R: AsRawFd + Read> NonBlockingReader<'a, R> {
     /// Initialize a NonBlockingReader from the reader's file descriptor.
     ///
     /// The reader will be managed internally,
     ///   and O_NONBLOCK will be set the file descriptor.
-    pub fn from_fd(reader: &'a mut ChildStdout) -> io::Result<NonBlockingReader<'a>> {
+    pub fn from_fd(reader: &'a mut R) -> io::Result<NonBlockingReader<'a, R>> {
         let fd = reader.as_raw_fd();
         set_blocking(fd, false)?;
         Ok(NonBlockingReader { reader, eof: false })
+    }
+
+    /// Consume this NonBlockingReader and return the blocking version
+    ///   of the internally managed reader.
+    ///
+    /// This will disable O_NONBLOCK on the file descriptor,
+    ///   and any data read from the NonBlockingReader before calling `into_blocking`
+    ///   will already have been consumed from the reader.
+    pub fn into_blocking(self) -> io::Result<&'a mut R> {
+        let fd = self.reader.as_raw_fd();
+        set_blocking(fd, true)?;
+        Ok(self.reader)
+    }
+
+    /// Indicates if EOF has been reached for the reader.
+    ///
+    /// Currently this defaults to false until one of the `read_available` methods is called,
+    ///   but this may change in the future if I stumble on a compelling way
+    ///   to check for EOF without consuming any of the internal reader.
+    pub fn is_eof(&self) -> bool {
+        self.eof
     }
 
     /// Reads any available data from the reader without blocking, placing them into `buf`.
@@ -73,6 +93,7 @@ impl<'a> NonBlockingReader<'a> {
     /// let mut buf = Vec::new();
     /// noblock_stdout.read_available(&mut buf).unwrap();
     /// ```
+
     pub fn read_available(&mut self, buf: &mut Vec<u8>) -> io::Result<usize> {
         let mut buf_len = 0;
         loop {
@@ -175,7 +196,7 @@ fn set_blocking(fd: RawFd, blocking: bool) -> io::Result<()> {
 }
 
 /// based on: https://github.com/anowell/nonblock-rs
-pub fn read_available_to_string(stream: &mut ChildStdout) -> String {
+pub fn read_available_to_string<'a, R: AsRawFd + Read>(stream: &mut R) -> String {
     let mut nb_stdout = NonBlockingReader::from_fd(stream).unwrap();
 
     let mut s = String::new();

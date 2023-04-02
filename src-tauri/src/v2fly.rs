@@ -36,6 +36,7 @@ impl V2Ray {
         let program = Command::new(&program_path)
             .args(args)
             .stdout(Stdio::piped())
+            .stderr(Stdio::piped())
             .spawn()?;
 
         *p = Some(program);
@@ -56,9 +57,15 @@ impl V2Ray {
             return "".to_string();
         }
 
-        let mut stdout = p.as_mut().unwrap().stdout.as_mut().unwrap();
+        let p = p.as_mut().unwrap();
 
-        read_available_to_string(&mut stdout)
+        let stdout = p.stdout.as_mut().unwrap();
+        let stderr = p.stderr.as_mut().unwrap();
+
+        let s_err = read_available_to_string(stderr);
+        let s_out = read_available_to_string(stdout);
+
+        format!("{}{}", s_out, s_err)
     }
 
     pub fn start(&self, app_conf: &AppConfig) -> io::Result<()> {
