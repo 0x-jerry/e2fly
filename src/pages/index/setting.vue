@@ -27,6 +27,11 @@ async function saveConfig() {
       </k-checkbox>
     </div>
     <div flex="~">
+      <k-checkbox v-model="appConf.proxy.lan" class="flex-1 justify-start">
+        {{ $t('page.setting.proxy--with-lan') }}
+      </k-checkbox>
+    </div>
+    <div flex="~">
       <k-checkbox v-model="appConf.app.autoHideWhenBlur" class="flex-1 justify-start">
         {{ $t('page.setting.auto-hide-when-blur') }}
       </k-checkbox>

@@ -6,7 +6,7 @@ const config = JSON.stringify({
     autoHideWhenBlur: true,
     autoStartup: false,
   },
-  proxy: { system: false, pac: false, lan: false },
+  proxy: { system: false, lan: false },
   active: {
     enabled: false,
     outboundId: '8outt12ADTezpjmRpOtQ-',

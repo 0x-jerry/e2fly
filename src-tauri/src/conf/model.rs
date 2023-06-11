@@ -66,9 +66,6 @@ pub struct Proxy {
     #[serde(rename = "system")]
     pub system: bool,
 
-    #[serde(rename = "pac")]
-    pub pac: bool,
-
     #[serde(rename = "lan")]
     pub lan: bool,
 }

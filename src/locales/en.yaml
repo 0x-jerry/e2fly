@@ -13,6 +13,7 @@ page:
     blockAds: Block Ads
     auto-hide-when-blur: Auto hide window when blur
     auto-startup: Auto startup
+    proxy--with-lan: Allow connections from the LAN
 menu:
   log: Log
   setting: Setting

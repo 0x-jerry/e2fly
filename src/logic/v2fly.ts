@@ -122,10 +122,10 @@ function getOutboundBlockConf(): V4.outbounds.OutboundObject {
   }
 }
 
-function getHttpInbound(host: string, port: number): V4.inbounds.InboundObject {
+function getHttpInbound(port: number, allowLAN?: boolean): V4.inbounds.InboundObject {
   return {
     protocol: 'http',
-    listen: host,
+    listen: allowLAN ? '0.0.0.0' : '127.0.0.1',
     port: port,
     sniffing: {
       enabled: true,
@@ -134,10 +134,10 @@ function getHttpInbound(host: string, port: number): V4.inbounds.InboundObject {
   }
 }
 
-function getSocksInbound(host: string, port: number): V4.inbounds.InboundObject {
+function getSocksInbound(port: number, allowLAN?: boolean): V4.inbounds.InboundObject {
   return {
     protocol: 'socks',
-    listen: host,
+    listen: allowLAN ? '0.0.0.0' : '127.0.0.1',
     port: port,
     settings: {
       udp: true,
@@ -185,18 +185,18 @@ function getRoutingConf(rules?: V4.routing.RuleObject[]): V4.routing.RoutingObje
 }
 
 export function getV2rayConfig(opt: AppConfig, outbound: V4.outbounds.OutboundObject): V4Config {
-  const { v2fly } = opt
+  const { v2fly, proxy } = opt
 
   const { routes } = v2fly
 
   const inbounds: V4.inbounds.InboundObject[] = []
 
   if (v2fly.http.enabled) {
-    inbounds.push(getHttpInbound(v2fly.http.address, v2fly.http.port))
+    inbounds.push(getHttpInbound(v2fly.http.port, proxy.lan))
   }
 
   if (v2fly.socks.enabled) {
-    inbounds.push(getSocksInbound(v2fly.socks.address, v2fly.socks.port))
+    inbounds.push(getSocksInbound(v2fly.socks.port, proxy.lan))
   }
 
   const extraRules: V4.routing.RuleObject[] = []

@@ -51,7 +51,7 @@ impl Proxy {
     pub fn new() -> Self {
         Self {
             system: false,
-            pac: false,
+            lan: false,
         }
     }
 }
