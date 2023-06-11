@@ -68,6 +68,9 @@ pub struct Proxy {
 
     #[serde(rename = "pac")]
     pub pac: bool,
+
+    #[serde(rename = "lan")]
+    pub lan: bool,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

@@ -25,6 +25,7 @@ export interface Outbound {
 export interface Proxy {
     system: boolean;
     pac:    boolean;
+    lan:    boolean;
 }
 
 export interface V2Fly {
