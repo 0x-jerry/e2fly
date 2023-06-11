@@ -1,4 +1,3 @@
-/// <reference types="vitest/config" />
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { join } from 'path'
@@ -57,8 +56,5 @@ export default defineConfig({
   },
   build: {
     emptyOutDir: true,
-  },
-  test: {
-    globals: true,
   },
 })

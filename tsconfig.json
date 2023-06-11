@@ -13,12 +13,7 @@
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
     "skipLibCheck": true,
-    "types": [
-      "vite/client",
-      "vitest/globals",
-      "vite-plugin-pages/client",
-      "unplugin-icons/types/vue"
-    ],
+    "types": ["vite/client", "vite-plugin-pages/client", "unplugin-icons/types/vue"],
     "paths": {
       "@/*": ["src/*"]
     }
