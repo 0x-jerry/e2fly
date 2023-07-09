@@ -42,6 +42,7 @@ fn main() {
             .set_app_name(&app_name)
             .set_app_path(&current_exe.to_str().unwrap())
             .set_use_launch_agent(true)
+            .set_args(&["--minimized"])
             .build()
             .unwrap();
 
