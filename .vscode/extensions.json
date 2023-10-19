@@ -1,8 +1,3 @@
 {
-  "recommendations": [
-    "vue.volar",
-    "bungcip.better-toml",
-    "rust-lang.rust-analyzer",
-    "Vue.volar"
-  ]
+  "recommendations": ["vue.volar", "rust-lang.rust-analyzer", "tamasfe.even-better-toml"]
 }

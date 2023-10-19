@@ -34,13 +34,13 @@ export default defineConfig({
 
     // https://github.com/antfu/unplugin-auto-import
     AutoImport({
-      dts: 'auto-imports.d.ts',
+      dts: 'types/auto-imports.d.ts',
       imports: ['vue', 'vue-router', '@vueuse/core'],
     }),
 
     // https://github.com/antfu/vite-plugin-components
     Components({
-      dts: 'auto-components.d.ts',
+      dts: 'types/auto-components.d.ts',
       resolvers: [VueKitResolver(), IconsResolver()],
     }),
 
