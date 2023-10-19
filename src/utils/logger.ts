@@ -1,7 +1,7 @@
-import { createSimpleLogger } from '@0x-jerry/utils'
+import { createLogger } from '@0x-jerry/utils'
 import { isDev } from '../config'
 
-export const logger = createSimpleLogger('[render]')
+export const logger = createLogger('[render]')
 
 if (isDev) {
   logger.enable()
