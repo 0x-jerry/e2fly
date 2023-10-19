@@ -3,7 +3,6 @@ mod lib;
 
 use crate::conf::get_v2fly_conf_path;
 use crate::conf::model::AppConfig;
-use lib::nonblock::read_available_to_string;
 use std::ffi::OsStr;
 use std::io;
 use std::process::{Child, Command, Stdio};
@@ -62,8 +61,11 @@ impl V2Ray {
         let stdout = p.stdout.as_mut().unwrap();
         let stderr = p.stderr.as_mut().unwrap();
 
-        let s_err = read_available_to_string(stderr);
-        let s_out = read_available_to_string(stdout);
+        // TODO, get stdout and stderr
+        let s_err = "";
+        let s_out = "";
+        // let s_err = read_available_to_string(stderr);
+        // let s_out = read_available_to_string(stdout);
 
         format!("{}{}", s_out, s_err)
     }
