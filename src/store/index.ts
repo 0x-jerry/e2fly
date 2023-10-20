@@ -3,7 +3,6 @@ import { ipc } from '../ipc'
 
 export const store = reactive({
   config: {} as AppConfig,
-  logs: [] as { id: string; content: string }[]
 })
 
 export const actions = {
@@ -19,5 +18,5 @@ export const actions = {
 
     store.config.active.enabled = false
     await ipc.saveConfig(toRaw(store.config))
-  }
+  },
 }

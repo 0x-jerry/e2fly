@@ -71,6 +71,7 @@ dependencies = [
  "dotenv",
  "dotenv_codegen",
  "libc",
+ "rev_buf_reader",
  "serde",
  "serde_derive",
  "serde_json",
@@ -2719,6 +2720,15 @@ dependencies = [
  "wasm-streams",
  "web-sys",
  "winreg",
+]
+
+[[package]]
+name = "rev_buf_reader"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8c0f2e47e00e29920959826e2e1784728a3780d1a784247be5257258cc75f910"
+dependencies = [
+ "memchr",
 ]
 
 [[package]]

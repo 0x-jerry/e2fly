@@ -20,7 +20,7 @@ export const ipc = {
 
     if (!outbound) return
 
-    const v2rayConf = getV2rayConfig(store.config, JSON.parse(outbound))
+    const v2rayConf = await getV2rayConfig(store.config, JSON.parse(outbound))
 
     await invoke('save_v2ray_conf', { content: JSON.stringify(v2rayConf) })
 
@@ -35,7 +35,9 @@ export const ipc = {
   async stopV2fly() {
     return invoke('stop_v2ray')
   },
-  async getV2flyLogs(): Promise<string> {
-    return invoke('get_v2ray_log')
+  async getV2flyLogs(logFile: string): Promise<string[]> {
+    return invoke('get_v2ray_log', {
+      file: logFile,
+    })
   },
 }

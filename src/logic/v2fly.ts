@@ -1,5 +1,6 @@
 import type { V4, V4Config } from '@0x-jerry/v2ray-schema'
 import { AppConfig } from '@/config'
+import { path } from '@tauri-apps/api'
 
 interface V2rayBase64 {
   port: number
@@ -94,9 +95,13 @@ export function getOutboundConfFromBase64(opt: V2rayConfOption): V4.outbounds.Ou
 
 //  ----------
 
-function getLogConf(): V4.overview.LogObject {
+export async function getLogConf(): Promise<V4.overview.LogObject> {
+  const logDir = await path.appLogDir()
+
   return {
     loglevel: 'warning',
+    access: await path.join(logDir, 'v2ray.log'),
+    error: await path.join(logDir, 'v2ray.log'),
   }
 }
 
@@ -184,7 +189,10 @@ function getRoutingConf(rules?: V4.routing.RuleObject[]): V4.routing.RoutingObje
   }
 }
 
-export function getV2rayConfig(opt: AppConfig, outbound: V4.outbounds.OutboundObject): V4Config {
+export async function getV2rayConfig(
+  opt: AppConfig,
+  outbound: V4.outbounds.OutboundObject,
+): Promise<V4Config> {
   const { v2fly, proxy } = opt
 
   const { routes } = v2fly
@@ -229,7 +237,7 @@ export function getV2rayConfig(opt: AppConfig, outbound: V4.outbounds.OutboundOb
   }
 
   return {
-    log: getLogConf(),
+    log: await getLogConf(),
     inbounds,
     outbounds: [
       {

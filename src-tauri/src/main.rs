@@ -13,6 +13,7 @@ use tauri::{Manager, RunEvent, WindowEvent};
 mod conf;
 mod env;
 mod ipc;
+mod lib;
 mod menu;
 mod proxy;
 mod utils;
@@ -47,11 +48,9 @@ fn main() {
             .unwrap();
 
         if app_conf.app.auto_startup {
-            auto_start.enable().unwrap();
-            auto_start.is_enabled().unwrap();
+            auto_start.enable().unwrap_or_default();
         } else {
-            auto_start.disable().unwrap();
-            auto_start.is_enabled().unwrap();
+            auto_start.disable().unwrap_or_default();
         }
 
         Ok(())

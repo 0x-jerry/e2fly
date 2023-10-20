@@ -1,8 +1,11 @@
+use std::fs::File;
+
 use tauri::{Builder, Runtime};
 
 use crate::{
     conf::{self, model::AppConfig, save_v2fly_config},
     env,
+    lib::tail_from_file,
     proxy::set_proxy,
     v2fly::get_v2ray_instance,
 };
@@ -46,12 +49,17 @@ pub fn stop_v2ray() {
 }
 
 #[tauri::command]
-pub fn get_v2ray_log() -> String {
-    let v2ray = get_v2ray_instance();
+pub fn get_v2ray_log(file: String) -> Vec<String> {
+    let f = File::open(file);
 
-    let log = v2ray.read_all();
+    if f.is_err() {
+        return vec![];
+    }
 
-    log
+    match f {
+        Ok(x) => tail_from_file(&x, 1000),
+        Err(_) => vec![],
+    }
 }
 
 #[tauri::command]
