@@ -28,7 +28,8 @@ pub fn set_app_tray_menu<R: Runtime>(app: Builder<R>) -> Builder<R> {
                 _ => {}
             },
             LeftClick { .. } => {
-                if cfg!(target_os = "windows") {
+                #[cfg(windows)]
+                {
                     if let Some(win) = app_handler.get_window("main") {
                         if win.is_visible().unwrap_or(false) {
                             win.hide().expect("Hide main window failed!");

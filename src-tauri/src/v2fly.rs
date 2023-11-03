@@ -1,5 +1,6 @@
 use crate::conf::get_v2fly_conf_path;
 use crate::conf::model::AppConfig;
+use crate::utils::hide_windows_cmd_window;
 use std::ffi::OsStr;
 use std::io;
 use std::process::{Child, Command};
@@ -27,11 +28,20 @@ impl V2Ray {
     {
         let mut p = self.program.try_lock().expect("get v2fly instance failed");
 
-        p.as_mut().map(|x| x.kill());
+        p.as_mut().map(|x| {
+            x.kill().unwrap_or_default();
+            x.wait().unwrap_or_default();
+        });
 
-        let program = Command::new(&program_path).args(args).spawn()?;
+        let mut program = Command::new(&program_path);
 
-        *p = Some(program);
+        hide_windows_cmd_window(&mut program);
+
+        program.args(args);
+
+        let child = program.spawn()?;
+
+        *p = Some(child);
 
         Ok(())
     }
