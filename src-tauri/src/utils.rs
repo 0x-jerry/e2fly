@@ -28,6 +28,9 @@ pub fn run_command(cmd: &str, args: &[&str]) -> io::Result<String> {
 
 /// https://stackoverflow.com/a/60958956
 pub fn hide_windows_cmd_window(cmd: &mut Command) {
+    // avoid build warning
+    let _ = cmd;
+
     #[cfg(windows)]
     {
         const CREATE_NO_WINDOW: u32 = 0x08000000;
