@@ -9,7 +9,7 @@ export default defineConfig({
       const confPath = 'src-tauri/tauri.conf.json'
       const conf = await readJson(confPath)
 
-      conf.package.version = ctx.nextVersion
+      conf.package.version = ctx.nextVersion.replace(/[a-z]+\./g, '')
 
       await writeFile(confPath, JSON.stringify(conf, null, 2))
     },
