@@ -26,12 +26,7 @@ impl V2Ray {
         A: IntoIterator<Item = S>,
         S: AsRef<OsStr>,
     {
-        let mut p = self.program.try_lock().expect("get v2fly instance failed");
-
-        p.as_mut().map(|x| {
-            x.kill().unwrap_or_default();
-            x.wait().unwrap_or_default();
-        });
+        self.stop();
 
         let mut program = Command::new(&program_path);
 
@@ -41,6 +36,7 @@ impl V2Ray {
 
         let child = program.spawn()?;
 
+        let mut p = self.program.try_lock().expect("get v2fly instance failed");
         *p = Some(child);
 
         Ok(())
@@ -49,7 +45,10 @@ impl V2Ray {
     pub fn stop(&self) {
         let mut p = self.program.try_lock().expect("get v2fly instance failed");
 
-        p.as_mut().map(|x| x.kill());
+        p.as_mut().map(|x| {
+            x.kill().unwrap_or_default();
+            x.wait().unwrap_or_default();
+        });
     }
 
     pub fn start(&self, app_conf: &AppConfig) -> io::Result<()> {
