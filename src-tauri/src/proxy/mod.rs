@@ -3,7 +3,7 @@ use std::io;
 
 #[cfg_attr(target_os = "macos", path = "mac.rs")]
 #[cfg_attr(target_os = "windows", path = "win.rs")]
-mod proxy_utils;
+mod proxy_impl;
 
 #[derive(Debug, Copy, Clone)]
 pub struct ProxyConf<'a> {
@@ -18,13 +18,13 @@ pub enum SysProxyType {
 }
 
 pub fn enable_proxy(proxy_type: SysProxyType, conf: ProxyConf) -> io::Result<()> {
-    proxy_utils::enable_proxy(proxy_type, conf)?;
+    proxy_impl::enable_proxy(proxy_type, conf)?;
 
     Ok(())
 }
 
 pub fn disable_proxy(proxy_type: SysProxyType) -> io::Result<()> {
-    proxy_utils::disable_proxy(proxy_type)?;
+    proxy_impl::disable_proxy(proxy_type)?;
 
     Ok(())
 }

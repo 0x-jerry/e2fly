@@ -22,6 +22,7 @@ pub fn enable_proxy(_proxy_type: SysProxyType, conf: ProxyConf) -> io::Result<()
         &[
             "add",
             INTERNET_SETTING_KEY,
+            "/f",
             "/v",
             "ProxyServer",
             "/t",
@@ -36,6 +37,7 @@ pub fn enable_proxy(_proxy_type: SysProxyType, conf: ProxyConf) -> io::Result<()
         &[
             "add",
             INTERNET_SETTING_KEY,
+            "/f",
             "/v",
             "ProxyEnable",
             "/t",
@@ -54,6 +56,7 @@ pub fn disable_proxy(_proxy_type: SysProxyType) -> io::Result<()> {
         &[
             "add",
             INTERNET_SETTING_KEY,
+            "/f",
             "/v",
             "ProxyEnable",
             "/t",
