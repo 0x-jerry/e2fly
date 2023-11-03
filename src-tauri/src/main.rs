@@ -13,7 +13,6 @@ use tauri::{Manager, RunEvent, WindowEvent};
 mod conf;
 mod env;
 mod ipc;
-mod lib;
 mod menu;
 mod proxy;
 mod utils;

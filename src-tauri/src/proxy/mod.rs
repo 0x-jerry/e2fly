@@ -1,8 +1,9 @@
+use crate::conf::model::AppConfig;
 use std::io;
 
-use crate::conf::model::AppConfig;
-
-mod mac;
+#[cfg_attr(target_os = "macos", path = "mac.rs")]
+#[cfg_attr(target_os = "windows", path = "win.rs")]
+mod proxy_utils;
 
 #[derive(Debug, Copy, Clone)]
 pub struct ProxyConf<'a> {
@@ -17,17 +18,13 @@ pub enum SysProxyType {
 }
 
 pub fn enable_proxy(proxy_type: SysProxyType, conf: ProxyConf) -> io::Result<()> {
-    if cfg!(unix) {
-        mac::enable_proxy(proxy_type, conf)?
-    }
+    proxy_utils::enable_proxy(proxy_type, conf)?;
 
     Ok(())
 }
 
 pub fn disable_proxy(proxy_type: SysProxyType) -> io::Result<()> {
-    if cfg!(unix) {
-        mac::disable_proxy(proxy_type)?
-    }
+    proxy_utils::disable_proxy(proxy_type)?;
 
     Ok(())
 }

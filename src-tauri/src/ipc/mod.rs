@@ -5,8 +5,8 @@ use tauri::{Builder, Runtime};
 use crate::{
     conf::{self, model::AppConfig, save_v2fly_config},
     env,
-    lib::tail_from_file,
     proxy::set_proxy,
+    utils::tail_from_file,
     v2fly::get_v2ray_instance,
 };
 

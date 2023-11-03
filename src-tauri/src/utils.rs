@@ -1,5 +1,7 @@
+use rev_buf_reader::RevBufReader;
 use std::{
-    io::{self, Read},
+    fs::File,
+    io::{self, BufRead, Read},
     process::{Command, Stdio},
 };
 
@@ -16,4 +18,12 @@ pub fn run_command(cmd: &str, args: &[&str]) -> io::Result<String> {
     stdout.read_to_string(&mut s)?;
 
     Ok(s)
+}
+
+pub fn tail_from_file(file: &File, limit: usize) -> Vec<String> {
+    let buf = RevBufReader::new(file);
+    buf.lines()
+        .take(limit)
+        .map(|l| l.expect("Could not parse line"))
+        .collect()
 }
