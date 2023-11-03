@@ -10,8 +10,6 @@ use conf::model::AppConfig;
 use std::env::current_exe;
 use tauri::{Manager, RunEvent, WindowEvent};
 
-use crate::v2fly::get_v2ray_instance;
-
 mod conf;
 mod env;
 mod ipc;
@@ -78,10 +76,6 @@ fn main() {
 
         RunEvent::ExitRequested { api, .. } => {
             api.prevent_exit();
-        }
-
-        RunEvent::Exit => {
-            get_v2ray_instance().stop();
         }
 
         _ => (),
