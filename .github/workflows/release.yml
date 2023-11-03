@@ -6,36 +6,68 @@ on:
       - 'v*'
 
 jobs:
-  release:
-    strategy:
-      fail-fast: false
-      matrix:
-        # platform: [macos-latest, ubuntu-latest, windows-latest]
-        platform: [macos-latest]
-
-    runs-on: ${{ matrix.platform }}
+  create-release:
+    permissions:
+      contents: write
+    runs-on: ubuntu-20.04
+    outputs:
+      release_id: ${{ steps.create-release.outputs.id }}
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: install Rust stable
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2.4.0
-        with:
-          version: 8
-
-      - name: Use Node.js
+      - name: setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
-          registry-url: https://registry.npm.taobao.org
+          node-version: 20
+
+      - name: Install Changelog Tool
+        run: npm install -g conventional-changelog-cli
+
+      - name: Generate Release Note
+        run: conventional-changelog -p angular -i RELEASE-NOTE.md -s -r 2
+
+      - uses: actions/github-script@v6
+        id: is-prerelease
+        with:
+          script: |
+            const name = context.ref.slice("refs/tags/".length);
+            return name.includes("-");
+
+      - name: Release
+        id: create-release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: RELEASE-NOTE.md
+          prerelease: ${{steps.is-prerelease.outputs.result}}
+
+  build-tauri:
+    needs: create-release
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        # platform: [macos-latest, ubuntu-20.04, windows-latest]
+        platform: [macos-latest, windows-latest]
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
           cache: 'pnpm'
+
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: install dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-20.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
 
       - name: Cache rust
         uses: actions/cache@v3
@@ -48,35 +80,11 @@ jobs:
             src-tauri/target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
-      - name: install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-latest'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
-
-      - name: Install Changelog Tool
-        run: npm install -g conventional-changelog-cli
-
-      - name: Generate Release Note
-        run: conventional-changelog -p angular -i RELEASE-NOTE.md -s -r 2
-
       - name: Install dependencies
         run: pnpm i
 
-      - name: Build App
-        run: pnpm run build
-
-      - uses: actions/github-script@v6
-        id: is-prerelease
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          script: |
-            const name = context.ref.slice("refs/tags/".length);
-            return name.includes("-");
-
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          body_path: RELEASE-NOTE.md
-          prerelease: ${{steps.is-prerelease.outputs.result}}
-          files: |
-            src-tauri/target/release/bundle/**/*.dmg
+          releaseId: ${{ needs.create-release.outputs.release_id }}
