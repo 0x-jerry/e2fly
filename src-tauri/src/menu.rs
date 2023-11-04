@@ -23,22 +23,22 @@ pub fn set_app_tray_menu<R: Runtime>(app: Builder<R>) -> Builder<R> {
                     app_handler.exit(0);
                 }
                 "show" => {
-                    if let Some(win) = app_handler.get_window("main") {
+                    app_handler.get_window("main").map(|win| {
                         win.show().expect("Show main window failed!");
                         win.set_focus().expect("Set main window focus failed!");
-                    }
+                    });
                 }
                 _ => {}
             },
             LeftClick { .. } => {
-                if let Some(win) = app_handler.get_window("main") {
+                app_handler.get_window("main").map(|win| {
                     if win.is_visible().unwrap_or(false) {
                         win.hide().expect("Hide main window failed!");
                     } else {
                         win.show().expect("Show main window failed!");
                         win.set_focus().expect("Set main window focus failed!");
                     }
-                }
+                });
             }
             RightClick { .. } => {
                 // println!("right clicked");

@@ -67,9 +67,7 @@ fn main() {
             WindowEvent::CloseRequested { api, .. } => {
                 api.prevent_close();
 
-                if let Some(win) = app_handle.get_window("main") {
-                    win.hide().unwrap();
-                }
+                app_handle.get_window("main").map(|win| win.hide().unwrap());
             }
             _ => (),
         },
