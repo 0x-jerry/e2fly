@@ -7,7 +7,7 @@ extern crate serde_derive;
 
 use auto_launch::AutoLaunchBuilder;
 use conf::model::AppConfig;
-use std::env::current_exe;
+use std::{env::current_exe, fs};
 use tauri::{Manager, RunEvent, WindowEvent};
 
 mod conf;
@@ -20,9 +20,6 @@ mod v2fly;
 
 fn main() {
     println!("DEV: {}", env::is_dev());
-
-    let app_conf = conf::read();
-    start_init(&app_conf);
 
     let context = tauri::generate_context!();
 
@@ -37,6 +34,17 @@ fn main() {
     let app = app.setup(move |app| {
         let app_name = &app.package_info().name;
         let current_exe = current_exe().unwrap();
+
+        // ensure app log dir
+        app.path_resolver().app_log_dir().map(|log_dir| {
+            if !log_dir.exists() {
+                fs::create_dir_all(log_dir).expect("Create log dir failed!");
+            }
+        });
+
+        // start v2ray
+        let app_conf = conf::read();
+        start_init(&app_conf);
 
         let auto_start = AutoLaunchBuilder::new()
             .set_app_name(&app_name)
