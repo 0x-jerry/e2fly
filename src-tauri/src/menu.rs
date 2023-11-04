@@ -31,22 +31,18 @@ pub fn set_app_tray_menu<R: Runtime>(app: Builder<R>) -> Builder<R> {
                 _ => {}
             },
             LeftClick { .. } => {
-                #[cfg(windows)]
-                {
-                    if let Some(win) = app_handler.get_window("main") {
-                        if win.is_visible().unwrap_or(false) {
-                            win.hide().expect("Hide main window failed!");
-                        } else {
-                            win.show().expect("Show main window failed!");
-                            win.set_focus().expect("Set main window focus failed!");
-                        }
+                if let Some(win) = app_handler.get_window("main") {
+                    if win.is_visible().unwrap_or(false) {
+                        win.hide().expect("Hide main window failed!");
+                    } else {
+                        win.show().expect("Show main window failed!");
+                        win.set_focus().expect("Set main window focus failed!");
                     }
                 }
             }
             RightClick { .. } => {
-                println!("right clicked");
+                // println!("right clicked");
             }
-            // DoubleClick { position, size, .. } => todo!(),
             _ => {}
         })
 }
