@@ -25,6 +25,7 @@ serde_derive = "1.0.138"
 libc = "0.2.126"
 auto-launch = "0.5.0"
 rev_buf_reader = "0.3.0"
+actix-web = "4"
 
 [features]
 # by default Tauri runs in production mode
