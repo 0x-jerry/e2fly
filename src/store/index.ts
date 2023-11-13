@@ -13,6 +13,9 @@ export const actions = {
     store.config.active.enabled = true
     await ipc.saveConfig(toRaw(store.config))
   },
+  async saveConfig() {
+    await ipc.saveConfig(toRaw(store.config))
+  },
   async stopV2fly() {
     await ipc.stopV2fly()
 

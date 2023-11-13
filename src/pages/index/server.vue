@@ -5,7 +5,6 @@ import { actions, store } from '@/store'
 import { remove, uuid } from '@0x-jerry/utils'
 import type { V4 } from '@0x-jerry/v2ray-schema'
 import { Outbound } from '@/config'
-import CodeHighlight from '../components/CodeHighlight.vue'
 
 const v2flyConf = reactive({
   b64: '',
@@ -68,12 +67,23 @@ function removeOutbound(item: E2FlyConfigOutbound) {
 
 const preview = reactive({
   show: false,
+  id: '',
   content: '',
 })
 
 function showConfig(item: Outbound) {
+  preview.id = item.id
   preview.content = JSON.stringify(JSON.parse(item.config), null, 2)
   preview.show = true
+}
+
+async function saveCurrentConfig() {
+  const resolved = store.config.outbound.find((n) => n.id === preview.id)
+  if (!resolved) return
+
+  resolved.config = preview.content
+
+  await actions.saveConfig()
 }
 </script>
 
@@ -128,7 +138,12 @@ function showConfig(item: Outbound) {
     <k-button class="w-full" block @click="addConfig">{{ $t('page.server.add') }}</k-button>
   </k-col>
   <k-drawer v-model="preview.show" width="300px" placement="left">
-    <CodeHighlight lang="json" :code="preview.content"> </CodeHighlight>
+    <div class="flex flex-col h-full">
+      <div class="border-(0 b solid gray-2) pb-1">
+        <k-button @click="saveCurrentConfig">Save</k-button>
+      </div>
+      <MonacoEditor class="flex-1" v-model="preview.content"></MonacoEditor>
+    </div>
   </k-drawer>
 </template>
 
