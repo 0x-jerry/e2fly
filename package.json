@@ -50,7 +50,7 @@
     "typescript": "^5.2.2",
     "unocss": "^0.57.1",
     "unplugin-auto-import": "^0.16.7",
-    "unplugin-icons": "^0.17.3",
+    "unplugin-icons": "^0.18.0",
     "unplugin-vue-components": "^0.25.2",
     "vite": "^5.0.0",
     "vite-plugin-pages": "^0.31.0",
