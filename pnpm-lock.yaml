@@ -44,8 +44,8 @@ devDependencies:
     specifier: ^2.2.137
     version: 2.2.137
   '@intlify/unplugin-vue-i18n':
-    specifier: ^1.5.0
-    version: 1.5.0(vue-i18n@9.6.4)
+    specifier: ^2.0.0
+    version: 2.0.0(vue-i18n@9.6.4)
   '@tauri-apps/cli':
     specifier: ^1.5.6
     version: 1.5.6
@@ -698,8 +698,8 @@ packages:
     resolution: {integrity: sha512-dsmya7s6KK58UD60cDWqbpkQcllFpPB/f4dz8OqgK5Pe+CgeatKJjpuAG516DHXX0BtD0P5X6JCD45+1FMvvZw==}
     engines: {node: '>= 16'}
 
-  /@intlify/unplugin-vue-i18n@1.5.0(vue-i18n@9.6.4):
-    resolution: {integrity: sha512-jW0MCCdwxybxcwjEfCunAcKjVoxyO3i+cnLL6v+MNGRLUHqrpELF6zQAJUhgAK2afhY7mCliy8RxTFWKdXm26w==}
+  /@intlify/unplugin-vue-i18n@2.0.0(vue-i18n@9.6.4):
+    resolution: {integrity: sha512-1oKvm92L9l2od2H9wKx2ZvR4tzn7gUtd7bPLI7AWUmm7U9H1iEypndt5d985ypxGsEs0gToDaKTrytbBIJwwSg==}
     engines: {node: '>= 14.16'}
     peerDependencies:
       petite-vue-i18n: '*'
