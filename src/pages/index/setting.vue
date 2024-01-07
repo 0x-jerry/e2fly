@@ -75,9 +75,9 @@ async function saveConfig() {
         <k-input v-model.number="appConf.v2fly.bin" class="w-full" block></k-input>
       </div>
     </div>
-    <k-row>
-      <k-button @click="saveConfig" class="w-full" block> {{ $t('page.setting.save') }}</k-button>
-    </k-row>
+    <div>
+      <button @click="saveConfig" class="w-full" block>{{ $t('page.setting.save') }}</button>
+    </div>
   </k-col>
 </template>
 

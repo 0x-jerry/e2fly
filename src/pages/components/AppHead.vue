@@ -18,7 +18,7 @@ function handleMenu(menu: MenuItem) {
         {{ activeMenu?.text }}
       </span>
     </div>
-    <k-row gap="8px">
+    <div class="flex gap-2">
       <div
         v-for="menu in menus"
         :key="menu.route"
@@ -28,7 +28,7 @@ function handleMenu(menu: MenuItem) {
       >
         <component :is="menu.icon"></component>
       </div>
-    </k-row>
+    </div>
   </div>
 </template>
 

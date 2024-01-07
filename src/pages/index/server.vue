@@ -88,7 +88,7 @@ async function saveCurrentConfig() {
 </script>
 
 <template>
-  <k-col>
+  <div class="flex flex-col">
     <div
       class="cards"
       grid="~"
@@ -105,7 +105,7 @@ async function saveCurrentConfig() {
         @click="switchConfig(item)"
       >
         <div flex="1">{{ getLabel(item.config) }}</div>
-        <k-row class="icons text-xs items-center" flex="~">
+        <div class="icons text-xs items-center" flex="~">
           <i-carbon-code class="icon" @click.stop="showConfig(item)" />
           <i-carbon-trash-can
             class="icon"
@@ -113,7 +113,7 @@ async function saveCurrentConfig() {
             @click.stop="removeOutbound(item)"
           />
           <i-carbon-circle-filled class="text-green-500" v-if="isActiveOutboundConfig(item)" />
-        </k-row>
+        </div>
       </div>
     </div>
 
@@ -132,15 +132,16 @@ async function saveCurrentConfig() {
       :placeholder="$t('page.server.link-placeholder')"
       v-model="v2flyConf.b64"
     ></textarea>
-    <k-row class="px-4">
+    <div class="flex px-4">
       <k-checkbox v-model="v2flyConf.mux">Mux</k-checkbox>
-    </k-row>
-    <k-button class="w-full" block @click="addConfig">{{ $t('page.server.add') }}</k-button>
-  </k-col>
+    </div>
+    <button class="w-full" block @click="addConfig">{{ $t('page.server.add') }}</button>
+  </div>
+
   <k-drawer v-model="preview.show" width="300px" placement="left">
     <div class="flex flex-col h-full">
       <div class="border-(0 b solid gray-2) pb-1">
-        <k-button @click="saveCurrentConfig">Save</k-button>
+        <button @click="saveCurrentConfig">Save</button>
       </div>
       <MonacoEditor class="flex-1" v-model="preview.content"></MonacoEditor>
     </div>

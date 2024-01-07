@@ -7,7 +7,6 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Unocss from 'unocss/vite'
-import { VueKitResolver } from '@0x-jerry/vue-kit/resolver'
 import vueI18n from '@intlify/unplugin-vue-i18n/vite'
 
 const r = (...path: string[]) => join(__dirname, ...path)
@@ -41,7 +40,7 @@ export default defineConfig({
     // https://github.com/antfu/vite-plugin-components
     Components({
       dts: 'types/auto-components.d.ts',
-      resolvers: [VueKitResolver(), IconsResolver()],
+      resolvers: [IconsResolver()],
     }),
 
     // https://github.com/hannoeru/vite-plugin-pages

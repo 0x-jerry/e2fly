@@ -1,6 +1,5 @@
 import { getV2rayConfig } from '@/logic/v2fly'
 import { store } from '@/store'
-import { toast } from '@0x-jerry/vue-kit'
 import { invoke } from '@tauri-apps/api'
 import { AppConfig } from '../config'
 
@@ -27,7 +26,7 @@ export const ipc = {
     const err: string = await invoke('start_v2ray')
 
     if (err) {
-      toast.warning(err)
+      // toast.warning(err)
     }
 
     return err
