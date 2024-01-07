@@ -133,19 +133,19 @@ async function saveCurrentConfig() {
       v-model="v2flyConf.b64"
     ></textarea>
     <div class="flex px-4">
-      <k-checkbox v-model="v2flyConf.mux">Mux</k-checkbox>
+      <Checkbox v-model="v2flyConf.mux">Mux</Checkbox>
     </div>
     <button class="w-full" block @click="addConfig">{{ $t('page.server.add') }}</button>
   </div>
 
-  <k-drawer v-model="preview.show" width="300px" placement="left">
-    <div class="flex flex-col h-full">
+  <Drawer v-model:visible="preview.show">
+    <div class="flex flex-col h-95vh">
       <div class="border-(0 b solid gray-2) pb-1">
         <button @click="saveCurrentConfig">Save</button>
       </div>
       <MonacoEditor class="flex-1" v-model="preview.content"></MonacoEditor>
     </div>
-  </k-drawer>
+  </Drawer>
 </template>
 
 <style lang="less" scoped>

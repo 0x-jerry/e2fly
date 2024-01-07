@@ -20,65 +20,65 @@ async function saveConfig() {
 </script>
 
 <template>
-  <k-col class="px-3 py-2" gap="0.5rem">
+  <div class="px-3 py-2" gap="0.5rem" flex="~ col">
     <div flex="~">
-      <k-checkbox v-model="appConf.proxy.system" class="flex-1 justify-start">
+      <Checkbox v-model="appConf.proxy.system" class="flex-1 justify-start">
         {{ $t('page.setting.system-proxy') }}
-      </k-checkbox>
+      </Checkbox>
     </div>
     <div flex="~">
-      <k-checkbox v-model="appConf.proxy.lan" class="flex-1 justify-start">
+      <Checkbox v-model="appConf.proxy.lan" class="flex-1 justify-start">
         {{ $t('page.setting.proxy--with-lan') }}
-      </k-checkbox>
+      </Checkbox>
     </div>
     <div flex="~">
-      <k-checkbox v-model="appConf.app.autoHideWhenBlur" class="flex-1 justify-start">
+      <Checkbox v-model="appConf.app.autoHideWhenBlur" class="flex-1 justify-start">
         {{ $t('page.setting.auto-hide-when-blur') }}
-      </k-checkbox>
+      </Checkbox>
     </div>
     <div flex="~">
-      <k-checkbox v-model="appConf.app.autoStartup" class="flex-1 justify-start">
+      <Checkbox v-model="appConf.app.autoStartup" class="flex-1 justify-start">
         {{ $t('page.setting.auto-startup') }}
-      </k-checkbox>
+      </Checkbox>
     </div>
     <div flex="~">
-      <k-checkbox v-model="appConf.v2fly.routes.bypassCN" class="flex-1 justify-start">
+      <Checkbox v-model="appConf.v2fly.routes.bypassCN" class="flex-1 justify-start">
         {{ $t('page.setting.bypassCN') }}
-      </k-checkbox>
+      </Checkbox>
     </div>
     <div flex="~">
-      <k-checkbox v-model="appConf.v2fly.routes.blockAds" class="flex-1 justify-start">
+      <Checkbox v-model="appConf.v2fly.routes.blockAds" class="flex-1 justify-start">
         {{ $t('page.setting.blockAds') }}
-      </k-checkbox>
+      </Checkbox>
     </div>
     <div flex="~">
-      <k-checkbox v-model="appConf.v2fly.stream.tcp" class="flex-1 justify-start">TCP</k-checkbox>
-      <k-checkbox v-model="appConf.v2fly.stream.udp" class="flex-1 justify-start">UDP</k-checkbox>
+      <Checkbox v-model="appConf.v2fly.stream.tcp" class="flex-1 justify-start">TCP</Checkbox>
+      <Checkbox v-model="appConf.v2fly.stream.udp" class="flex-1 justify-start">UDP</Checkbox>
     </div>
     <div class="items-center gap-x-1" flex="~">
-      <k-checkbox v-model="appConf.v2fly.http.enabled"></k-checkbox>
+      <Checkbox v-model="appConf.v2fly.http.enabled"></Checkbox>
       <div w="6em" text="right">Http {{ $t('page.setting.port') }}：</div>
       <div flex="1">
-        <k-input class="w-full" v-model.number="appConf.v2fly.http.port" block></k-input>
+        <input class="w-full" v-model.number="appConf.v2fly.http.port" block />
       </div>
     </div>
     <div class="items-center gap-x-1" flex="~">
-      <k-checkbox v-model="appConf.v2fly.socks.enabled"></k-checkbox>
+      <Checkbox v-model="appConf.v2fly.socks.enabled"></Checkbox>
       <div w="6em" text="right">Socks {{ $t('page.setting.port') }}：</div>
       <div flex="1">
-        <k-input v-model.number="appConf.v2fly.socks.port" class="w-full" block></k-input>
+        <input v-model.number="appConf.v2fly.socks.port" class="w-full" block />
       </div>
     </div>
     <div class="items-center gap-x-1" flex="~">
       <div w="7em" text="right">{{ $t('page.setting.v2ray-bin') }}：</div>
       <div flex="1">
-        <k-input v-model.number="appConf.v2fly.bin" class="w-full" block></k-input>
+        <input v-model.number="appConf.v2fly.bin" class="w-full" block />
       </div>
     </div>
     <div>
       <button @click="saveConfig" class="w-full" block>{{ $t('page.setting.save') }}</button>
     </div>
-  </k-col>
+  </div>
 </template>
 
 <style></style>
