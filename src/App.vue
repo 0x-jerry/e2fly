@@ -42,4 +42,17 @@ div {
   user-select: none;
   box-sizing: border-box;
 }
+
+.btn {
+  @apply border-none px-2 py-1 bg-gray-2;
+  cursor: pointer;
+
+  &:hover {
+    @apply bg-gray-3;
+  }
+
+  &:active {
+    @apply bg-gray-2;
+  }
+}
 </style>

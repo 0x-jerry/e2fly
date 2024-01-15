@@ -135,7 +135,7 @@ async function saveCurrentConfig() {
     <div class="flex px-4">
       <Checkbox v-model="v2flyConf.mux">Mux</Checkbox>
     </div>
-    <button class="w-full" block @click="addConfig">{{ $t('page.server.add') }}</button>
+    <button class="w-full btn" block @click="addConfig">{{ $t('page.server.add') }}</button>
   </div>
 
   <Drawer v-model:visible="preview.show">

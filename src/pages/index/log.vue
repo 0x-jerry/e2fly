@@ -34,7 +34,7 @@ async function openLogFolder() {
 <template>
   <div class="log-page flex flex-col">
     <div class="flex gap-1 border-(0 b solid gray-2) mb-1 justify-end">
-      <button @click="openLogFolder">Open Log Folder</button>
+      <button class="btn" @click="openLogFolder">Open Log Folder</button>
     </div>
     <div class="px-3 overflow-auto flex-1">
       <pre><code v-for="o in state.logs" :key="o.id" >{{o.content}}</code></pre>
@@ -43,15 +43,6 @@ async function openLogFolder() {
 </template>
 
 <style lang="less" scoped>
-button {
-  background: white;
-  border: none;
-  cursor: pointer;
-
-  &.active {
-    background: rgb(172, 214, 253);
-  }
-}
 .log-page {
   @apply bg-light-300;
   height: 100%;
