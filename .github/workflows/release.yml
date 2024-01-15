@@ -20,11 +20,8 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install Changelog Tool
-        run: npm install -g conventional-changelog-cli
-
       - name: Generate Release Note
-        run: conventional-changelog -p angular -i RELEASE-NOTE.md -s -r 2
+        run: npx changelogithub --output RELEASE-NOTE.md
 
       - uses: actions/github-script@v7
         id: is-prerelease
