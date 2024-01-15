@@ -250,8 +250,15 @@ export async function getV2rayConfig(
     routing: getRoutingConf(extraRules),
     dns: {
       servers: [
-        //
-        'quic+local://dns.adguard.com',
+        {
+          address: '223.5.5.5',
+          domains: ['geosite:cn'],
+          expectIPs: ['geoip:cn'],
+        },
+        '1.1.1.1',
+        '8.8.8.8',
+        'https://dns.google/dns-query',
+        '127.0.0.1',
       ],
     },
   }
