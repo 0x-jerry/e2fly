@@ -23,9 +23,11 @@ mod utils;
 mod v2fly;
 
 fn main() {
-    thread::spawn(|| {
-        start_server().unwrap();
-    });
+    if env::is_dev() {
+        thread::spawn(|| {
+            start_server().unwrap();
+        });
+    }
 
     start_tauri();
 }
