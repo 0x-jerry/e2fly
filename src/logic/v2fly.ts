@@ -166,6 +166,7 @@ function getRoutingConf(rules?: V4.routing.RuleObject[]): V4.routing.RoutingObje
     'apple',
     'twitter',
     'telegram',
+    'bing',
   ]
 
   return {
