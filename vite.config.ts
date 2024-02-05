@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import { join } from 'path'
 import Pages from 'vite-plugin-pages'
 import Components from 'unplugin-vue-components/vite'
+import { PrimeVueResolver } from 'unplugin-vue-components/resolvers'
 import AutoImport from 'unplugin-auto-import/vite'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
@@ -40,7 +41,12 @@ export default defineConfig({
     // https://github.com/antfu/vite-plugin-components
     Components({
       dts: 'types/auto-components.d.ts',
-      resolvers: [IconsResolver()],
+      resolvers: [
+        IconsResolver(),
+        PrimeVueResolver({
+          importStyle: false,
+        }),
+      ],
     }),
 
     // https://github.com/hannoeru/vite-plugin-pages

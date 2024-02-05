@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Toast from 'primevue/toast'
 import { ipc } from './ipc'
 import { store } from './store'
 import { logger } from './utils'
@@ -17,6 +18,7 @@ init()
 </script>
 
 <template>
+  <Toast></Toast>
   <router-view v-if="initialized"></router-view>
 </template>
 

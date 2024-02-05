@@ -1,0 +1,5 @@
+@layer reset, primevue;
+
+@import url('normalize.css/normalize.css') layer(reset);
+
+@import 'primevue/resources/themes/aura-light-green/theme.css';
