@@ -76,7 +76,7 @@ async function saveConfig() {
       </div>
     </div>
     <div>
-      <button @click="saveConfig" class="w-full btn">{{ $t('page.setting.save') }}</button>
+      <Button @click="saveConfig" class="w-full block">{{ $t('page.setting.save') }}</Button>
     </div>
   </div>
 </template>
