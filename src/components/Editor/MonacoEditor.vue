@@ -17,7 +17,7 @@ const ins = useMonaco(el, {
 
 let _oldValue = ''
 
-watch(
+watchImmediate(
   () => props.modelValue,
   (v) => {
     if (_oldValue === v) {

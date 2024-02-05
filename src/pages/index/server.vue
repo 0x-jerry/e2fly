@@ -117,15 +117,15 @@ async function saveCurrentConfig() {
       </div>
     </div>
 
-    <div
+    <Button
       @click="toggleV2fly"
       p="y-1"
-      class="connection-btn bg-red-400 text-white text-center cursor-pointer"
-      bg="hover:red-500"
-      :class="{ 'is-disabled': !store.config.active.enabled }"
+      class="block"
+      border="rounded-0"
+      :severity="!store.config.active.enabled ? 'primary' : 'danger'"
     >
       {{ store.config.active.enabled ? $t('page.server.disconnect') : $t('page.server.reconnect') }}
-    </div>
+    </Button>
     <textarea
       class="w-full border-gray-300 bg-gray-100 resize-y outline-none border-x-0 text-sm px-3"
       rows="6"
@@ -135,17 +135,19 @@ async function saveCurrentConfig() {
     <div class="flex px-4">
       <Checkbox v-model="v2flyConf.mux">Mux</Checkbox>
     </div>
-    <button class="w-full btn" block @click="addConfig">{{ $t('page.server.add') }}</button>
+    <Button severity="secondary" class="w-full rounded-0 block" @click="addConfig">
+      {{ $t('page.server.add') }}
+    </Button>
   </div>
 
-  <Drawer v-model:visible="preview.show">
-    <div class="flex flex-col h-95vh">
-      <div class="border-(0 b solid gray-2) pb-1">
-        <button @click="saveCurrentConfig">Save</button>
+  <Sidebar v-model:visible="preview.show" header="Edit config" position="full">
+    <div class="flex flex-col h-full">
+      <div class="border-(0 b solid gray-2) pb-1 text-right">
+        <Button size="small" @click="saveCurrentConfig">Save</Button>
       </div>
       <MonacoEditor class="flex-1" v-model="preview.content"></MonacoEditor>
     </div>
-  </Drawer>
+  </Sidebar>
 </template>
 
 <style lang="less" scoped>
