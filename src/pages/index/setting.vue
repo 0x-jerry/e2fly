@@ -52,31 +52,31 @@ async function saveConfig() {
       </BinaryCheckbox>
     </div>
     <div flex="~">
-      <BinaryCheckbox v-model="appConf.v2fly.stream.tcp" class="flex-1 justify-start"
-        >TCP</BinaryCheckbox
-      >
-      <BinaryCheckbox v-model="appConf.v2fly.stream.udp" class="flex-1 justify-start"
-        >UDP</BinaryCheckbox
-      >
+      <BinaryCheckbox v-model="appConf.v2fly.stream.tcp" class="flex-1 justify-start">
+        TCP
+      </BinaryCheckbox>
+      <BinaryCheckbox v-model="appConf.v2fly.stream.udp" class="flex-1 justify-start">
+        UDP
+      </BinaryCheckbox>
     </div>
     <div class="items-center gap-x-1" flex="~">
       <BinaryCheckbox v-model="appConf.v2fly.http.enabled"></BinaryCheckbox>
       <div w="6em" text="right">Http {{ $t('page.setting.port') }}：</div>
       <div flex="1">
-        <input class="w-full" v-model.number="appConf.v2fly.http.port" block />
+        <InputText class="w-full" v-model.number="appConf.v2fly.http.port" block />
       </div>
     </div>
     <div class="items-center gap-x-1" flex="~">
       <BinaryCheckbox v-model="appConf.v2fly.socks.enabled"></BinaryCheckbox>
       <div w="6em" text="right">Socks {{ $t('page.setting.port') }}：</div>
       <div flex="1">
-        <input v-model.number="appConf.v2fly.socks.port" class="w-full" block />
+        <InputText v-model.number="appConf.v2fly.socks.port" class="w-full" block />
       </div>
     </div>
     <div class="items-center gap-x-1" flex="~">
-      <div w="7em" text="right">{{ $t('page.setting.v2ray-bin') }}：</div>
+      <div w="7.8em" text="right">{{ $t('page.setting.v2ray-bin') }}：</div>
       <div flex="1">
-        <input v-model.number="appConf.v2fly.bin" class="w-full" block />
+        <InputText v-model.number="appConf.v2fly.bin" class="w-full" block />
       </div>
     </div>
     <div>

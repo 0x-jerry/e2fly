@@ -30,7 +30,11 @@ hr {
 
 html,
 body {
-  @apply font-sans text-base;
+  @apply font-sans;
+}
+
+html {
+  font-size: 15px;
 }
 
 body,
