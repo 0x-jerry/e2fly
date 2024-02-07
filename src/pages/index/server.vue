@@ -5,6 +5,7 @@ import { actions, store } from '@/store'
 import { remove, uuid } from '@0x-jerry/utils'
 import type { V4 } from '@0x-jerry/v2ray-schema'
 import { Outbound } from '@/config'
+import { version } from '../../../package.json'
 
 const v2flyConf = reactive({
   b64: '',
@@ -105,7 +106,7 @@ async function saveCurrentConfig() {
         @click="switchConfig(item)"
       >
         <div flex="1">{{ getLabel(item.config) }}</div>
-        <div class="icons text-xs items-center" flex="~">
+        <div class="flex gap-2 text-xs items-center" flex="~">
           <i-carbon-code class="icon" @click.stop="showConfig(item)" />
           <i-carbon-trash-can
             class="icon"
@@ -119,7 +120,6 @@ async function saveCurrentConfig() {
 
     <Button
       @click="toggleV2fly"
-      p="y-1"
       class="block"
       border="rounded-0"
       :severity="!store.config.active.enabled ? 'primary' : 'danger'"
@@ -138,6 +138,7 @@ async function saveCurrentConfig() {
     <Button severity="secondary" class="w-full rounded-0 block" @click="addConfig">
       {{ $t('page.server.add') }}
     </Button>
+    <div class="mt-3" text="xs gray-3 center">version: v{{ version }}</div>
   </div>
 
   <Sidebar v-model:visible="preview.show" header="Edit config" position="full">
@@ -168,7 +169,7 @@ async function saveCurrentConfig() {
 }
 
 .v2fly-card {
-  @apply px-3 py-1;
+  @apply px-3 py-2;
   @apply bg-gray-100 text-gray-700;
   @apply text-sm;
   @apply flex;
