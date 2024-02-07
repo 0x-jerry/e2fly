@@ -132,8 +132,8 @@ async function saveCurrentConfig() {
       :placeholder="$t('page.server.link-placeholder')"
       v-model="v2flyConf.b64"
     ></textarea>
-    <div class="flex px-4">
-      <Checkbox v-model="v2flyConf.mux">Mux</Checkbox>
+    <div class="px-4 my-2">
+      <BinaryCheckbox v-model="v2flyConf.mux">Mux</BinaryCheckbox>
     </div>
     <Button severity="secondary" class="w-full rounded-0 block" @click="addConfig">
       {{ $t('page.server.add') }}

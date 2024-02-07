@@ -3,8 +3,8 @@ const value = defineModel()
 </script>
 
 <template>
-  <label>
-    <input class="mr-1" type="checkbox" v-model="value" />
+  <label class="flex items-center cursor-pointer">
+    <Checkbox class="mr-1" binary v-model="value"></Checkbox>
     <slot></slot>
   </label>
 </template>
