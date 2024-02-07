@@ -141,7 +141,14 @@ async function saveCurrentConfig() {
     <div class="mt-3" text="xs gray-3 center">version: v{{ version }}</div>
   </div>
 
-  <Sidebar v-model:visible="preview.show" header="Edit config" position="full">
+  <Sidebar
+    v-model:visible="preview.show"
+    header="Edit config"
+    position="full"
+    :pt="{
+      content: 'p-0',
+    }"
+  >
     <div class="flex flex-col h-full">
       <div class="border-(0 b solid gray-2) pb-1 text-right">
         <Button size="small" @click="saveCurrentConfig">Save</Button>
