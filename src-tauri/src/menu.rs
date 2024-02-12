@@ -10,8 +10,12 @@ use crate::v2fly::get_v2ray_instance;
 pub fn set_app_tray_menu<R: Runtime>(app: Builder<R>) -> Builder<R> {
     let quit = CustomMenuItem::new("quit".to_string(), "Quit E2Fly").accelerator("CmdOrControl+Q");
     let show_win = CustomMenuItem::new("show".to_string(), "Show E2Fly");
+    let open_devtools = CustomMenuItem::new("open_devtools".to_string(), "Open Devtools");
 
-    let tray_menu = SystemTrayMenu::new().add_item(show_win).add_item(quit);
+    let tray_menu = SystemTrayMenu::new()
+        .add_item(show_win)
+        .add_item(quit)
+        .add_item(open_devtools);
 
     let system_tray = SystemTray::new().with_menu(tray_menu);
 
@@ -26,6 +30,11 @@ pub fn set_app_tray_menu<R: Runtime>(app: Builder<R>) -> Builder<R> {
                     app_handler.get_window("main").map(|win| {
                         win.show().expect("Show main window failed!");
                         win.set_focus().expect("Set main window focus failed!");
+                    });
+                }
+                "open_devtools" => {
+                    app_handler.get_window("main").map(|win| {
+                        win.open_devtools();
                     });
                 }
                 _ => {}
