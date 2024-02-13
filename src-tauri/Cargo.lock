@@ -69,7 +69,6 @@ dependencies = [
  "dirs 5.0.1",
  "dotenv",
  "dotenv_codegen",
- "libc",
  "rev_buf_reader",
  "serde",
  "serde_derive",

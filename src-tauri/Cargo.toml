@@ -22,7 +22,6 @@ dotenv = "0.15.0"
 dotenv_codegen = "0.15.0"
 dirs = "5.0"
 serde_derive = "1.0.190"
-libc = "0.2.152"
 rev_buf_reader = "0.3.0"
 tauri-plugin-autostart = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 
