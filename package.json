@@ -20,8 +20,8 @@
     "build": "tauri build",
     "dev:web": "vite",
     "build:web": "vite build",
-    "gen:icons": "imger -p ./scripts/icons.preset.json",
-    "gen:types": "tsx scripts/gen-config-types.ts",
+    "g:icons": "imger -p ./scripts/icons.preset.json",
+    "g:types": "tsx scripts/gen-config-types.ts",
     "release": "x-release"
   },
   "dependencies": {
@@ -35,7 +35,7 @@
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
-    "@0x-jerry/imger": "^0.2.2",
+    "@0x-jerry/imger": "^0.3.0",
     "@0x-jerry/utils": "^2.1.1",
     "@0x-jerry/v2ray-schema": "^1.0.3",
     "@0x-jerry/vue-kit": "^2.0.1",
