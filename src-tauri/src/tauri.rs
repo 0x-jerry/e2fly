@@ -1,7 +1,7 @@
-use auto_launch::AutoLaunchBuilder;
 use conf::model::AppConfig;
-use std::{env::current_exe, fs};
+use std::fs;
 use tauri::{Manager, RunEvent, WindowEvent};
+use tauri_plugin_autostart::{MacosLauncher, ManagerExt};
 
 use crate::{conf, env, ipc, menu, proxy, v2fly};
 
@@ -12,6 +12,11 @@ pub fn start_tauri() {
 
     let app = tauri::Builder::default();
 
+    let app = app.plugin(tauri_plugin_autostart::init(
+        MacosLauncher::LaunchAgent,
+        Some(vec!["--minimized"]),
+    ));
+
     let app = ipc::set_app_ipc_methods(app);
 
     let app = menu::set_app_tray_menu(app);
@@ -19,9 +24,6 @@ pub fn start_tauri() {
     let app = menu::set_app_win_menu(app, &context);
 
     let app = app.setup(move |app| {
-        let app_name = &app.package_info().name;
-        let current_exe = current_exe().unwrap();
-
         // ensure app log dir
         app.path_resolver().app_log_dir().map(|log_dir| {
             if !log_dir.exists() {
@@ -33,18 +35,10 @@ pub fn start_tauri() {
         let app_conf = conf::read();
         start_init(&app_conf);
 
-        let auto_start = AutoLaunchBuilder::new()
-            .set_app_name(&app_name)
-            .set_app_path(&current_exe.to_str().unwrap())
-            .set_use_launch_agent(true)
-            .set_args(&["--minimized"])
-            .build()
-            .unwrap();
-
         if app_conf.app.auto_startup {
-            auto_start.enable().unwrap_or_default();
+            app.autolaunch().enable().unwrap_or_default();
         } else {
-            auto_start.disable().unwrap_or_default();
+            app.autolaunch().disable().unwrap_or_default();
         }
 
         Ok(())
