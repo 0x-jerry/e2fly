@@ -6,12 +6,8 @@
 #[macro_use]
 extern crate serde_derive;
 
-use std::thread;
-
-use server::start_server;
 use tauri::start_tauri;
 
-mod server;
 mod tauri;
 
 mod conf;
@@ -23,11 +19,5 @@ mod utils;
 mod v2fly;
 
 fn main() {
-    if env::is_dev() {
-        thread::spawn(|| {
-            start_server().unwrap();
-        });
-    }
-
     start_tauri();
 }
