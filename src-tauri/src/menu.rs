@@ -10,12 +10,8 @@ use crate::v2fly::get_v2ray_instance;
 pub fn set_app_tray_menu<R: Runtime>(app: Builder<R>) -> Builder<R> {
     let quit = CustomMenuItem::new("quit".to_string(), "Quit E2Fly").accelerator("CmdOrControl+Q");
     let show_win = CustomMenuItem::new("show".to_string(), "Show E2Fly");
-    let open_devtools = CustomMenuItem::new("open_devtools".to_string(), "Open Devtools");
 
-    let tray_menu = SystemTrayMenu::new()
-        .add_item(show_win)
-        .add_item(quit)
-        .add_item(open_devtools);
+    let tray_menu = SystemTrayMenu::new().add_item(show_win).add_item(quit);
 
     let system_tray = SystemTray::new().with_menu(tray_menu);
 
@@ -30,11 +26,6 @@ pub fn set_app_tray_menu<R: Runtime>(app: Builder<R>) -> Builder<R> {
                     app_handler.get_window("main").map(|win| {
                         win.show().expect("Show main window failed!");
                         win.set_focus().expect("Set main window focus failed!");
-                    });
-                }
-                "open_devtools" => {
-                    app_handler.get_window("main").map(|win| {
-                        win.open_devtools();
                     });
                 }
                 _ => {}
@@ -86,9 +77,12 @@ pub fn set_app_win_menu<R: Runtime, A: Assets>(
         )), //
         MenuEntry::Submenu(Submenu::new(
             "Window",
-            Menu::with_items([CustomMenuItem::new("toggle-win", "Close Windows")
-                .accelerator("CmdOrControl+W")
-                .into()]),
+            Menu::with_items([
+                CustomMenuItem::new("toggle-win", "Close Windows")
+                    .accelerator("CmdOrControl+W")
+                    .into(),
+                CustomMenuItem::new("open_devtools", "Open Devtools").into(),
+            ]),
         )), //
     ]);
 
@@ -97,6 +91,10 @@ pub fn set_app_win_menu<R: Runtime, A: Assets>(
             "toggle-win" => {
                 let win = event.window();
                 toggle_win(win).expect("Toggle window visible status failed!")
+            }
+            "open_devtools" => {
+                let win = event.window();
+                win.open_devtools();
             }
             _ => {}
         })
