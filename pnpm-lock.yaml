@@ -44,8 +44,8 @@ devDependencies:
     specifier: ^2.0.1
     version: 2.0.1(typescript@5.3.3)
   '@0x-jerry/x-release':
-    specifier: ^0.4.0
-    version: 0.4.0
+    specifier: ^1.0.0
+    version: 1.0.0
   '@iconify/json':
     specifier: ^2.2.180
     version: 2.2.180
@@ -158,14 +158,14 @@ packages:
       - typescript
     dev: true
 
-  /@0x-jerry/x-release@0.4.0:
-    resolution: {integrity: sha512-oE+MgEG5hbY5cCt/FeaEfIBb3xNgJVOm3jZCrN3OgQzx0DgRtzPFQVpVfpJ4MHMMqRr1N0NPfNZp0UvHLV/n+w==}
+  /@0x-jerry/x-release@1.0.0:
+    resolution: {integrity: sha512-/H6mQPxxDzXlBXDFmzBZTxOn8Ig6dEtxT4Frr+TXUm8KSn6zGtpifna01Urq9fplFS520FCDvbiaKbm8lZBQbQ==}
     hasBin: true
     dependencies:
       '@0x-jerry/load-pkg': 0.1.2
       cac: 6.7.14
       debug: 4.3.4
-      execa: 7.2.0
+      execa: 8.0.1
       picocolors: 1.0.0
       prompts: 2.4.2
       semver: 7.6.0
@@ -2134,21 +2134,6 @@ packages:
       strip-final-newline: 2.0.0
     dev: true
 
-  /execa@7.2.0:
-    resolution: {integrity: sha512-UduyVP7TLB5IcAQl+OzLyLcS/l32W/GLg+AhHJ+ow40FOk2U3SAllPwR44v4vmdFwIWqpdwxxpQbF1n5ta9seA==}
-    engines: {node: ^14.18.0 || ^16.14.0 || >=18.0.0}
-    dependencies:
-      cross-spawn: 7.0.3
-      get-stream: 6.0.1
-      human-signals: 4.3.1
-      is-stream: 3.0.0
-      merge-stream: 2.0.0
-      npm-run-path: 5.2.0
-      onetime: 6.0.0
-      signal-exit: 3.0.7
-      strip-final-newline: 3.0.0
-    dev: true
-
   /execa@8.0.1:
     resolution: {integrity: sha512-VyhnebXciFV2DESc+p6B+y0LjSm0krU4OgJN44qFAhBY0TJ+1V61tYD2+wHusZ6F9n5K+vl8k0sTy7PEfV4qpg==}
     engines: {node: '>=16.17'}
@@ -2366,11 +2351,6 @@ packages:
   /human-signals@2.1.0:
     resolution: {integrity: sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==}
     engines: {node: '>=10.17.0'}
-    dev: true
-
-  /human-signals@4.3.1:
-    resolution: {integrity: sha512-nZXjEF2nbo7lIw3mgYjItAfgQXog3OjJogSbKa2CQIIvSGWcKgeJnQlNXip6NglNzYH45nSRiEVimMvYL8DDqQ==}
-    engines: {node: '>=14.18.0'}
     dev: true
 
   /human-signals@5.0.0:
