@@ -35,10 +35,16 @@ pub fn start_tauri() {
         let app_conf = conf::read();
         start_init(&app_conf);
 
+        let is_enabled_autolaunch = app.autolaunch().is_enabled().unwrap_or_default();
+
         if app_conf.app.auto_startup {
-            app.autolaunch().enable().unwrap_or_default();
+            if !is_enabled_autolaunch {
+                app.autolaunch().enable().unwrap_or_default();
+            }
         } else {
-            app.autolaunch().disable().unwrap_or_default();
+            if is_enabled_autolaunch {
+                app.autolaunch().disable().unwrap_or_default();
+            }
         }
 
         Ok(())
