@@ -32,8 +32,8 @@ dependencies:
 
 devDependencies:
   '@0x-jerry/imger':
-    specifier: ^0.3.0
-    version: 0.3.0
+    specifier: ^0.4.1
+    version: 0.4.1
   '@0x-jerry/utils':
     specifier: ^2.1.1
     version: 2.1.1
@@ -100,8 +100,8 @@ devDependencies:
 
 packages:
 
-  /@0x-jerry/imger@0.3.0:
-    resolution: {integrity: sha512-jmkUn0qHCxHBHvaKR8YV0xENyu1JQy9iP4YqRylge+XB/YDZ3I02rGNTM+ybGYGvLtmm6KB8E190SSsiU4AVRQ==}
+  /@0x-jerry/imger@0.4.1:
+    resolution: {integrity: sha512-G4o/TsnUwlezlPxTVcRxrUsnvX1fkTl7RwjXOB1gdAb3eFXlm/qaohRJaf0hmTF8hfhqS/9S7ogRJTidxzuDgg==}
     engines: {node: '>=14'}
     hasBin: true
     dependencies:
