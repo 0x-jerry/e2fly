@@ -27,7 +27,7 @@
   "dependencies": {
     "@tauri-apps/api": "^1.5.3",
     "highlight.js": "^11.9.0",
-    "monaco-editor": "^0.47.0",
+    "monaco-editor": "^0.48.0",
     "primeicons": "^7.0.0",
     "primevue": "^3.48.0",
     "vue": "^3.4.15",
