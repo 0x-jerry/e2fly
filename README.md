@@ -19,7 +19,7 @@ Em..., There are no excited features. It just works as expected.
 - [x] Support Window
 - [ ] Support Linux
 - [ ] Support more protocol, current only support vmess protocol
-- [ ] Auto update, [docs](https://tauri.app/v1/guides/distribution/updater)
+- [x] Auto update, [docs](https://tauri.app/v1/guides/distribution/updater)
 
 ## Contribute
 
