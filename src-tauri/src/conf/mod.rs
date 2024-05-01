@@ -13,20 +13,17 @@ pub const APP_NAME: &str = "e2fly.beta";
 const CONFIG_NAME: &str = "config.json";
 
 fn get_config_dir() -> PathBuf {
-    let dir = (env::is_dev()).then(|| Path::new("../test-conf").to_path_buf());
+    let config_dir = if env::is_dev() {
+        PathBuf::from("../test-conf")
+    } else {
+        let name = format!(".{}", APP_NAME);
 
-    let config_dir = match dir {
-        Some(d) => d,
-        None => {
-            let name = format!("{}{}", ".", APP_NAME);
+        let dir_path = dirs::home_dir()
+            .expect("Invalid homedir path")
+            .as_path()
+            .join(name);
 
-            let dir_path = dirs::home_dir()
-                .expect("Invalid homedir path")
-                .as_path()
-                .join(name);
-
-            dir_path
-        }
+        dir_path
     };
 
     // ensure config folder
