@@ -1,4 +1,4 @@
-import SettingIcon from '~icons/ep/setting'
+import SettingIcon from '~icons/carbon/settings'
 import ServerIcon from '~icons/carbon/bare-metal-server'
 import DebugIcon from '~icons/carbon/debug'
 
