@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { AppConfig } from '@/config'
-import { ipc } from '@/ipc'
+import { disableAutostart, enableAutostart, ipc, isEnabledAutostart } from '@/ipc'
 import { store } from '@/store'
 
 const appConf = reactive<AppConfig>(structuredClone(toRaw(store.config)))
@@ -15,6 +15,14 @@ async function saveConfig() {
     await ipc.startV2fly(conf.active.outboundId)
   } else {
     await ipc.stopV2fly()
+  }
+
+  if (conf.app.autoStartup !== (await isEnabledAutostart())) {
+    if (conf.app.autoStartup) {
+      await enableAutostart()
+    } else {
+      await disableAutostart()
+    }
   }
 }
 </script>

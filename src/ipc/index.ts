@@ -40,3 +40,15 @@ export const ipc = {
     })
   },
 }
+
+export async function isEnabledAutostart(): Promise<boolean> {
+  return await invoke('plugin:autostart|is_enabled')
+}
+
+export async function enableAutostart(): Promise<void> {
+  await invoke('plugin:autostart|enable')
+}
+
+export async function disableAutostart(): Promise<void> {
+  await invoke('plugin:autostart|disable')
+}

@@ -8,8 +8,6 @@ use crate::{conf, env, ipc, menu, proxy, v2fly};
 pub fn start_tauri() {
     println!("DEV: {}", env::is_dev());
 
-    let context = tauri::generate_context!();
-
     let app = tauri::Builder::default();
 
     let app = app.plugin(tauri_plugin_autostart::init(
@@ -20,6 +18,8 @@ pub fn start_tauri() {
     let app = ipc::set_app_ipc_methods(app);
 
     let app = menu::set_app_tray_menu(app);
+
+    let context = tauri::generate_context!();
 
     let app = menu::set_app_win_menu(app, &context);
 
