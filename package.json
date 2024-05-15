@@ -25,7 +25,7 @@
     "release": "x-release"
   },
   "dependencies": {
-    "@tauri-apps/api": "^1.5.5",
+    "@tauri-apps/api": "^1.5.6",
     "highlight.js": "^11.9.0",
     "monaco-editor": "^0.48.0",
     "primeicons": "^7.0.0",
@@ -37,7 +37,7 @@
   "devDependencies": {
     "@0x-jerry/utils": "^2.2.5",
     "@0x-jerry/v2ray-schema": "^1.0.4",
-    "@0x-jerry/x-release": "^1.0.1",
+    "@0x-jerry/x-release": "^2.2.0",
     "@iconify-json/carbon": "^1.1.33",
     "@intlify/unplugin-vue-i18n": "^4.0.0",
     "@tauri-apps/cli": "^1.5.14",
@@ -48,7 +48,7 @@
     "less": "^4.2.0",
     "node-fetch": "^3.3.2",
     "normalize.css": "^8.0.1",
-    "tsx": "^4.10.2",
+    "tsx": "^4.10.3",
     "typescript": "^5.4.5",
     "unocss": "^0.60.2",
     "unplugin-auto-import": "^0.17.6",
