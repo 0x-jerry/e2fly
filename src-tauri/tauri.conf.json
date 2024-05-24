@@ -65,7 +65,7 @@
       "endpoints": [
         "https://github.com/0x-jerry/e2fly/releases/latest/download/latest.json"
       ],
-      "dialog": false,
+      "dialog": true,
       "windows": {
         "installMode": "passive"
       },
