@@ -38,8 +38,8 @@ devDependencies:
     specifier: ^1.0.4
     version: 1.0.4
   '@0x-jerry/x-release':
-    specifier: ^2.2.0
-    version: 2.2.0
+    specifier: ^2.2.2
+    version: 2.2.2
   '@iconify-json/carbon':
     specifier: ^1.1.33
     version: 1.1.33
@@ -97,12 +97,20 @@ devDependencies:
 
 packages:
 
-  /@0x-jerry/load-pkg@0.1.4:
-    resolution: {integrity: sha512-oO/1YwEhZTcH5zRGOoG95hFzyeL18WUKPw1jDxeP5dpQyKXtFwIZ/TFeXQdrowdCq893p6tyoE6K9QHk60gLOw==}
+  /@0x-jerry/load-pkg@0.1.5:
+    resolution: {integrity: sha512-OsG9WZfCDzLaIC5t7HNHAYdpvZEf5efs/+fLEXsbOQr3IdZyMuWA27utAOsrNwTfl1BCgr6+r048ZyMd9YE72Q==}
     dev: true
 
   /@0x-jerry/utils@2.2.5:
     resolution: {integrity: sha512-u+60FMcpI+6x6uBwlIKjcuumVVo8cUGi0oEFiYQYfwUdhMCCPGaTZ7ryz6J7zExmhPbChNl1PPb3g/Vgeh4pLg==}
+    dependencies:
+      fflate: 0.8.2
+      nanoid: 5.0.7
+      picocolors: 1.0.1
+    dev: true
+
+  /@0x-jerry/utils@2.2.7:
+    resolution: {integrity: sha512-+qb/blJNlEdB1ce/0AJyG+YvZUyjScDnkQVIAJykXzVWrWxB4mdFFz2nA6OHqPySquUgrbtRc/DwAzAGw1Ii/Q==}
     dependencies:
       fflate: 0.8.2
       nanoid: 5.0.7
@@ -119,18 +127,18 @@ packages:
       - supports-color
     dev: true
 
-  /@0x-jerry/x-release@2.2.0:
-    resolution: {integrity: sha512-ov0CWRbin8lTTWtbhTbhnngtzRVRhMaRFnjCx5PEb3A+rUIWGzrGrKUl0SbW1YFUz/M+qPgQI02G8/md+2j2+Q==}
+  /@0x-jerry/x-release@2.2.2:
+    resolution: {integrity: sha512-WgOXuzoLhZeyeQnjXAsOfMmG45DzFZx7BUCPABjT5uaBOOIIpzXmo5JO1vu3jE2TlNpermfOE//YSXhUyPxURQ==}
     hasBin: true
     dependencies:
-      '@0x-jerry/load-pkg': 0.1.4
-      '@0x-jerry/utils': 2.2.5
+      '@0x-jerry/load-pkg': 0.1.5
+      '@0x-jerry/utils': 2.2.7
       cac: 6.7.14
       debug: 4.3.4
       picocolors: 1.0.1
       prompts: 2.4.2
       semver: 7.6.2
-      unconfig: 0.3.13
+      unconfig: 0.4.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -1648,6 +1656,16 @@ packages:
       update-browserslist-db: 1.0.16(browserslist@4.23.0)
     dev: true
 
+  /bundle-require@4.1.0(esbuild@0.20.2):
+    resolution: {integrity: sha512-FeArRFM+ziGkRViKRnSTbHZc35dgmR9yNog05Kn0+ItI59pOAISGvnnIwW1WgFZQW59IxD9QpJnUPkdIPfZuXg==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    peerDependencies:
+      esbuild: '>=0.17'
+    dependencies:
+      esbuild: 0.20.2
+      load-tsconfig: 0.2.5
+    dev: true
+
   /cac@6.7.14:
     resolution: {integrity: sha512-b6Ilus+c3RrdDk+JhLKUAQfzzgLEPy6wcXqS7f/xe1EETvsDP6GORG7SFuOs6cID5YkqchW/LXZbX5bc8j7ZcQ==}
     engines: {node: '>=8'}
@@ -2220,6 +2238,18 @@ packages:
     dev: true
     optional: true
 
+  /importx@0.2.4:
+    resolution: {integrity: sha512-FldH9d+GsFzPAsyVrzvrkdGmXpysa4TRg5CyA4XCdKhMYk8s3H4JrlChoocAmzmeKzG7SmeYIO3NYWWFsvvfEQ==}
+    dependencies:
+      bundle-require: 4.1.0(esbuild@0.20.2)
+      debug: 4.3.4
+      esbuild: 0.20.2
+      jiti: 1.21.0
+      tsx: 4.10.3
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /internal-slot@1.0.7:
     resolution: {integrity: sha512-NGnrKwXzSms2qUUih/ILZ5JBqNTSa1+ZmP6flaIp6KmSElgE9qdndzS3cqjrDovwFdmwsGsLdeFgB6suw+1e9g==}
     engines: {node: '>= 0.4'}
@@ -2453,6 +2483,11 @@ packages:
       mime: 1.6.0
       needle: 3.3.1
       source-map: 0.6.1
+    dev: true
+
+  /load-tsconfig@0.2.5:
+    resolution: {integrity: sha512-IXO6OCs9yg8tMKzfPZ1YmheJbZCiEsnBdcB03l0OcfK9prKnJb96siuHCr5Fl37/yo9DnKU+TLpxzTUspw9shg==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dev: true
 
   /local-pkg@0.5.0:
@@ -3289,6 +3324,16 @@ packages:
       '@antfu/utils': 0.7.8
       defu: 6.1.4
       jiti: 1.21.0
+    dev: true
+
+  /unconfig@0.4.1:
+    resolution: {integrity: sha512-R13UbdxX+bhFIwM+N5jFYWPpHBNbFUct5Mn3eTt+zMUFpwgRQ6R2aIOnu9HBly9dAHN8uMzgIYRZu9QXLMLIiw==}
+    dependencies:
+      '@antfu/utils': 0.7.8
+      defu: 6.1.4
+      importx: 0.2.4
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /undici-types@5.26.5:
