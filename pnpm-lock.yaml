@@ -12,8 +12,8 @@ dependencies:
     specifier: ^11.9.0
     version: 11.9.0
   monaco-editor:
-    specifier: ^0.48.0
-    version: 0.48.0
+    specifier: ^0.50.0
+    version: 0.50.0
   primeicons:
     specifier: ^7.0.0
     version: 7.0.0
@@ -2804,8 +2804,8 @@ packages:
       ufo: 1.5.3
     dev: true
 
-  /monaco-editor@0.48.0:
-    resolution: {integrity: sha512-goSDElNqFfw7iDHMg8WDATkfcyeLTNpBHQpO8incK6p5qZt5G/1j41X0xdGzpIkGojGXM+QiRQyLjnfDVvrpwA==}
+  /monaco-editor@0.50.0:
+    resolution: {integrity: sha512-8CclLCmrRRh+sul7C08BmPBP3P8wVWfBHomsTcndxg5NRCEPfu/mc2AGU8k37ajjDVXcXFc12ORAMUkmk+lkFA==}
     dev: false
 
   /mrmime@2.0.0:
