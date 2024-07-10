@@ -38,8 +38,8 @@ devDependencies:
     specifier: ^2.4.2
     version: 2.4.2
   '@0x-jerry/v2ray-schema':
-    specifier: ^1.0.4
-    version: 1.0.4
+    specifier: ^1.0.5
+    version: 1.0.5
   '@0x-jerry/x-release':
     specifier: ^2.2.2
     version: 2.2.2
@@ -112,8 +112,8 @@ packages:
       picocolors: 1.0.1
     dev: true
 
-  /@0x-jerry/v2ray-schema@1.0.4:
-    resolution: {integrity: sha512-TmH0VXnMNQcDUUS+mt59ZS+iKluSQX1OdrA2Hf+m16nMQVNJEexr62L6VlGjHe5NuUbufdyfAZ8CeVqHlgDIfQ==}
+  /@0x-jerry/v2ray-schema@1.0.5:
+    resolution: {integrity: sha512-uwgM+12s0gL+Eun2gtxYIRyNl/Qm5VJ3FefqNyjpafYoe3HXYUIbe1GjRcZVrE+PFpNTAOKrLktG/iCMoc3lVw==}
     dependencies:
       '@0x-jerry/utils': 2.4.2
       '@biomejs/biome': 1.8.3
@@ -535,7 +535,6 @@ packages:
     engines: {node: '>=14.21.3'}
     cpu: [arm64]
     os: [linux]
-    libc: [musl]
     requiresBuild: true
     dev: true
     optional: true
@@ -545,7 +544,6 @@ packages:
     engines: {node: '>=14.21.3'}
     cpu: [arm64]
     os: [linux]
-    libc: [glibc]
     requiresBuild: true
     dev: true
     optional: true
@@ -555,7 +553,6 @@ packages:
     engines: {node: '>=14.21.3'}
     cpu: [x64]
     os: [linux]
-    libc: [musl]
     requiresBuild: true
     dev: true
     optional: true
@@ -565,7 +562,6 @@ packages:
     engines: {node: '>=14.21.3'}
     cpu: [x64]
     os: [linux]
-    libc: [glibc]
     requiresBuild: true
     dev: true
     optional: true

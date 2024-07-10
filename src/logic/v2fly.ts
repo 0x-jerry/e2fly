@@ -256,10 +256,18 @@ export async function getV2rayConfig(
           domains: ['geosite:cn'],
           expectIPs: ['geoip:cn'],
         },
-        '1.1.1.1',
-        '8.8.8.8',
-        'https://dns.google/dns-query',
-        '127.0.0.1',
+        {
+          address: 'fakedns',
+          domains: ['geosite:geolocation-!cn'],
+          expectIPs: ['geoip:!cn'],
+        },
+        {
+          address: 'https://1.1.1.1/dns-query',
+          domains: ['geosite:geolocation-!cn'],
+          expectIPs: ['geoip:!cn'],
+        },
+        '223.5.5.5',
+        'localhost',
       ],
     },
   }
