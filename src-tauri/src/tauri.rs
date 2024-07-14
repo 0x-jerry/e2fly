@@ -3,7 +3,12 @@ use std::fs;
 use tauri::{Manager, RunEvent, WindowEvent};
 use tauri_plugin_autostart::{MacosLauncher, ManagerExt};
 
-use crate::{conf, env, ipc, menu, proxy, v2fly};
+use crate::{
+    conf,
+    env::{self, is_dev},
+    ipc, menu, proxy,
+    v2fly::{self, get_v2ray_instance},
+};
 
 pub fn start_tauri() {
     println!("DEV: {}", env::is_dev());
@@ -27,8 +32,20 @@ pub fn start_tauri() {
         // ensure app log dir
         app.path_resolver().app_log_dir().map(|log_dir| {
             if !log_dir.exists() {
-                fs::create_dir_all(log_dir).expect("Create log dir failed!");
+                fs::create_dir_all(log_dir.clone()).expect("Create log dir failed!");
             }
+
+            let file_name = if is_dev() {
+                "v2ray.dev.log"
+            } else {
+                "v2ray.log"
+            };
+
+            let log_file_path = log_dir.join(file_name);
+
+            get_v2ray_instance()
+                .set_log_file(log_file_path)
+                .expect("set log file failed!");
         });
 
         // start v2ray

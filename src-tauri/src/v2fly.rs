@@ -1,9 +1,11 @@
 use crate::conf::get_v2fly_conf_path;
 use crate::conf::model::AppConfig;
-use crate::utils::hide_windows_cmd_window;
+use crate::utils::{hide_windows_cmd_window, tail_from_file};
 use std::ffi::OsStr;
+use std::fs::File;
 use std::io;
-use std::process::{Child, Command};
+use std::path::PathBuf;
+use std::process::{Child, Command, Stdio};
 
 use std::sync::{Arc, Mutex};
 
@@ -18,6 +20,7 @@ pub fn get_v2ray_instance() -> Arc<V2Ray> {
 #[derive(Default)]
 pub struct V2Ray {
     program: Mutex<Option<Child>>,
+    log_file: Mutex<Option<PathBuf>>,
 }
 
 impl V2Ray {
@@ -31,6 +34,16 @@ impl V2Ray {
         let mut program = Command::new(&program_path);
 
         hide_windows_cmd_window(&mut program);
+
+        self.log_file
+            .try_lock()
+            .expect("log file")
+            .as_ref()
+            .map(|p| {
+                let f = File::create(p).unwrap();
+                program.stdout(Stdio::from(f.try_clone().unwrap()));
+                program.stderr(Stdio::from(f));
+            });
 
         program.args(args);
 
@@ -56,5 +69,34 @@ impl V2Ray {
             app_conf.v2_fly.bin.as_str(),
             ["run", "-c", get_v2fly_conf_path().to_str().unwrap()],
         )
+    }
+
+    pub fn set_log_file(&self, log_file: PathBuf) -> io::Result<()> {
+        let mut f = self.log_file.try_lock().expect("get log file path");
+        *f = Some(log_file);
+
+        Ok(())
+    }
+
+    pub fn read_logs(&self) -> Vec<String> {
+        let log_file = self.log_file.try_lock().unwrap();
+
+        match log_file.as_ref() {
+            Some(file) => {
+                let f = File::open(file);
+
+                if f.is_err() {
+                    return vec![];
+                }
+
+                match f {
+                    Ok(x) => tail_from_file(&x, 1000),
+                    Err(_) => vec![],
+                }
+            }
+            None => {
+                return vec![];
+            }
+        }
     }
 }

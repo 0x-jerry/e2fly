@@ -1,6 +1,5 @@
 import type { V4, V4Config } from '@0x-jerry/v2ray-schema'
 import { AppConfig } from '@/config'
-import { path } from '@tauri-apps/api'
 
 interface V2rayBase64 {
   port: number
@@ -96,12 +95,8 @@ export function getOutboundConfFromBase64(opt: V2rayConfOption): V4.outbounds.Ou
 //  ----------
 
 export async function getLogConf(): Promise<V4.overview.LogObject> {
-  const logDir = await path.appLogDir()
-
   return {
     loglevel: 'warning',
-    access: await path.join(logDir, 'v2ray.log'),
-    error: await path.join(logDir, 'v2ray.log'),
   }
 }
 

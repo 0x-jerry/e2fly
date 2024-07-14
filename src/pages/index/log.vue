@@ -2,7 +2,6 @@
 import { ipc } from '@/ipc'
 import { useInterval } from '@/hooks'
 import { path, shell } from '@tauri-apps/api'
-import { getLogConf } from '@/logic/v2fly'
 
 interface LogLine {
   id: number
@@ -14,8 +13,7 @@ const state = reactive({
 })
 
 async function getLogs() {
-  const conf = await getLogConf()
-  const logs = await ipc.getV2flyLogs(conf.access!)
+  const logs = await ipc.getV2flyLogs()
 
   state.logs = logs.map((x, idx) => ({
     id: idx,
