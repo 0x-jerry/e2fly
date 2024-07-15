@@ -21,7 +21,7 @@ tauri = { version = "1.6", features = [ "updater", "api-all", "system-tray", "de
 dotenv = "0.15.0"
 dotenv_codegen = "0.15.0"
 dirs = "5.0"
-serde_derive = "1.0.190"
+serde_derive = "1.0.204"
 rev_buf_reader = "0.3.0"
 tauri-plugin-autostart = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 os_pipe = "1.2.0"
