@@ -6,7 +6,7 @@ use std::ffi::OsStr;
 use std::fs::File;
 use std::io;
 use std::path::PathBuf;
-use std::process::{Child, Command, Stdio};
+use std::process::{Child, Command};
 
 use std::sync::{Arc, Mutex};
 
@@ -41,8 +41,8 @@ impl V2Ray {
             .expect("log file")
             .as_ref()
             .map(|p| {
-                let stdout= Logger::from_path(p.to_str().unwrap());
-                let stderr= Logger::from_path(p.to_str().unwrap());
+                let stdout = Logger::from(p);
+                let stderr = Logger::from(p);
 
                 program.stdout(stdout);
                 program.stderr(stderr);

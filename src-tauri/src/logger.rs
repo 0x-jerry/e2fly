@@ -1,13 +1,14 @@
 use file_rotate::{compression::Compression, suffix::AppendCount, ContentLimit, FileRotate};
 use std::{
     io::{Read, Write},
+    path::Path,
     process::Stdio,
 };
 
 pub struct Logger(FileRotate<AppendCount>);
 
-impl Logger {
-    pub fn from_path(path: &str) -> Self {
+impl<T: AsRef<Path>> From<T> for Logger {
+    fn from(path: T) -> Self {
         let log = FileRotate::new(
             path,
             AppendCount::new(2),
