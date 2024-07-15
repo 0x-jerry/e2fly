@@ -15,7 +15,7 @@ defineProps<LoadingProps>()
       v-if="loading"
       class="spinner absolute top-0 left-0 size-full flex items-center justify-center"
     >
-      <Spinner class="h-4/5" strokeWidth="6" />
+      <Spinner class="h-4/5 max-h-8" strokeWidth="6" />
     </div>
   </div>
 </template>
