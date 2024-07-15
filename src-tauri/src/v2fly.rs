@@ -2,104 +2,91 @@ use crate::conf::get_v2fly_conf_path;
 use crate::conf::model::AppConfig;
 use crate::logger::Logger;
 use crate::utils::{hide_windows_cmd_window, tail_from_file};
+use std::cell::RefCell;
 use std::ffi::OsStr;
 use std::fs::File;
-use std::io;
+use std::io::Result;
 use std::path::PathBuf;
 use std::process::{Child, Command};
 
-use std::sync::{Arc, Mutex};
-
 thread_local! {
-    static SINGLETON_POOL: Arc<V2Ray> = Arc::new(Default::default());
-}
-
-pub fn get_v2ray_instance() -> Arc<V2Ray> {
-    SINGLETON_POOL.with(|singleton_pool| singleton_pool.clone())
+    static V2RAY: RefCell<V2Ray> = RefCell::new(V2Ray::default());
 }
 
 #[derive(Default)]
 pub struct V2Ray {
-    program: Mutex<Option<Child>>,
-    log_file: Mutex<Option<PathBuf>>,
+    program: Option<Child>,
+    log_file: Option<PathBuf>,
 }
 
-impl V2Ray {
-    fn run<S, A>(&self, program_path: S, args: A) -> io::Result<()>
-    where
-        A: IntoIterator<Item = S>,
-        S: AsRef<OsStr>,
-    {
-        self.stop();
+fn run<S, A>(program_path: S, args: A) -> Result<()>
+where
+    A: IntoIterator<Item = S>,
+    S: AsRef<OsStr>,
+{
+    stop();
 
-        let mut program = Command::new(&program_path);
+    let mut program = Command::new(&program_path);
 
-        hide_windows_cmd_window(&mut program);
+    hide_windows_cmd_window(&mut program);
 
-        self.log_file
-            .try_lock()
-            .expect("log file")
-            .as_ref()
-            .map(|p| {
-                let stdout = Logger::from(p);
-                let stderr = Logger::from(p);
+    V2RAY.with_borrow_mut(|v2ray| -> Result<()> {
+        v2ray.log_file.as_ref().map(|p| {
+            let stdout = Logger::from(p);
+            let stderr = Logger::from(p);
 
-                program.stdout(stdout);
-                program.stderr(stderr);
-            });
+            program.stdout(stdout);
+            program.stderr(stderr);
+        });
 
         program.args(args);
 
         let child = program.spawn()?;
 
-        let mut p = self.program.try_lock().expect("get v2fly instance failed");
-        *p = Some(child);
+        v2ray.program = Some(child);
 
         Ok(())
-    }
+    })
+}
 
-    pub fn stop(&self) {
-        let mut p = self.program.try_lock().expect("get v2fly instance failed");
-
-        p.as_mut().map(|x| {
+pub fn stop() {
+    V2RAY.with_borrow_mut(|v2ray| {
+        v2ray.program.as_mut().map(|x| {
             x.kill().unwrap_or_default();
             x.wait().unwrap_or_default();
         });
-    }
+    })
+}
 
-    pub fn start(&self, app_conf: &AppConfig) -> io::Result<()> {
-        self.run(
-            app_conf.v2_fly.bin.as_str(),
-            ["run", "-c", get_v2fly_conf_path().to_str().unwrap()],
-        )
-    }
+pub fn start(app_conf: &AppConfig) -> Result<()> {
+    run(
+        app_conf.v2_fly.bin.as_str(),
+        ["run", "-c", get_v2fly_conf_path().to_str().unwrap()],
+    )
+}
 
-    pub fn set_log_file(&self, log_file: PathBuf) -> io::Result<()> {
-        let mut f = self.log_file.try_lock().expect("get log file path");
-        *f = Some(log_file);
+pub fn set_log_file(log_file: PathBuf) {
+    V2RAY.with_borrow_mut(|v2ray| {
+        v2ray.log_file = Some(log_file);
+    });
+}
 
-        Ok(())
-    }
+pub fn read_logs() -> Vec<String> {
+    V2RAY.with_borrow(|v2ray| match v2ray.log_file.as_ref() {
+        Some(file) => {
+            let f = File::open(file);
 
-    pub fn read_logs(&self) -> Vec<String> {
-        let log_file = self.log_file.try_lock().unwrap();
-
-        match log_file.as_ref() {
-            Some(file) => {
-                let f = File::open(file);
-
-                if f.is_err() {
-                    return vec![];
-                }
-
-                match f {
-                    Ok(x) => tail_from_file(&x, 1000),
-                    Err(_) => vec![],
-                }
-            }
-            None => {
+            if f.is_err() {
                 return vec![];
             }
+
+            match f {
+                Ok(x) => tail_from_file(&x, 1000),
+                Err(_) => vec![],
+            }
         }
-    }
+        None => {
+            return vec![];
+        }
+    })
 }

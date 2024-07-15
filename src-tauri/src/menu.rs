@@ -5,7 +5,7 @@ use tauri::{
     SystemTrayMenu, Window,
 };
 
-use crate::v2fly::get_v2ray_instance;
+use crate::v2fly;
 
 pub fn set_app_tray_menu<R: Runtime>(app: Builder<R>) -> Builder<R> {
     let quit = CustomMenuItem::new("quit".to_string(), "Quit E2Fly").accelerator("CmdOrControl+Q");
@@ -19,7 +19,7 @@ pub fn set_app_tray_menu<R: Runtime>(app: Builder<R>) -> Builder<R> {
         .on_system_tray_event(|app_handler, event| match event {
             MenuItemClick { id, .. } => match id.as_str() {
                 "quit" => {
-                    get_v2ray_instance().stop();
+                    v2fly::stop();
                     app_handler.exit(0);
                 }
                 "show" => {

@@ -4,7 +4,7 @@ use crate::{
     conf::{self, model::AppConfig, save_v2fly_config},
     env,
     proxy::set_proxy,
-    v2fly::get_v2ray_instance,
+    v2fly,
 };
 
 #[tauri::command]
@@ -27,11 +27,9 @@ pub fn read_conf() -> AppConfig {
 
 #[tauri::command]
 pub fn start_v2ray() -> String {
-    let v2ray = get_v2ray_instance();
-
     let app_conf = conf::read();
 
-    if let Some(err) = v2ray.start(&app_conf).err() {
+    if let Some(err) = v2fly::start(&app_conf).err() {
         return err.to_string();
     }
 
@@ -40,14 +38,12 @@ pub fn start_v2ray() -> String {
 
 #[tauri::command]
 pub fn stop_v2ray() {
-    let v2ray = get_v2ray_instance();
-
-    v2ray.stop();
+    v2fly::stop();
 }
 
 #[tauri::command]
 pub fn get_v2ray_log() -> Vec<String> {
-    return get_v2ray_instance().read_logs();
+    return v2fly::read_logs();
 }
 
 #[tauri::command]

@@ -6,8 +6,7 @@ use tauri_plugin_autostart::{MacosLauncher, ManagerExt};
 use crate::{
     conf,
     env::{self, is_dev},
-    ipc, menu, proxy,
-    v2fly::{self, get_v2ray_instance},
+    ipc, menu, proxy, v2fly,
 };
 
 pub fn start_tauri() {
@@ -43,9 +42,7 @@ pub fn start_tauri() {
 
             let log_file_path = log_dir.join(file_name);
 
-            get_v2ray_instance()
-                .set_log_file(log_file_path)
-                .expect("set log file failed!");
+            v2fly::set_log_file(log_file_path);
         });
 
         // start v2ray
@@ -99,8 +96,7 @@ fn start_init(conf: &AppConfig) {
     proxy::set_proxy(&conf);
 
     if conf.active.enabled {
-        let v2ray = v2fly::get_v2ray_instance();
-        if let Some(err) = v2ray.start(&conf).err() {
+        if let Some(err) = v2fly::start(&conf).err() {
             println!("{err:?}");
         }
     }
