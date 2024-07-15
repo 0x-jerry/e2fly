@@ -85,6 +85,10 @@ pub fn start_tauri() {
             api.prevent_exit();
         }
 
+        RunEvent::Exit => {
+            v2fly::stop();
+        }
+
         _ => (),
     })
 }
