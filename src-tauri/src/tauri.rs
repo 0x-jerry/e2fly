@@ -1,5 +1,4 @@
 use conf::model::AppConfig;
-use std::fs;
 use tauri::{Manager, RunEvent, WindowEvent};
 use tauri_plugin_autostart::{MacosLauncher, ManagerExt};
 
@@ -29,21 +28,20 @@ pub fn start_tauri() {
 
     let app = app.setup(move |app| {
         // ensure app log dir
-        app.path_resolver().app_log_dir().map(|log_dir| {
-            if !log_dir.exists() {
-                fs::create_dir_all(log_dir.clone()).expect("Create log dir failed!");
-            }
+        let app_log_dir = app
+            .path_resolver()
+            .app_log_dir()
+            .expect("get app log dir failed");
 
-            let file_name = if is_dev() {
-                "v2ray.dev.log"
-            } else {
-                "v2ray.log"
-            };
+        let file_name = if is_dev() {
+            "v2ray.dev.log"
+        } else {
+            "v2ray.log"
+        };
 
-            let log_file_path = log_dir.join(file_name);
+        let log_file_path = app_log_dir.join(file_name);
 
-            v2fly::set_log_file(log_file_path);
-        });
+        v2fly::set_log_file(log_file_path);
 
         // start v2ray
         let app_conf = conf::read();
