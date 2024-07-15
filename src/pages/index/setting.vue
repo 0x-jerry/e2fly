@@ -2,17 +2,29 @@
 import { AppConfig } from '@/config'
 import { disableAutostart, enableAutostart, ipc, isEnabledAutostart } from '@/ipc'
 import { store } from '@/store'
+import { useLoading } from '@0x-jerry/vue-kit'
+import { useToast } from 'primevue/usetoast'
 
 const appConf = reactive<AppConfig>(structuredClone(toRaw(store.config)))
 
-async function saveConfig() {
+const toast = useToast()
+
+const saveConfig = useLoading(async () => {
   store.config = structuredClone(toRaw(appConf))
 
   const conf = toRaw(store.config)
   await ipc.saveConfig(conf)
 
   if (conf.active.enabled) {
-    await ipc.startV2fly(conf.active.outboundId)
+    const err = await ipc.startV2fly(conf.active.outboundId)
+    if (err) {
+      toast.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: err,
+        life: 5000,
+      })
+    }
   } else {
     await ipc.stopV2fly()
   }
@@ -24,7 +36,11 @@ async function saveConfig() {
       await disableAutostart()
     }
   }
-}
+})
+
+const isModified = computed(() => {
+  return JSON.stringify(appConf) === JSON.stringify(store.config)
+})
 </script>
 
 <template>
@@ -88,7 +104,13 @@ async function saveConfig() {
       </div>
     </div>
     <div>
-      <Button @click="saveConfig" class="w-full block">{{ $t('page.setting.save') }}</Button>
+      <Button
+        @click="saveConfig"
+        class="w-full"
+        :disabled="isModified"
+        :loading="saveConfig.isLoading"
+        :label="$t('page.setting.save')"
+      />
     </div>
   </div>
 </template>
