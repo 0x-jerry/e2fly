@@ -24,7 +24,7 @@ dirs = "5.0"
 serde_derive = "1.0.190"
 rev_buf_reader = "0.3.0"
 tauri-plugin-autostart = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
-os_pipe = "1.1.5"
+os_pipe = "1.2.0"
 file-rotate = "0.7.6"
 
 [features]
