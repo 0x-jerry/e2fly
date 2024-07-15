@@ -25,6 +25,7 @@
     "release": "x-release"
   },
   "dependencies": {
+    "@0x-jerry/vue-kit": "^2.0.3",
     "@primevue/themes": "^4.0.0",
     "@tauri-apps/api": "^1.6.0",
     "highlight.js": "^11.10.0",

@@ -1,3 +1,11 @@
 @layer reset, primevue;
 
 @import url('normalize.css/normalize.css') layer(reset);
+
+:root {
+  --p-toast-width: 330px;
+}
+
+.p-toast-message {
+  margin: 0;
+}

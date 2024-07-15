@@ -2,6 +2,7 @@ import { getV2rayConfig } from '@/logic/v2fly'
 import { store } from '@/store'
 import { invoke } from '@tauri-apps/api'
 import { AppConfig } from '../config'
+import { sleep } from '@0x-jerry/utils'
 
 /**
  * @todo implement methods
@@ -26,10 +27,15 @@ export const ipc = {
     const err: string = await invoke('start_v2ray')
 
     if (err) {
-      // toast.warning(err)
+      return err
     }
 
-    return err
+    await sleep(1500)
+    const logs = await ipc.getV2flyLogs()
+    const isStartFailed = logs.at(0)?.startsWith('Failed to start')
+    if (isStartFailed) {
+      return logs.at(0)
+    }
   },
   async stopV2fly() {
     return invoke('stop_v2ray')

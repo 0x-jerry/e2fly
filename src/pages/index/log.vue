@@ -48,9 +48,7 @@ async function openLogFolder() {
   height: 100%;
   margin: 0;
   @apply text-gray-700;
-  overflow: auto;
   @apply text-xs;
-  line-height: 1.7em;
 }
 
 pre {

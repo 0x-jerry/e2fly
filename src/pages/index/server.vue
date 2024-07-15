@@ -6,6 +6,11 @@ import { remove, uuid } from '@0x-jerry/utils'
 import type { V4 } from '@0x-jerry/v2ray-schema'
 import { Outbound } from '@/config'
 import { version } from '../../../package.json'
+import { useToast } from 'primevue/usetoast'
+import { useLoading } from '@0x-jerry/vue-kit'
+import LoadingPanel from '@/components/LoadingPanel.vue'
+
+const toast = useToast()
 
 const v2flyConf = reactive({
   b64: '',
@@ -29,21 +34,39 @@ async function addConfig() {
   v2flyConf.b64 = ''
 }
 
-async function toggleV2fly() {
+const toggleV2fly = useLoading(async () => {
   if (store.config.active.enabled) {
     await actions.stopV2fly()
   } else {
-    await actions.startV2fly(store.config.active.outboundId)
+    const err = await actions.startV2fly(store.config.active.outboundId)
+
+    if (err) {
+      toast.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: err,
+        life: 5000,
+      })
+    }
   }
-}
+})
 
 type E2FlyConfigOutbound = any
 
-async function switchConfig(item: E2FlyConfigOutbound) {
+const switchConfig = useLoading(async (item: E2FlyConfigOutbound) => {
   if (store.config.active.enabled && item.id === store.config.active.outboundId) return
 
-  await actions.startV2fly(item.id)
-}
+  const err = await actions.startV2fly(item.id)
+
+  if (err) {
+    toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: err,
+      life: 5000,
+    })
+  }
+})
 
 function getLabel(itemConf: string) {
   const item: V4.outbounds.OutboundObject = JSON.parse(itemConf)
@@ -96,36 +119,39 @@ async function saveCurrentConfig() {
       style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))"
       gap="x-2 y-1"
     >
-      <div
-        v-for="item in store.config.outbound"
-        :key="item.id"
-        class="v2fly-card"
-        :class="{
-          'is-active': isActiveOutboundConfig(item),
-        }"
-        @click="switchConfig(item)"
-      >
-        <div flex="1">{{ getLabel(item.config) }}</div>
-        <div class="flex gap-2 text-xs items-center" flex="~">
-          <i-carbon-code class="icon" @click.stop="showConfig(item)" />
-          <i-carbon-trash-can
-            class="icon"
-            v-if="!isActiveOutboundConfig(item)"
-            @click.stop="removeOutbound(item)"
-          />
-          <i-carbon-circle-filled class="text-green-500" v-if="isActiveOutboundConfig(item)" />
+      <LoadingPanel :loading="switchConfig.isLoading">
+        <div
+          v-for="item in store.config.outbound"
+          @click="switchConfig(item)"
+          :key="item.id"
+          class="v2fly-item-btn"
+          :class="{
+            'is-active': isActiveOutboundConfig(item),
+          }"
+        >
+          <div flex="1">{{ getLabel(item.config) }}</div>
+          <div class="flex gap-2 text-xs items-center" flex="~">
+            <i-carbon-code class="icon" @click.stop="showConfig(item)" />
+            <i-carbon-trash-can
+              class="icon"
+              v-if="!isActiveOutboundConfig(item)"
+              @click.stop="removeOutbound(item)"
+            />
+            <i-carbon-circle-filled class="text-green-500" v-if="isActiveOutboundConfig(item)" />
+          </div>
         </div>
-      </div>
+      </LoadingPanel>
     </div>
 
     <Button
       @click="toggleV2fly"
-      class="block"
       border="rounded-0"
+      :loading="toggleV2fly.isLoading"
       :severity="!store.config.active.enabled ? 'primary' : 'danger'"
-    >
-      {{ store.config.active.enabled ? $t('page.server.disconnect') : $t('page.server.reconnect') }}
-    </Button>
+      :label="
+        store.config.active.enabled ? $t('page.server.disconnect') : $t('page.server.reconnect')
+      "
+    />
     <textarea
       class="w-full border-gray-300 bg-gray-100 resize-y outline-none border-x-0 text-sm px-3"
       rows="6"
@@ -175,18 +201,17 @@ async function saveCurrentConfig() {
   // @apply my-1;
 }
 
-.v2fly-card {
+.v2fly-item-btn {
   @apply px-3 py-2;
   @apply bg-gray-100 text-gray-700;
   @apply text-sm;
   @apply flex;
+  outline: none;
+  border: none;
   cursor: pointer;
+  text-align: left;
 
   &.is-selected {
-    //
-  }
-
-  &.is-active {
     //
   }
 

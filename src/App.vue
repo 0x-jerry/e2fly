@@ -18,7 +18,7 @@ init()
 </script>
 
 <template>
-  <Toast></Toast>
+  <Toast position="bottom-center"></Toast>
   <router-view v-if="initialized"></router-view>
 </template>
 
@@ -35,13 +35,6 @@ body {
 
 html {
   font-size: 15px;
-}
-
-body,
-div {
-  &::-webkit-scrollbar {
-    height: 6px;
-  }
 }
 
 * {

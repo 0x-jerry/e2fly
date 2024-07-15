@@ -7,7 +7,10 @@ export const store = reactive({
 
 export const actions = {
   async startV2fly(id: string) {
-    await ipc.startV2fly(id)
+    const err = await ipc.startV2fly(id)
+    if (err) {
+      return err
+    }
 
     store.config.active.outboundId = id
     store.config.active.enabled = true
