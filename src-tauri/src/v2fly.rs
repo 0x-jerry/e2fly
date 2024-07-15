@@ -1,5 +1,6 @@
 use crate::conf::get_v2fly_conf_path;
 use crate::conf::model::AppConfig;
+use crate::logger::Logger;
 use crate::utils::{hide_windows_cmd_window, tail_from_file};
 use std::ffi::OsStr;
 use std::fs::File;
@@ -40,9 +41,11 @@ impl V2Ray {
             .expect("log file")
             .as_ref()
             .map(|p| {
-                let f = File::create(p).unwrap();
-                program.stdout(Stdio::from(f.try_clone().unwrap()));
-                program.stderr(Stdio::from(f));
+                let stdout= Logger::from_path(p.to_str().unwrap());
+                let stderr= Logger::from_path(p.to_str().unwrap());
+
+                program.stdout(stdout);
+                program.stderr(stderr);
             });
 
         program.args(args);

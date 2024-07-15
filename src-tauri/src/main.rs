@@ -9,7 +9,7 @@ extern crate serde_derive;
 use tauri::start_tauri;
 
 mod tauri;
-
+mod logger;
 mod conf;
 mod env;
 mod ipc;
