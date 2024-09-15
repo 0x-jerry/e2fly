@@ -3,16 +3,28 @@ import Toast from 'primevue/toast'
 import { ipc } from './ipc'
 import { store } from './store'
 import { logger } from './utils'
+import { useEvent } from './hooks/useEvent'
+import { useConfigChangedEvent } from './events'
 
 const initialized = ref(false)
 
 async function init() {
+  await reloadConfig()
+  initialized.value = true
+}
+
+const configChangedEvent = useConfigChangedEvent()
+
+async function reloadConfig() {
   const conf = await ipc.getConfig()
   logger.log('load config:', conf)
 
   store.config = conf
-  initialized.value = true
+
+  configChangedEvent.emit()
 }
+
+useEvent('config-changed', () => reloadConfig())
 
 init()
 </script>

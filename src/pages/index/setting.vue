@@ -1,11 +1,16 @@
 <script lang="ts" setup>
 import { AppConfig } from '@/config'
+import { useConfigChangedEvent } from '@/events'
 import { disableAutostart, enableAutostart, ipc, isEnabledAutostart } from '@/ipc'
 import { store } from '@/store'
 import { useLoading } from '@0x-jerry/vue-kit'
 import { useToast } from 'primevue/usetoast'
 
 const appConf = reactive<AppConfig>(structuredClone(toRaw(store.config)))
+
+useConfigChangedEvent().on(() => {
+  Object.assign(appConf, structuredClone(toRaw(store.config)))
+})
 
 const toast = useToast()
 
