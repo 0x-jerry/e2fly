@@ -8,13 +8,14 @@ extern crate serde_derive;
 
 use tauri::start_tauri;
 
-mod tauri;
-mod logger;
+mod app;
 mod conf;
 mod env;
 mod ipc;
+mod logger;
 mod menu;
 mod proxy;
+mod tauri;
 mod utils;
 mod v2fly;
 

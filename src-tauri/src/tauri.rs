@@ -5,7 +5,10 @@ use tauri_plugin_autostart::{MacosLauncher, ManagerExt};
 use crate::{
     conf,
     env::{self, is_dev},
-    ipc, menu, proxy, v2fly,
+    ipc::{self},
+    menu,
+    proxy::{self},
+    v2fly,
 };
 
 pub fn start_tauri() {
@@ -81,10 +84,6 @@ pub fn start_tauri() {
 
         RunEvent::ExitRequested { api, .. } => {
             api.prevent_exit();
-        }
-
-        RunEvent::Exit => {
-            v2fly::stop();
         }
 
         _ => (),

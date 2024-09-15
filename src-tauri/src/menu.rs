@@ -6,8 +6,8 @@ use tauri::{
 };
 
 use crate::{
+    app::exit_app,
     ipc::{read_conf, save_conf, start_v2ray},
-    v2fly,
 };
 
 pub fn set_app_tray_menu<R: Runtime>(app: Builder<R>) -> Builder<R> {
@@ -50,8 +50,7 @@ pub fn set_app_tray_menu<R: Runtime>(app: Builder<R>) -> Builder<R> {
                         .map(|win| win.emit("config-changed", ""));
                 }
                 "quit" => {
-                    v2fly::stop();
-                    app_handler.exit(0);
+                    exit_app(app_handler);
                 }
                 "show" => {
                     app_handler.get_window("main").map(|win| {
