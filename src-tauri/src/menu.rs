@@ -1,6 +1,6 @@
 use tauri::{
-    AboutMetadata, Assets, Builder, Context, CustomMenuItem, Manager, Menu, MenuEntry, MenuItem,
-    Runtime, Submenu, SystemTray,
+    AboutMetadata, Assets, Builder, Context, CustomMenuItem, Icon, Manager, Menu, MenuEntry,
+    MenuItem, Runtime, Submenu, SystemTray,
     SystemTrayEvent::{LeftClick, MenuItemClick, RightClick},
     SystemTrayMenu, Window,
 };
@@ -13,7 +13,10 @@ use crate::{
 pub fn set_app_tray_menu<R: Runtime>(app: Builder<R>) -> Builder<R> {
     let quit = CustomMenuItem::new("quit".to_string(), "Quit E2Fly").accelerator("CmdOrControl+Q");
     let show_win = CustomMenuItem::new("show".to_string(), "Show E2Fly");
-    let toggle_menu = CustomMenuItem::new("toggle-system-proxy", "Enable System Proxy");
+
+    let mut toggle_menu = CustomMenuItem::new("toggle-system-proxy", "System Proxy").selected();
+    let is_enabled_system_proxy = read_conf().proxy.system;
+    toggle_menu.selected = is_enabled_system_proxy;
 
     let tray_menu = SystemTrayMenu::new()
         .add_item(toggle_menu)
@@ -22,26 +25,25 @@ pub fn set_app_tray_menu<R: Runtime>(app: Builder<R>) -> Builder<R> {
 
     let system_tray = SystemTray::new().with_menu(tray_menu);
 
+    #[cfg(windows)]
+    let system_tray =
+        system_tray.with_icon(Icon::Raw(include_bytes!("../icons/icon.ico").to_vec()));
+
     app.system_tray(system_tray)
         .on_system_tray_event(|app_handler, event| match event {
             MenuItemClick { id, .. } => match id.as_str() {
                 "toggle-system-proxy" => {
                     let mut app_conf = read_conf();
                     app_conf.proxy.system = !app_conf.proxy.system;
+                    let is_enabled_system_proxy = app_conf.proxy.system;
                     save_conf(app_conf);
                     start_v2ray();
 
-                    let app_conf = read_conf();
-
                     let menu_item = app_handler.tray_handle().get_item(&id);
 
-                    let title = if app_conf.proxy.system {
-                        "Disable System Proxy"
-                    } else {
-                        "Enable System Proxy"
-                    };
-
-                    menu_item.set_title(title).expect("Change title failed");
+                    menu_item
+                        .set_selected(is_enabled_system_proxy)
+                        .expect("toggle menu selected failed");
 
                     app_handler
                         .get_window("main")
