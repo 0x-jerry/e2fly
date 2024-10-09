@@ -1,6 +1,6 @@
 import { getV2rayConfig } from '@/logic/v2fly'
 import { store } from '@/store'
-import { invoke } from '@tauri-apps/api'
+import { invoke } from '@tauri-apps/api/core'
 import { AppConfig } from '../config'
 import { sleep } from '@0x-jerry/utils'
 

@@ -6,11 +6,16 @@
     "windows",
     "linux"
   ],
+  "webviews": [
+    "main"
+  ],
+  "local": true,
   "permissions": [
     "core:default",
     "updater:default",
     "autostart:default",
     "clipboard-manager:default",
-    "shell:default"
+    "shell:default",
+    "core:event:allow-listen"
   ]
 }
