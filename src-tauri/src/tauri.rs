@@ -21,7 +21,7 @@ pub fn start_tauri() {
             MacosLauncher::LaunchAgent,
             Some(vec!["--minimized"]),
         ))
-        .plugin(tauri_plugin_single_instance::init(|app, args, cwd| {
+        .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
             let win = app.get_webview_window("main").expect("no main window");
             win.show().expect("show main window");
             win.set_focus().expect("focus main window");
@@ -32,13 +32,14 @@ pub fn start_tauri() {
 
     let app = ipc::set_app_ipc_methods(app);
 
-    let app = tray::setup_tray_menu(app);
-
     let context = tauri::generate_context!();
 
-    let app = menu::set_app_win_menu(app, context.package_info().clone());
+    let pkg_info = context.package_info().clone();
 
     let app = app.setup(move |app| {
+        tray::setup_tray_menu(app)?;
+        menu::setup_win_menu(app, pkg_info)?;
+
         // ensure app log dir
         let app_log_dir = app.path().app_log_dir().expect("get app log dir failed");
 

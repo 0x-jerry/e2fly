@@ -1,8 +1,8 @@
-use tauri::{AppHandle, Runtime};
+use std::process::exit;
 
 use crate::{ipc::read_conf, proxy::set_proxy, v2fly};
 
-pub fn exit_app<R: Runtime>(app: &AppHandle<R>) {
+pub fn exit_app() {
     v2fly::stop();
 
     let mut conf = read_conf();
@@ -12,5 +12,5 @@ pub fn exit_app<R: Runtime>(app: &AppHandle<R>) {
         set_proxy(&conf);
     }
 
-    app.exit(0);
+    exit(0);
 }

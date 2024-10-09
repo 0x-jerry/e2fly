@@ -67,11 +67,6 @@
         "width": 350
       }
     ],
-    "trayIcon": {
-      "iconPath": "./icons/logoTemplate.png",
-      "iconAsTemplate": true,
-      "menuOnLeftClick": false
-    },
     "security": {
       "csp": null
     }
