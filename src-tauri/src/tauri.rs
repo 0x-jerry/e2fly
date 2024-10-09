@@ -8,7 +8,7 @@ use crate::{
     ipc::{self},
     menu,
     proxy::{self},
-    v2fly,
+    tray, v2fly,
 };
 
 pub fn start_tauri() {
@@ -16,34 +16,31 @@ pub fn start_tauri() {
 
     let app = tauri::Builder::default();
 
-    let app = app.plugin(tauri_plugin_autostart::init(
-        MacosLauncher::LaunchAgent,
-        Some(vec!["--minimized"]),
-    ))
-    .plugin(tauri_plugin_single_instance::init(|app, args, cwd| {
-        let win = app.get_webview_window("main").expect("no main window");
-        win.show().expect("show main window");
-        win.set_focus().expect("focus main window");
-    }))
-    .plugin(tauri_plugin_updater::Builder::new().build())
-    .plugin(tauri_plugin_shell::init())
-    .plugin(tauri_plugin_clipboard_manager::init());
-
+    let app = app
+        .plugin(tauri_plugin_autostart::init(
+            MacosLauncher::LaunchAgent,
+            Some(vec!["--minimized"]),
+        ))
+        .plugin(tauri_plugin_single_instance::init(|app, args, cwd| {
+            let win = app.get_webview_window("main").expect("no main window");
+            win.show().expect("show main window");
+            win.set_focus().expect("focus main window");
+        }))
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_clipboard_manager::init());
 
     let app = ipc::set_app_ipc_methods(app);
 
-    let app = menu::set_app_tray_menu(app);
+    let app = tray::setup_tray_menu(app);
 
     let context = tauri::generate_context!();
 
-    let app = menu::set_app_win_menu(app, &context);
+    let app = menu::set_app_win_menu(app, context.package_info().clone());
 
     let app = app.setup(move |app| {
         // ensure app log dir
-        let app_log_dir = app
-            .path_resolver()
-            .app_log_dir()
-            .expect("get app log dir failed");
+        let app_log_dir = app.path().app_log_dir().expect("get app log dir failed");
 
         let file_name = if is_dev() {
             "v2ray.dev.log"
@@ -86,7 +83,9 @@ pub fn start_tauri() {
             WindowEvent::CloseRequested { api, .. } => {
                 api.prevent_close();
 
-                app_handle.get_window("main").map(|win| win.hide().unwrap());
+                app_handle
+                    .get_webview_window("main")
+                    .map(|win| win.hide().unwrap());
             }
             _ => (),
         },

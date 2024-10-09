@@ -16,6 +16,7 @@ mod logger;
 mod menu;
 mod proxy;
 mod tauri;
+mod tray;
 mod utils;
 mod v2fly;
 
