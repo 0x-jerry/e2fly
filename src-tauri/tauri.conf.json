@@ -1,5 +1,9 @@
 {
   "$schema": "https://schema.tauri.app/config/2.0.0",
+  "productName": "E2Fly",
+  "mainBinaryName": "E2Fly",
+  "version": "0.8.0",
+  "identifier": "com.0x-jerry.dev",
   "build": {
     "beforeBuildCommand": "pnpm build:web",
     "beforeDevCommand": "pnpm dev:web",
@@ -41,10 +45,6 @@
     },
     "createUpdaterArtifacts": "v1Compatible"
   },
-  "productName": "E2Fly",
-  "mainBinaryName": "E2Fly",
-  "version": "0.8.0",
-  "identifier": "com.0x-jerry.dev",
   "plugins": {
     "updater": {
       "windows": {
