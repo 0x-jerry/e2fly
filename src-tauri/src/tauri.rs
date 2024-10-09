@@ -16,10 +16,14 @@ pub fn start_tauri() {
 
     let app = tauri::Builder::default();
 
+    // #region init plugins
     let app = app.plugin(tauri_plugin_autostart::init(
         MacosLauncher::LaunchAgent,
         Some(vec!["--minimized"]),
     ));
+
+    let app = app.plugin(tauri_plugin_updater::Builder::new().build());
+    // #regionend
 
     let app = ipc::set_app_ipc_methods(app);
 
@@ -30,9 +34,6 @@ pub fn start_tauri() {
     let app = menu::set_app_win_menu(app, &context);
 
     let app = app.setup(move |app| {
-        #[cfg(desktop)]
-        app.handle().plugin(tauri_plugin_updater::Builder::new().build());
-
         // ensure app log dir
         let app_log_dir = app
             .path_resolver()
