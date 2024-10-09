@@ -30,6 +30,7 @@
     "@tauri-apps/api": "^2.0.2",
     "@tauri-apps/plugin-clipboard-manager": "^2.0.0",
     "@tauri-apps/plugin-shell": "^2.0.0",
+    "@tauri-apps/plugin-updater": "^2.0.0",
     "highlight.js": "^11.10.0",
     "monaco-editor": "^0.52.0",
     "primeicons": "^7.0.0",

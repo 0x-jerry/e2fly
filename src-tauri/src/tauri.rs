@@ -30,6 +30,9 @@ pub fn start_tauri() {
     let app = menu::set_app_win_menu(app, &context);
 
     let app = app.setup(move |app| {
+        #[cfg(desktop)]
+        app.handle().plugin(tauri_plugin_updater::Builder::new().build());
+
         // ensure app log dir
         let app_log_dir = app
             .path_resolver()
