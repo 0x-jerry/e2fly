@@ -52,6 +52,10 @@ pub fn setup_tray_menu<R: Runtime>(app: &mut App<R>) -> Result<(), Error> {
                 exit_app();
             }
             "show" => {
+                app.get_webview_window("main")
+                    .map(|win| win.show().expect("show window"));
+            }
+            "toggle-system-proxy" => {
                 let mut app_conf = read_conf();
                 app_conf.proxy.system = !app_conf.proxy.system;
                 let is_enabled_system_proxy = app_conf.proxy.system;
