@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { join } from 'path'
-import Pages from 'vite-plugin-pages'
+import VueRouter from 'unplugin-vue-router/vite'
 import Components from 'unplugin-vue-components/vite'
 import { PrimeVueResolver } from 'unplugin-vue-components/resolvers'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -22,6 +22,12 @@ export default defineConfig({
     },
   },
   plugins: [
+    // https://github.com/posva/unplugin-vue-router
+    VueRouter({
+      dts: 'types/typed-router.d.ts',
+      exclude: ['**/components/*.vue'],
+    }),
+
     vue(),
     vueI18n({
       include: r('src/locales/**'),
@@ -47,11 +53,6 @@ export default defineConfig({
           importStyle: false,
         }),
       ],
-    }),
-
-    // https://github.com/hannoeru/vite-plugin-pages
-    Pages({
-      exclude: ['**/components/*.vue'],
     }),
   ],
   resolve: {
