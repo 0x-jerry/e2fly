@@ -1,5 +1,6 @@
 import { store } from '@/store'
-import { appWindow } from '@tauri-apps/api/window'
+import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow'
+const appWindow = getCurrentWebviewWindow()
 
 appWindow.listen('tauri://blur', () => {
   if (store.config.app.autoHideWhenBlur) {

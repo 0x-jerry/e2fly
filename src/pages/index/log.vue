@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { ipc } from '@/ipc'
 import { useInterval } from '@/hooks'
-import { path, shell } from '@tauri-apps/api'
+import { path,  } from '@tauri-apps/api'
+import * as shell from "@tauri-apps/plugin-shell"
 
 interface LogLine {
   id: number
