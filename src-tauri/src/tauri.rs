@@ -16,14 +16,12 @@ pub fn start_tauri() {
 
     let app = tauri::Builder::default();
 
-    // #region init plugins
     let app = app.plugin(tauri_plugin_autostart::init(
         MacosLauncher::LaunchAgent,
         Some(vec!["--minimized"]),
-    ));
-
-    let app = app.plugin(tauri_plugin_updater::Builder::new().build());
-    // #regionend
+    ))
+    .plugin(tauri_plugin_updater::Builder::new().build())
+    .plugin(tauri_plugin_clipboard_manager::init());
 
     let app = ipc::set_app_ipc_methods(app);
 

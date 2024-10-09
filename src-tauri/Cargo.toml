@@ -27,8 +27,8 @@ serde_derive = "1.0.204"
 rev_buf_reader = "0.3.0"
 os_pipe = "1.2.0"
 file-rotate = "0.7.6"
-tauri-plugin-clipboard-manager = "2.0.1"
 
 [target."cfg(not(any(target_os = \"android\", target_os = \"ios\")))".dependencies]
 tauri-plugin-autostart = "2"
 tauri-plugin-updater = "2"
+tauri-plugin-clipboard-manager = "2.0.1"

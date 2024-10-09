@@ -7,6 +7,7 @@
   ],
   "permissions": [
     "updater:default",
-    "autostart:default"
+    "autostart:default",
+    "clipboard-manager:default"
   ]
 }
