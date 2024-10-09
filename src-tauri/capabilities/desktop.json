@@ -8,6 +8,7 @@
   "permissions": [
     "updater:default",
     "autostart:default",
-    "clipboard-manager:default"
+    "clipboard-manager:default",
+    "shell:default"
   ]
 }
