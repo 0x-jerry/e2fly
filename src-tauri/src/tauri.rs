@@ -20,8 +20,14 @@ pub fn start_tauri() {
         MacosLauncher::LaunchAgent,
         Some(vec!["--minimized"]),
     ))
+    .plugin(tauri_plugin_single_instance::init(|app, args, cwd| {
+        let win = app.get_webview_window("main").expect("no main window");
+        win.show().expect("show main window");
+        win.set_focus().expect("focus main window");
+    }))
     .plugin(tauri_plugin_updater::Builder::new().build())
     .plugin(tauri_plugin_clipboard_manager::init());
+
 
     let app = ipc::set_app_ipc_methods(app);
 
