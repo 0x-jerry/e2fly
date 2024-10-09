@@ -7,7 +7,7 @@ export default defineConfig({
     const confPath = 'src-tauri/tauri.conf.json'
     const conf = await fs.readJson(confPath)
 
-    conf.package.version = ctx.nextVersion.replace(/[a-z]+\./g, '')
+    conf.version = ctx.nextVersion.replace(/[a-z]+\./g, '')
 
     await fs.writeFile(confPath, JSON.stringify(conf, null, 2))
   },
