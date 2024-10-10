@@ -16,6 +16,7 @@
     "autostart:default",
     "clipboard-manager:default",
     "shell:default",
-    "core:event:allow-listen"
+    "core:event:allow-listen",
+    "core:window:allow-hide"
   ]
 }
