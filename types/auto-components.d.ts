@@ -12,6 +12,7 @@ declare module 'vue' {
     Checkbox: typeof import('primevue/checkbox')['default']
     ICarbonCircleFilled: typeof import('~icons/carbon/circle-filled')['default']
     ICarbonCode: typeof import('~icons/carbon/code')['default']
+    ICarbonCopy: typeof import('~icons/carbon/copy')['default']
     ICarbonTrashCan: typeof import('~icons/carbon/trash-can')['default']
     InputText: typeof import('primevue/inputtext')['default']
     LoadingPanel: typeof import('./../src/components/LoadingPanel.vue')['default']

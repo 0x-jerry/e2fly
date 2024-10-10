@@ -2,7 +2,7 @@
 import { getOutboundConfFromBase64 } from '@/logic/v2fly'
 import { ipc } from '@/ipc'
 import { actions, store } from '@/store'
-import { remove, uuid } from '@0x-jerry/utils'
+import { nanoid, remove } from '@0x-jerry/utils'
 import type { V4 } from '@0x-jerry/v2ray-schema'
 import { Outbound } from '@/config'
 import { version } from '../../../package.json'
@@ -19,7 +19,7 @@ const v2flyConf = reactive({
 
 async function addConfig() {
   store.config.outbound.push({
-    id: uuid(),
+    id: nanoid(),
     label: 'default',
     config: JSON.stringify(
       getOutboundConfFromBase64({
@@ -101,6 +101,15 @@ function showConfig(item: Outbound) {
   preview.show = true
 }
 
+async function copyConfig(item: Outbound) {
+  const conf = structuredClone(toRaw(item))
+  conf.id = nanoid()
+
+  store.config.outbound.push(conf)
+
+  await ipc.saveConfig(toRaw(store.config))
+}
+
 async function saveCurrentConfig() {
   const resolved = store.config.outbound.find((n) => n.id === preview.id)
   if (!resolved) return
@@ -132,6 +141,7 @@ async function saveCurrentConfig() {
           <div flex="1">{{ getLabel(item.config) }}</div>
           <div class="flex gap-2 text-xs items-center" flex="~">
             <i-carbon-code class="icon" @click.stop="showConfig(item)" />
+            <i-carbon-copy class="icon" @click.stop="copyConfig(item)" />
             <i-carbon-trash-can
               class="icon"
               v-if="!isActiveOutboundConfig(item)"
