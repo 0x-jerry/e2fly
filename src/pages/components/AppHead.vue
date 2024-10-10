@@ -29,7 +29,7 @@ function handleMenu(menu: SelectButtonChangeEvent) {
         @change="handleMenu"
         #option="{ option }"
       >
-        <component class="relative" :is="option.icon"></component>
+        <component :is="option.icon"></component>
       </SelectButton>
     </div>
   </div>
@@ -37,7 +37,7 @@ function handleMenu(menu: SelectButtonChangeEvent) {
 
 <style lang="less" scoped>
 .app-head {
-  -webkit-app-region: drag;
+  // -webkit-app-region: drag;
   background: #f1f5f9;
 
   @apply pl-3;
