@@ -9,6 +9,7 @@ import { version } from '../../../package.json'
 import { useToast } from 'primevue/usetoast'
 import { useLoading } from '@0x-jerry/vue-kit'
 import LoadingPanel from '@/components/LoadingPanel.vue'
+import Drawer from 'primevue/drawer'
 
 const toast = useToast()
 
@@ -177,21 +178,24 @@ async function saveCurrentConfig() {
     <div class="mt-3" text="xs gray-3 center">version: v{{ version }}</div>
   </div>
 
-  <Sidebar
+  <Drawer
     v-model:visible="preview.show"
-    header="Edit config"
     position="full"
     :pt="{
       content: 'p-0',
+      header: 'py-1',
     }"
   >
-    <div class="flex flex-col h-full">
-      <div class="border-(0 b solid gray-2) pb-1 text-right">
+    <template #header>
+      <div class="flex gap-2 items-center">
+        <h2 class="m-0">Edit Config</h2>
         <Button size="small" @click="saveCurrentConfig">Save</Button>
       </div>
+    </template>
+    <div class="flex flex-col h-full b-(0 t solid gray-3)">
       <MonacoEditor class="flex-1" v-model="preview.content"></MonacoEditor>
     </div>
-  </Sidebar>
+  </Drawer>
 </template>
 
 <style lang="less" scoped>
