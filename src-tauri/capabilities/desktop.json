@@ -17,6 +17,7 @@
     "clipboard-manager:default",
     "shell:default",
     "core:event:allow-listen",
-    "core:window:allow-hide"
+    "core:window:allow-hide",
+    "window-state:default"
   ]
 }

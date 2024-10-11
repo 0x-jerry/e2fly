@@ -2,6 +2,7 @@ use conf::model::AppConfig;
 use tauri::{AppHandle, Manager, RunEvent, Url, WindowEvent};
 use tauri_plugin_autostart::{MacosLauncher, ManagerExt};
 use tauri_plugin_updater::UpdaterExt;
+use tauri_plugin_window_state::{StateFlags, WindowExt};
 
 use crate::{
     app::exit_app,
@@ -25,6 +26,7 @@ pub fn start_tauri() {
         ))
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_window_state::Builder::default().build())
         .plugin(tauri_plugin_clipboard_manager::init());
 
     if !env::is_dev() {
@@ -42,6 +44,11 @@ pub fn start_tauri() {
     let pkg_info = context.package_info().clone();
 
     let app = app.setup(move |app| {
+        app.get_webview_window("main").map(|win| {
+            win.restore_state(StateFlags::all())
+                .expect("restore window state failed");
+        });
+
         // start v2ray
         let app_conf = conf::read();
         start_init(&app_conf);
@@ -107,7 +114,7 @@ pub fn start_tauri() {
         RunEvent::Exit => {
             println!("exit app");
 
-            exit_app();
+            exit_app(app_handle);
         }
         _ => (),
     })

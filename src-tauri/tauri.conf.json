@@ -61,6 +61,7 @@
       {
         "fullscreen": false,
         "resizable": false,
+        "maximizable": false,
         "alwaysOnTop": true,
         "title": "E2Fly",
         "height": 640,

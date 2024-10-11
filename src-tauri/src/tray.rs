@@ -2,7 +2,7 @@ use tauri::{
     image::Image,
     menu::{CheckMenuItem, Menu, MenuItem},
     tray::{MouseButton, TrayIconBuilder, TrayIconEvent},
-    App, Emitter, Error, Manager, Runtime,
+    App, Emitter, Error, Manager,
 };
 
 use crate::{
@@ -10,7 +10,7 @@ use crate::{
     ipc::{read_conf, save_conf, start_v2ray},
 };
 
-pub fn setup_tray_menu<R: Runtime>(app: &mut App<R>) -> Result<(), Error> {
+pub fn setup_tray_menu(app: &mut App) -> Result<(), Error> {
     let quit = MenuItem::with_id(app, "quit", "Quit", true, "CmdOrControl+Q".into())?;
     let show = MenuItem::with_id(app, "show", "Show", true, None::<&str>)?;
 
@@ -49,7 +49,7 @@ pub fn setup_tray_menu<R: Runtime>(app: &mut App<R>) -> Result<(), Error> {
         .menu(&tray_menu)
         .on_menu_event(move |app, event| match event.id().as_ref() {
             "quit" => {
-                exit_app();
+                exit_app(app);
             }
             "show" => {
                 app.get_webview_window("main")
