@@ -16,7 +16,7 @@ pub fn setup_win_menu(app: &mut App, package_info: PackageInfo) -> Result<(), Er
             &SubmenuBuilder::new(app, "About")
                 .about(Some(about_meta))
                 .quit()
-                .item(&MenuItemBuilder::with_id("check-update", "Check Update").build(app)?)
+                .item(&MenuItemBuilder::with_id("check-updates", "Check for updates").build(app)?)
                 .build()?,
             &SubmenuBuilder::new(app, "Edit")
                 .copy()

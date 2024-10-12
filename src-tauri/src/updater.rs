@@ -1,4 +1,5 @@
 use tauri::{AppHandle, Url};
+use tauri_plugin_notification::NotificationExt;
 use tauri_plugin_updater::UpdaterExt;
 
 use crate::ipc::read_conf;
@@ -51,6 +52,13 @@ async fn update(app: AppHandle) -> Result<(), tauri_plugin_updater::Error> {
 
         println!("update installed");
         app.restart();
+    } else {
+        app.notification()
+            .builder()
+            .title("E2Fly")
+            .body("You are using the latest version")
+            .show()
+            .unwrap();
     }
 
     Ok(())

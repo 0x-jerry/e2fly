@@ -19,6 +19,7 @@ pub fn start_tauri() {
     let app = tauri::Builder::default();
 
     let mut app = app
+        .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_autostart::init(
             MacosLauncher::LaunchAgent,
             Some(vec!["--minimized"]),
@@ -43,11 +44,6 @@ pub fn start_tauri() {
     let pkg_info = context.package_info().clone();
 
     let app = app.setup(move |app| {
-        app.get_webview_window("main").map(|win| {
-            win.restore_state(StateFlags::all())
-                .expect("restore window state failed");
-        });
-
         // start v2ray
         let app_conf = conf::read();
         start_init(&app_conf);
@@ -67,6 +63,11 @@ pub fn start_tauri() {
         let log_file_path = app_log_dir.join(file_name);
 
         v2fly::set_log_file(log_file_path);
+
+        app.get_webview_window("main").map(|win| {
+            win.restore_state(StateFlags::all())
+                .expect("restore window state failed");
+        });
 
         if app_conf.app.auto_startup {
             let _ = app

@@ -18,6 +18,7 @@
     "shell:default",
     "core:event:allow-listen",
     "core:window:allow-hide",
-    "window-state:default"
+    "window-state:default",
+    "notification:default"
   ]
 }

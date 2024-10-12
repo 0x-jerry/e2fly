@@ -8,6 +8,7 @@ use tauri::{
 use crate::{
     app::exit_app,
     ipc::{read_conf, save_conf, start_v2ray},
+    updater::check_update,
 };
 
 pub fn setup_tray_menu(app: &mut App) -> Result<(), Error> {
@@ -24,7 +25,10 @@ pub fn setup_tray_menu(app: &mut App) -> Result<(), Error> {
         None::<&str>,
     )?;
 
-    let tray_menu = Menu::with_items(app, &[&toggle, &show, &quit])?;
+    let check_updates =
+        MenuItem::with_id(app, "check-update", "Check for updates", true, None::<&str>)?;
+
+    let tray_menu = Menu::with_items(app, &[&toggle, &show, &check_updates, &quit])?;
 
     let system_tray = TrayIconBuilder::new();
 
@@ -54,6 +58,9 @@ pub fn setup_tray_menu(app: &mut App) -> Result<(), Error> {
             "show" => {
                 app.get_webview_window("main")
                     .map(|win| win.show().expect("show window"));
+            }
+            "check-updates" => {
+                check_update(app);
             }
             "toggle-system-proxy" => {
                 let mut app_conf = read_conf();
