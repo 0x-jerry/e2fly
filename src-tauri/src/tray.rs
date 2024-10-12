@@ -1,7 +1,7 @@
 use tauri::{
     image::Image,
     menu::{CheckMenuItem, Menu, MenuItem},
-    tray::{MouseButton, TrayIconBuilder, TrayIconEvent},
+    tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
     App, Emitter, Error, Manager,
 };
 
@@ -82,13 +82,20 @@ pub fn setup_tray_menu(app: &mut App) -> Result<(), Error> {
         .on_tray_icon_event(|tray, event| {
             if let TrayIconEvent::Click {
                 button: MouseButton::Left,
+                button_state: MouseButtonState::Up,
                 ..
             } = event
             {
                 let app = tray.app_handle();
-                if let Some(webview_window) = app.get_webview_window("main") {
-                    let _ = webview_window.show();
-                    let _ = webview_window.set_focus();
+                if let Some(win) = app.get_webview_window("main") {
+                    println!("tray left click event, {}", win.is_visible().unwrap());
+
+                    if win.is_visible().unwrap() {
+                        win.hide().expect("hide main window");
+                    } else {
+                        win.show().expect("show main window");
+                        win.set_focus().expect("focus on main window");
+                    }
                 }
             }
         })
