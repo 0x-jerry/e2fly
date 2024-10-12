@@ -61,11 +61,6 @@ const isModified = computed(() => {
       </BinaryCheckbox>
     </div>
     <div flex="~">
-      <BinaryCheckbox v-model="appConf.app.autoHideWhenBlur" class="flex-1 justify-start">
-        {{ $t('page.setting.auto-hide-when-blur') }}
-      </BinaryCheckbox>
-    </div>
-    <div flex="~">
       <BinaryCheckbox v-model="appConf.app.autoStartup" class="flex-1 justify-start">
         {{ $t('page.setting.auto-startup') }}
       </BinaryCheckbox>

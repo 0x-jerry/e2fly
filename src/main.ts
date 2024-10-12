@@ -6,7 +6,6 @@ import PrimeVue, { type PrimeVueConfiguration } from 'primevue/config'
 import ToastService from 'primevue/toastservice'
 import Aura from '@primevue/themes/aura'
 import { routes } from 'vue-router/auto-routes'
-import './logic/win'
 
 import './style'
 import 'uno.css'
