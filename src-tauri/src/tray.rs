@@ -2,35 +2,13 @@ use tauri::{
     image::Image,
     menu::{CheckMenuItem, Menu, MenuItem},
     tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
-    App, Emitter, Error, Manager,
+    AppHandle, Error, Manager, Runtime,
 };
 
-use crate::{
-    app::exit_app,
-    ipc::{read_conf, save_conf, start_v2ray},
-    updater::check_update,
-};
+use crate::{app::exit_app, conf, system_proxy::update_system_proxy, updater::check_update};
 
-pub fn setup_tray_menu(app: &mut App) -> Result<(), Error> {
-    let quit = MenuItem::with_id(app, "quit", "Quit", true, "CmdOrControl+Q".into())?;
-    let show = MenuItem::with_id(app, "show", "Show", true, None::<&str>)?;
-
-    let is_enabled_system_proxy = read_conf().proxy.system;
-    let toggle = CheckMenuItem::with_id(
-        app,
-        "toggle-system-proxy",
-        "System Proxy",
-        true,
-        is_enabled_system_proxy,
-        None::<&str>,
-    )?;
-
-    let check_updates =
-        MenuItem::with_id(app, "check-update", "Check for updates", true, None::<&str>)?;
-
-    let tray_menu = Menu::with_items(app, &[&toggle, &show, &check_updates, &quit])?;
-
-    let system_tray = TrayIconBuilder::new();
+pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
+    let system_tray = TrayIconBuilder::<R>::with_id("main");
 
     #[cfg(windows)]
     let system_tray = {
@@ -48,6 +26,8 @@ pub fn setup_tray_menu(app: &mut App) -> Result<(), Error> {
         system_tray.icon_as_template(true).icon(icon_img)
     };
 
+    let tray_menu = build_tray_menu(app).expect("build tray menu");
+
     system_tray
         .menu_on_left_click(false)
         .menu(&tray_menu)
@@ -63,19 +43,11 @@ pub fn setup_tray_menu(app: &mut App) -> Result<(), Error> {
                 check_update(app);
             }
             "toggle-system-proxy" => {
-                let mut app_conf = read_conf();
+                let mut app_conf = conf::read();
                 app_conf.proxy.system = !app_conf.proxy.system;
-                let is_enabled_system_proxy = app_conf.proxy.system;
+                conf::save(&app_conf);
 
-                save_conf(app_conf);
-                start_v2ray();
-
-                toggle
-                    .set_checked(is_enabled_system_proxy)
-                    .expect("set checked");
-
-                app.get_webview_window("main")
-                    .map(|win| win.emit("config-changed", ""));
+                update_system_proxy(app);
             }
             _ => (),
         })
@@ -102,4 +74,26 @@ pub fn setup_tray_menu(app: &mut App) -> Result<(), Error> {
         .build(app)?;
 
     Ok(())
+}
+
+pub fn build_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<Menu<R>, Error> {
+    let quit = MenuItem::with_id(app, "quit", "Quit", true, "CmdOrControl+Q".into())?;
+    let show = MenuItem::with_id(app, "show", "Show", true, None::<&str>)?;
+
+    let is_enabled_system_proxy = conf::read().proxy.system;
+    let toggle = CheckMenuItem::with_id(
+        app,
+        "toggle-system-proxy",
+        "System Proxy",
+        true,
+        is_enabled_system_proxy,
+        None::<&str>,
+    )?;
+
+    let check_updates =
+        MenuItem::with_id(app, "check-update", "Check for updates", true, None::<&str>)?;
+
+    let tray_menu = Menu::with_items(app, &[&toggle, &show, &check_updates, &quit])?;
+
+    return Ok(tray_menu);
 }

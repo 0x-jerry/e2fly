@@ -15,6 +15,7 @@ mod ipc;
 mod logger;
 mod menu;
 mod proxy;
+mod system_proxy;
 mod tauri;
 mod tray;
 mod updater;

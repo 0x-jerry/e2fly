@@ -1,11 +1,14 @@
 use tauri::{
     menu::{AboutMetadataBuilder, Menu, MenuItemBuilder, SubmenuBuilder},
-    App, Error, Manager, PackageInfo, Runtime, WebviewWindow,
+    AppHandle, Error, Manager, PackageInfo, Runtime, WebviewWindow,
 };
 
 use crate::updater::check_update;
 
-pub fn setup_win_menu(app: &mut App, package_info: PackageInfo) -> Result<(), Error> {
+pub fn setup_win_menu<R: Runtime>(
+    app: &AppHandle<R>,
+    package_info: PackageInfo,
+) -> Result<(), Error> {
     let about_meta = AboutMetadataBuilder::new()
         .version(Some(package_info.version.to_string()))
         .build();

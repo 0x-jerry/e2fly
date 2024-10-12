@@ -1,32 +1,31 @@
-use tauri::{Builder, Runtime};
+use tauri::{command, AppHandle, Builder, Runtime};
 
 use crate::{
     conf::{self, model::AppConfig, save_v2fly_config},
     env,
-    proxy::set_proxy,
+    system_proxy::update_system_proxy,
     v2fly,
 };
 
-#[tauri::command]
-pub fn is_dev() -> bool {
+#[command]
+fn is_dev() -> bool {
     env::is_dev()
 }
 
-#[tauri::command]
-pub fn save_conf(conf: AppConfig) {
+#[command]
+fn save_conf<R: Runtime>(app: AppHandle<R>, conf: AppConfig) {
     conf::save(&conf);
 
-    // set system proxy
-    set_proxy(&conf);
+    update_system_proxy(&app);
 }
 
-#[tauri::command]
-pub fn read_conf() -> AppConfig {
+#[command]
+fn read_conf() -> AppConfig {
     conf::read()
 }
 
-#[tauri::command]
-pub fn start_v2ray() -> String {
+#[command]
+fn start_v2ray() -> String {
     let app_conf = conf::read();
 
     if let Some(err) = v2fly::start(&app_conf).err() {
@@ -36,18 +35,18 @@ pub fn start_v2ray() -> String {
     "".to_string()
 }
 
-#[tauri::command]
-pub fn stop_v2ray() {
+#[command]
+fn stop_v2ray() {
     v2fly::stop();
 }
 
-#[tauri::command]
-pub fn get_v2ray_log() -> Vec<String> {
+#[command]
+fn get_v2ray_log() -> Vec<String> {
     return v2fly::read_logs();
 }
 
-#[tauri::command]
-pub fn save_v2ray_conf(content: String) {
+#[command]
+fn save_v2ray_conf(content: String) {
     save_v2fly_config(content)
 }
 

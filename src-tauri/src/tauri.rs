@@ -48,8 +48,8 @@ pub fn start_tauri() {
         let app_conf = conf::read();
         start_init(&app_conf);
 
-        tray::setup_tray_menu(app)?;
-        menu::setup_win_menu(app, pkg_info)?;
+        tray::setup_tray_menu(app.handle())?;
+        menu::setup_win_menu(app.handle(), pkg_info)?;
 
         // ensure app log dir
         let app_log_dir = app.path().app_log_dir().expect("get app log dir failed");

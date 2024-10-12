@@ -1,20 +1,20 @@
-use tauri::{AppHandle, Url};
+use tauri::{AppHandle, Runtime, Url};
 use tauri_plugin_notification::NotificationExt;
 use tauri_plugin_updater::UpdaterExt;
 
-use crate::ipc::read_conf;
+use crate::conf;
 
-pub fn check_update(app: &AppHandle) {
+pub fn check_update<R: Runtime>(app: &AppHandle<R>) {
     let handle = app.clone();
     tauri::async_runtime::spawn(async move {
         update(handle).await.expect("update failed");
     });
 }
 
-async fn update(app: AppHandle) -> Result<(), tauri_plugin_updater::Error> {
+async fn update<R: Runtime>(app: AppHandle<R>) -> Result<(), tauri_plugin_updater::Error> {
     println!("start check update");
 
-    let conf = read_conf();
+    let conf = conf::read();
     let mut updater_builder = app.updater_builder();
 
     if conf.active.enabled && conf.v2_fly.http.enabled {
