@@ -35,10 +35,6 @@ pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
             "quit" => {
                 exit_app(app);
             }
-            "show" => {
-                app.get_webview_window("main")
-                    .map(|win| win.show().expect("show window"));
-            }
             "check-updates" => {
                 check_update(app);
             }
@@ -78,7 +74,6 @@ pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
 
 pub fn build_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<Menu<R>, Error> {
     let quit = MenuItem::with_id(app, "quit", "Quit", true, "CmdOrControl+Q".into())?;
-    let show = MenuItem::with_id(app, "show", "Show", true, None::<&str>)?;
 
     let is_enabled_system_proxy = conf::read().proxy.system;
     let toggle = CheckMenuItem::with_id(
@@ -93,7 +88,7 @@ pub fn build_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<Menu<R>, Error>
     let check_updates =
         MenuItem::with_id(app, "check-update", "Check for updates", true, None::<&str>)?;
 
-    let tray_menu = Menu::with_items(app, &[&toggle, &show, &check_updates, &quit])?;
+    let tray_menu = Menu::with_items(app, &[&toggle, &check_updates, &quit])?;
 
     return Ok(tray_menu);
 }
