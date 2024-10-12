@@ -3,10 +3,9 @@ use tauri::{
     App, Error, Manager, PackageInfo, Runtime, WebviewWindow,
 };
 
-pub fn setup_win_menu<R: Runtime>(
-    app: &mut App<R>,
-    package_info: PackageInfo,
-) -> Result<(), Error> {
+use crate::updater::check_update;
+
+pub fn setup_win_menu(app: &mut App, package_info: PackageInfo) -> Result<(), Error> {
     let about_meta = AboutMetadataBuilder::new()
         .version(Some(package_info.version.to_string()))
         .build();
@@ -17,6 +16,7 @@ pub fn setup_win_menu<R: Runtime>(
             &SubmenuBuilder::new(app, "About")
                 .about(Some(about_meta))
                 .quit()
+                .item(&MenuItemBuilder::with_id("check-update", "Check Update").build(app)?)
                 .build()?,
             &SubmenuBuilder::new(app, "Edit")
                 .copy()
@@ -48,6 +48,9 @@ pub fn setup_win_menu<R: Runtime>(
             "open-devtools" => {
                 let win = app.get_webview_window("main").expect("get main window");
                 win.open_devtools();
+            }
+            "check-update" => {
+                check_update(app);
             }
             _ => {}
         };

@@ -1,14 +1,13 @@
 use conf::model::AppConfig;
-use tauri::{AppHandle, Manager, RunEvent, Url, WindowEvent};
+use tauri::{Manager, RunEvent, WindowEvent};
 use tauri_plugin_autostart::{MacosLauncher, ManagerExt};
-use tauri_plugin_updater::UpdaterExt;
 use tauri_plugin_window_state::{StateFlags, WindowExt};
 
 use crate::{
     app::exit_app,
     conf,
     env::{self, is_dev},
-    ipc::{self, read_conf},
+    ipc::{self},
     menu,
     proxy::{self},
     tray, v2fly,
@@ -55,11 +54,6 @@ pub fn start_tauri() {
 
         tray::setup_tray_menu(app)?;
         menu::setup_win_menu(app, pkg_info)?;
-
-        let handle = app.handle().clone();
-        tauri::async_runtime::spawn(async move {
-            update(handle).await.expect("update failed");
-        });
 
         // ensure app log dir
         let app_log_dir = app.path().app_log_dir().expect("get app log dir failed");
@@ -133,50 +127,4 @@ fn start_init(conf: &AppConfig) {
             println!("{err:?}");
         }
     }
-}
-
-async fn update(app: AppHandle) -> Result<(), tauri_plugin_updater::Error> {
-    println!("start check update");
-
-    let conf = read_conf();
-    let mut updater_builder = app.updater_builder();
-
-    if conf.active.enabled && conf.v2_fly.http.enabled {
-        let http_proxy = format!(
-            "http://{}:{}",
-            conf.v2_fly.http.address, conf.v2_fly.http.port
-        );
-
-        let url = Url::parse(http_proxy.as_str()).expect("parse proxy url");
-
-        println!("set proxy {}", url);
-
-        updater_builder = updater_builder.proxy(url);
-    }
-
-    let updater = updater_builder.build()?;
-
-    if let Some(update) = updater.check().await? {
-        let mut downloaded = 0;
-
-        println!("start download");
-
-        // alternatively we could also call update.download() and update.install() separately
-        update
-            .download_and_install(
-                |chunk_length, content_length| {
-                    downloaded += chunk_length;
-                    println!("downloaded {downloaded} from {content_length:?}");
-                },
-                || {
-                    println!("download finished");
-                },
-            )
-            .await?;
-
-        println!("update installed");
-        app.restart();
-    }
-
-    Ok(())
 }
