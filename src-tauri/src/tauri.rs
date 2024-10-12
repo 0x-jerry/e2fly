@@ -79,6 +79,8 @@ pub fn start_tauri() {
                 .autolaunch()
                 .enable()
                 .map_err(|err| println!("enable autostart failed: {}", err.to_string()));
+
+            app.get_webview_window("main").map(|win| win.hide());
         } else {
             let _ = app
                 .autolaunch()
