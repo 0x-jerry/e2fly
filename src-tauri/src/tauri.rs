@@ -65,7 +65,10 @@ pub fn start_tauri() {
         v2fly::set_log_file(log_file_path);
 
         app.get_webview_window("main").map(|win| {
-            win.restore_state(StateFlags::all())
+            let mut state = StateFlags::all();
+            state.remove(StateFlags::VISIBLE);
+
+            win.restore_state(state)
                 .expect("restore window state failed");
         });
 
@@ -74,13 +77,13 @@ pub fn start_tauri() {
                 .autolaunch()
                 .enable()
                 .map_err(|err| println!("enable autostart failed: {}", err.to_string()));
-
-            app.get_webview_window("main").map(|win| win.hide());
         } else {
             let _ = app
                 .autolaunch()
                 .disable()
                 .map_err(|err| println!("disable autostart failed: {}", err.to_string()));
+
+            app.get_webview_window("main").map(|win| win.show());
         }
 
         Ok(())

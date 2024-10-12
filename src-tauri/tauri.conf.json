@@ -59,6 +59,8 @@
   "app": {
     "windows": [
       {
+        "visible": false,
+        "focus": false,
         "fullscreen": false,
         "resizable": false,
         "maximizable": false,
