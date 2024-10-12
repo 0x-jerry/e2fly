@@ -2,7 +2,7 @@ use tauri::{AppHandle, Runtime, Url};
 use tauri_plugin_notification::NotificationExt;
 use tauri_plugin_updater::UpdaterExt;
 
-use crate::conf;
+use crate::{conf, v2fly};
 
 pub fn check_update<R: Runtime>(app: &AppHandle<R>) {
     let handle = app.clone();
@@ -45,7 +45,8 @@ async fn update<R: Runtime>(app: AppHandle<R>) -> Result<(), tauri_plugin_update
                     println!("downloaded {downloaded} from {content_length:?}");
                 },
                 || {
-                    println!("download finished");
+                    v2fly::stop();
+                    println!("download finished, start installing");
                 },
             )
             .await?;
