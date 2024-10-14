@@ -30,11 +30,8 @@
     },
     "longDescription": "",
     "macOS": {
-      "entitlements": null,
-      "exceptionDomain": "",
-      "frameworks": [],
-      "providerShortName": null,
-      "signingIdentity": null
+      "providerShortName": "E2Fly",
+      "signingIdentity": "-"
     },
     "resources": [],
     "shortDescription": "",
