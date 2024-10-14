@@ -57,7 +57,7 @@ async fn update<R: Runtime>(app: AppHandle<R>) -> Result<(), tauri_plugin_update
         let answer = app
             .dialog()
             .message("Updates is ready, confirm to install")
-            .title("E2fly")
+            .title("E2Fly")
             .buttons(MessageDialogButtons::OkCancel)
             .blocking_show();
 
