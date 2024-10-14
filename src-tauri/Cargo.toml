@@ -25,7 +25,7 @@ dotenv_codegen = "0.15.0"
 dirs = "5.0"
 serde_derive = "1.0.204"
 rev_buf_reader = "0.3.0"
-os_pipe = "1.2.0"
+os_pipe = "1.2.1"
 file-rotate = "0.7.6"
 tauri-plugin-notification = "2"
 
