@@ -5,7 +5,7 @@ use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 
 use crate::{conf, proxy::set_proxy, v2fly};
 
-pub fn exit_app<R: Runtime>(app: &AppHandle<R>) {
+pub fn before_exit_app<R: Runtime>(app: &AppHandle<R>) {
     let _ = app.save_window_state(StateFlags::all());
 
     v2fly::stop();
@@ -16,6 +16,10 @@ pub fn exit_app<R: Runtime>(app: &AppHandle<R>) {
         conf.proxy.system = false;
         set_proxy(&conf);
     }
+}
+
+pub fn exit_app<R: Runtime>(app: &AppHandle<R>) {
+    before_exit_app(app);
 
     exit(0);
 }

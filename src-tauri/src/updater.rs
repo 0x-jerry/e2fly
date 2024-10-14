@@ -3,7 +3,7 @@ use tauri_plugin_dialog::{DialogExt, MessageDialogButtons};
 use tauri_plugin_notification::NotificationExt;
 use tauri_plugin_updater::UpdaterExt;
 
-use crate::{conf, v2fly};
+use crate::{app::before_exit_app, conf};
 
 pub fn check_update<R: Runtime>(app: &AppHandle<R>) {
     let handle = app.clone();
@@ -31,9 +31,10 @@ async fn update<R: Runtime>(app: AppHandle<R>) -> Result<(), tauri_plugin_update
         updater_builder = updater_builder.proxy(url);
     }
 
+    let cloned_app_handler = app.clone();
     let updater = updater_builder
-        .on_before_exit(|| {
-            v2fly::stop();
+        .on_before_exit(move || {
+            before_exit_app(&cloned_app_handler);
         })
         .build()?;
 
