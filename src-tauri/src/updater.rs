@@ -1,4 +1,5 @@
 use tauri::{AppHandle, Runtime, Url};
+use tauri_plugin_dialog::{DialogExt, MessageDialogButtons};
 use tauri_plugin_notification::NotificationExt;
 use tauri_plugin_updater::UpdaterExt;
 
@@ -30,29 +31,42 @@ async fn update<R: Runtime>(app: AppHandle<R>) -> Result<(), tauri_plugin_update
         updater_builder = updater_builder.proxy(url);
     }
 
-    let updater = updater_builder.build()?;
+    let updater = updater_builder
+        .on_before_exit(|| {
+            v2fly::stop();
+        })
+        .build()?;
 
     if let Some(update) = updater.check().await? {
         let mut downloaded = 0;
 
         println!("start download");
 
-        // alternatively we could also call update.download() and update.install() separately
-        update
-            .download_and_install(
+        let binary = update
+            .download(
                 |chunk_length, content_length| {
                     downloaded += chunk_length;
                     println!("downloaded {downloaded} from {content_length:?}");
                 },
                 || {
-                    v2fly::stop();
-                    println!("download finished, start installing");
+                    println!("download finished");
                 },
             )
             .await?;
 
-        println!("update installed");
-        app.restart();
+        let answer = app
+            .dialog()
+            .message("Updates is ready, confirm to install")
+            .title("E2fly")
+            .buttons(MessageDialogButtons::OkCancel)
+            .blocking_show();
+
+        if answer {
+            update.install(binary)?;
+
+            println!("update installed");
+            app.restart();
+        }
     } else {
         app.notification()
             .builder()

@@ -28,6 +28,7 @@ rev_buf_reader = "0.3.0"
 os_pipe = "1.2.1"
 file-rotate = "0.7.6"
 tauri-plugin-notification = "2"
+tauri-plugin-dialog = "2"
 
 [target."cfg(not(any(target_os = \"android\", target_os = \"ios\")))".dependencies]
 tauri-plugin-autostart = "2"
