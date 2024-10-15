@@ -27,7 +27,11 @@ pub fn start_tauri() {
         ))
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_shell::init())
-        .plugin(tauri_plugin_window_state::Builder::default().build())
+        .plugin(
+            tauri_plugin_window_state::Builder::default()
+                .with_state_flags(StateFlags::POSITION)
+                .build(),
+        )
         .plugin(tauri_plugin_clipboard_manager::init());
 
     if !env::is_dev() {
@@ -64,14 +68,6 @@ pub fn start_tauri() {
         let log_file_path = app_log_dir.join(file_name);
 
         v2fly::set_log_file(log_file_path);
-
-        app.get_webview_window("main").map(|win| {
-            let mut state = StateFlags::all();
-            state.remove(StateFlags::VISIBLE);
-
-            win.restore_state(state)
-                .expect("restore window state failed");
-        });
 
         if app_conf.app.auto_startup {
             let _ = app
