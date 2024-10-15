@@ -8,7 +8,11 @@ use tauri::{
 use crate::{conf, system_proxy::update_system_proxy, updater::check_update};
 
 pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
-    let system_tray = TrayIconBuilder::<R>::with_id("main").tooltip("E2Fly");
+    let version = app.config().version.clone().unwrap_or_default();
+
+    let tooltip_msg = format!("E2Fly v{}", version);
+
+    let system_tray = TrayIconBuilder::<R>::with_id("main").tooltip(tooltip_msg);
 
     #[cfg(windows)]
     let system_tray = {
@@ -79,7 +83,7 @@ pub fn build_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<Menu<R>, Error>
     let toggle = CheckMenuItem::with_id(
         app,
         "toggle-system-proxy",
-        "System Proxy",
+        "System proxy",
         true,
         is_enabled_system_proxy,
         None::<&str>,

@@ -27,7 +27,7 @@ pub fn setup_win_menu<R: Runtime>(
             &SubmenuBuilder::new(app, "About")
                 .item(&MenuItemBuilder::with_id("check-updates", "Check for updates").build(app)?)
                 .item(
-                    &MenuItemBuilder::with_id("toggle-win", "Close Windows")
+                    &MenuItemBuilder::with_id("toggle-win", "Close window")
                         .accelerator("CmdOrControl+W")
                         .build(app)?,
                 )
