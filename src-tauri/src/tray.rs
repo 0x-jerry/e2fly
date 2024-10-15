@@ -5,7 +5,7 @@ use tauri::{
     AppHandle, Error, Manager, Runtime,
 };
 
-use crate::{app::exit_app, conf, system_proxy::update_system_proxy, updater::check_update};
+use crate::{conf, system_proxy::update_system_proxy, updater::check_update};
 
 pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
     let system_tray = TrayIconBuilder::<R>::with_id("main").tooltip("E2Fly");
@@ -33,7 +33,7 @@ pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
         .menu(&tray_menu)
         .on_menu_event(move |app, event| match event.id().as_ref() {
             "quit" => {
-                exit_app(app);
+                app.exit(0);
             }
             "check-updates" => {
                 check_update(app);

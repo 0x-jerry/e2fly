@@ -1,5 +1,3 @@
-use std::process::exit;
-
 use tauri::{AppHandle, Runtime};
 use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 
@@ -16,10 +14,4 @@ pub fn before_exit_app<R: Runtime>(app: &AppHandle<R>) {
         conf.proxy.system = false;
         set_proxy(&conf);
     }
-}
-
-pub fn exit_app<R: Runtime>(app: &AppHandle<R>) {
-    before_exit_app(app);
-
-    exit(0);
 }

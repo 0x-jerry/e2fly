@@ -1,10 +1,10 @@
 use conf::model::AppConfig;
 use tauri::{Manager, RunEvent, WindowEvent};
 use tauri_plugin_autostart::{MacosLauncher, ManagerExt};
-use tauri_plugin_window_state::{StateFlags, WindowExt};
+use tauri_plugin_window_state::StateFlags;
 
 use crate::{
-    app::exit_app,
+    app::{self},
     conf,
     env::{self, is_dev},
     ipc::{self},
@@ -105,13 +105,10 @@ pub fn start_tauri() {
             _ => (),
         },
 
-        RunEvent::ExitRequested { api, .. } => {
-            api.prevent_exit();
-        }
         RunEvent::Exit => {
-            println!("exit app");
+            app::before_exit_app(app_handle);
 
-            exit_app(app_handle);
+            println!("app exited!");
         }
         _ => (),
     })
