@@ -16,11 +16,6 @@ pub fn setup_win_menu<R: Runtime>(
     let menu = Menu::with_items(
         app,
         &[
-            &SubmenuBuilder::new(app, "About")
-                .about(Some(about_meta))
-                .quit()
-                .item(&MenuItemBuilder::with_id("check-updates", "Check for updates").build(app)?)
-                .build()?,
             &SubmenuBuilder::new(app, "Edit")
                 .copy()
                 .paste()
@@ -29,13 +24,14 @@ pub fn setup_win_menu<R: Runtime>(
                 .redo()
                 .undo()
                 .build()?,
-            &SubmenuBuilder::new(app, "Window")
-                .items(&[
+            &SubmenuBuilder::new(app, "About")
+                .item(&MenuItemBuilder::with_id("check-updates", "Check for updates").build(app)?)
+                .item(
                     &MenuItemBuilder::with_id("toggle-win", "Close Windows")
                         .accelerator("CmdOrControl+W")
                         .build(app)?,
-                    &MenuItemBuilder::with_id("open-devtools", "Open Devtools").build(app)?,
-                ])
+                )
+                .about(Some(about_meta))
                 .build()?,
         ],
     )?;
@@ -47,10 +43,6 @@ pub fn setup_win_menu<R: Runtime>(
             "toggle-win" => {
                 let win = app.get_webview_window("main").expect("get main window");
                 toggle_win(&win).expect("toggle window");
-            }
-            "open-devtools" => {
-                let win = app.get_webview_window("main").expect("get main window");
-                win.open_devtools();
             }
             "check-update" => {
                 check_update(app);
