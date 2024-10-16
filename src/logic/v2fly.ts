@@ -129,7 +129,7 @@ function getHttpInbound(port: number, allowLAN?: boolean): V4.inbounds.InboundOb
     port: port,
     sniffing: {
       enabled: true,
-      destOverride: ['tls', 'http'],
+      destOverride: ['tls', 'http', 'fakedns', 'quic'],
     },
   }
 }
@@ -145,7 +145,7 @@ function getSocksInbound(port: number, allowLAN?: boolean): V4.inbounds.InboundO
     },
     sniffing: {
       enabled: true,
-      destOverride: ['tls', 'http'],
+      destOverride: ['tls', 'http', 'fakedns', 'quic'],
     },
   }
 }
