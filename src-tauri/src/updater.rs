@@ -31,12 +31,7 @@ async fn update<R: Runtime>(app: AppHandle<R>) -> Result<(), tauri_plugin_update
         updater_builder = updater_builder.proxy(url);
     }
 
-    let cloned_app_handler = app.clone();
-    let updater = updater_builder
-        .on_before_exit(move || {
-            before_exit_app(&cloned_app_handler);
-        })
-        .build()?;
+    let updater = updater_builder.build()?;
 
     if let Some(update) = updater.check().await? {
         let mut downloaded = 0;
@@ -63,10 +58,8 @@ async fn update<R: Runtime>(app: AppHandle<R>) -> Result<(), tauri_plugin_update
             .blocking_show();
 
         if answer {
+            before_exit_app(&app);
             update.install(binary)?;
-
-            println!("update installed");
-            app.restart();
         }
     } else {
         app.notification()
