@@ -6,11 +6,14 @@ use tauri_plugin_window_state::StateFlags;
 use crate::{
     app::{self},
     conf,
+    const_var::WINDOW_NAME,
     env::{self, is_dev},
     ipc::{self},
     menu,
     proxy::{self},
-    tray, v2fly,
+    tray,
+    utils::show_window,
+    v2fly,
 };
 
 pub fn start_tauri() {
@@ -36,9 +39,8 @@ pub fn start_tauri() {
 
     if !env::is_dev() {
         app = app.plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
-            let win = app.get_webview_window("main").expect("no main window");
-            win.show().expect("show main window");
-            win.set_focus().expect("focus main window");
+            let win = app.get_webview_window(WINDOW_NAME).expect("no main window");
+            show_window(&win).expect("show main window");
         }));
     }
 
@@ -80,7 +82,7 @@ pub fn start_tauri() {
                 .disable()
                 .map_err(|err| println!("disable autostart failed: {}", err.to_string()));
 
-            app.get_webview_window("main").map(|win| win.show());
+            app.get_webview_window(WINDOW_NAME).map(|win| win.show());
         }
 
         Ok(())
@@ -99,7 +101,7 @@ pub fn start_tauri() {
                 api.prevent_close();
 
                 app_handle
-                    .get_webview_window("main")
+                    .get_webview_window(WINDOW_NAME)
                     .map(|win| win.hide().unwrap());
             }
             _ => (),

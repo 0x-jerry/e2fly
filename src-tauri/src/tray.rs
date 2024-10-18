@@ -2,17 +2,20 @@ use tauri::{
     image::Image,
     menu::{CheckMenuItem, Menu, MenuItem},
     tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
-    AppHandle, Error, Manager, Runtime,
+    AppHandle, Error, Runtime,
 };
 
-use crate::{conf, system_proxy::update_system_proxy, updater::check_update};
+use crate::{
+    conf, const_var::TRAY_NAME, system_proxy::update_system_proxy, updater::check_update,
+    utils::toggle_main_window,
+};
 
 pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
     let version = app.config().version.clone().unwrap_or_default();
 
     let tooltip_msg = format!("E2Fly v{}", version);
 
-    let system_tray = TrayIconBuilder::<R>::with_id("main").tooltip(tooltip_msg);
+    let system_tray = TrayIconBuilder::<R>::with_id(TRAY_NAME).tooltip(tooltip_msg);
 
     #[cfg(windows)]
     let system_tray = {
@@ -59,16 +62,7 @@ pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
             } = event
             {
                 let app = tray.app_handle();
-                if let Some(win) = app.get_webview_window("main") {
-                    println!("tray left click event, {}", win.is_visible().unwrap());
-
-                    if win.is_visible().unwrap() {
-                        win.hide().expect("hide main window");
-                    } else {
-                        win.show().expect("show main window");
-                        win.set_focus().expect("focus on main window");
-                    }
-                }
+                toggle_main_window(&app).expect("toggle window visible");
             }
         })
         .build(app)?;

@@ -1,9 +1,9 @@
 use tauri::{
     menu::{AboutMetadataBuilder, Menu, MenuItemBuilder, SubmenuBuilder},
-    AppHandle, Error, Manager, PackageInfo, Runtime, WebviewWindow,
+    AppHandle, Error, PackageInfo, Runtime,
 };
 
-use crate::updater::check_update;
+use crate::{updater::check_update, utils::toggle_main_window};
 
 pub fn setup_win_menu<R: Runtime>(
     app: &AppHandle<R>,
@@ -41,8 +41,7 @@ pub fn setup_win_menu<R: Runtime>(
     app.on_menu_event(|app, event| {
         match event.id().0.as_str() {
             "toggle-win" => {
-                let win = app.get_webview_window("main").expect("get main window");
-                toggle_win(&win).expect("toggle window");
+                toggle_main_window(&app).expect("toggle window");
             }
             "check-update" => {
                 check_update(app);
@@ -50,16 +49,6 @@ pub fn setup_win_menu<R: Runtime>(
             _ => {}
         };
     });
-
-    Ok(())
-}
-
-fn toggle_win<R: Runtime>(win: &WebviewWindow<R>) -> tauri::Result<()> {
-    if win.is_visible()? {
-        win.hide()?;
-    } else {
-        win.show()?;
-    }
 
     Ok(())
 }

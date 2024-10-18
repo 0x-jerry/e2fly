@@ -10,6 +10,7 @@ use tauri::start_tauri;
 
 mod app;
 mod conf;
+mod const_var;
 mod env;
 mod ipc;
 mod logger;

@@ -6,6 +6,9 @@ use std::{
     io::{self, BufRead, Read},
     process::{Command, Stdio},
 };
+use tauri::{AppHandle, Manager, Result, Runtime, WebviewWindow};
+
+use crate::const_var::WINDOW_NAME;
 
 pub fn run_command(cmd: &str, args: &[&str]) -> io::Result<String> {
     let mut command = Command::new(cmd);
@@ -45,4 +48,27 @@ pub fn tail_from_file(file: &File, limit: usize) -> Vec<String> {
         .take(limit)
         .map(|l| l.expect("Could not parse line"))
         .collect()
+}
+
+pub fn toggle_main_window<R: Runtime>(app: &AppHandle<R>) -> Result<()> {
+    app.get_webview_window(WINDOW_NAME)
+        .map(|win| -> Result<()> {
+            if win.is_visible()? {
+                win.hide()?;
+            } else {
+                show_window(&win)?;
+            }
+
+            Ok(())
+        })
+        .unwrap_or_else(|| Ok(()))
+}
+
+pub fn show_window<R: Runtime>(win: &WebviewWindow<R>) -> Result<()> {
+    win.set_always_on_top(true)?;
+    win.show()?;
+    win.set_focus()?;
+    win.set_always_on_top(false)?;
+
+    Ok(())
 }
