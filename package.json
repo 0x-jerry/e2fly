@@ -26,18 +26,18 @@
   },
   "dependencies": {
     "@0x-jerry/vue-kit": "^2.1.0",
-    "@primevue/themes": "^4.1.0",
-    "@tauri-apps/api": "^2.0.2",
+    "@primevue/themes": "^4.1.1",
+    "@tauri-apps/api": "^2.0.3",
     "@tauri-apps/plugin-autostart": "^2.0.0",
     "@tauri-apps/plugin-clipboard-manager": "^2.0.0",
     "@tauri-apps/plugin-notification": "^2.0.0",
-    "@tauri-apps/plugin-shell": "^2.0.0",
+    "@tauri-apps/plugin-shell": "^2.0.1",
     "@tauri-apps/plugin-updater": "^2.0.0",
     "@tauri-apps/plugin-window-state": "^2.0.0",
     "highlight.js": "^11.10.0",
     "monaco-editor": "^0.52.0",
     "primeicons": "^7.0.0",
-    "primevue": "^4.1.0",
+    "primevue": "^4.1.1",
     "vue": "^3.5.12",
     "vue-i18n": "^10.0.4",
     "vue-router": "^4.4.5"
@@ -63,6 +63,6 @@
     "unplugin-icons": "^0.19.3",
     "unplugin-vue-components": "^0.27.4",
     "unplugin-vue-router": "^0.10.8",
-    "vite": "^5.4.8"
+    "vite": "^5.4.9"
   }
 }
