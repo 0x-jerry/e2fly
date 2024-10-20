@@ -1,7 +1,7 @@
 use std::{fs, path::PathBuf};
 
-use crate::env;
 use model::AppConfig;
+use tauri::is_dev;
 
 pub mod model;
 pub mod model_impl;
@@ -10,7 +10,7 @@ pub const APP_NAME: &str = "e2fly.beta";
 const CONFIG_NAME: &str = "config.json";
 
 fn get_config_dir() -> PathBuf {
-    let config_dir = if env::is_dev() {
+    let config_dir = if is_dev() {
         PathBuf::from("../test-conf")
     } else {
         let name = format!(".{}", APP_NAME);

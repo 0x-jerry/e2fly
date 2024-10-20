@@ -1,5 +1,5 @@
 use conf::model::AppConfig;
-use tauri::{Manager, RunEvent, WindowEvent};
+use tauri::{is_dev, Manager, RunEvent, WindowEvent};
 use tauri_plugin_autostart::{MacosLauncher, ManagerExt};
 use tauri_plugin_window_state::StateFlags;
 
@@ -7,7 +7,6 @@ use crate::{
     app::{self},
     conf,
     const_var::WINDOW_NAME,
-    env::{self, is_dev},
     ipc::{self},
     menu,
     proxy::{self},
@@ -17,8 +16,6 @@ use crate::{
 };
 
 pub fn start_tauri() {
-    println!("DEV: {}", env::is_dev());
-
     let app = tauri::Builder::default();
 
     let mut app = app
@@ -37,7 +34,7 @@ pub fn start_tauri() {
         )
         .plugin(tauri_plugin_clipboard_manager::init());
 
-    if !env::is_dev() {
+    if !is_dev() {
         app = app.plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
             let win = app.get_webview_window(WINDOW_NAME).expect("no main window");
             show_window(&win).expect("show main window");
