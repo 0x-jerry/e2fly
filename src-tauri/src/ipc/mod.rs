@@ -3,7 +3,7 @@ use tauri::{command, AppHandle, Builder, Manager, Runtime};
 use crate::{
     conf::{self, model::AppConfig, save_v2fly_config},
     system_proxy::update_system_proxy,
-    v2fly,
+    v2fly::{self, FlyStateExt},
 };
 
 #[command]
@@ -20,9 +20,7 @@ fn read_conf() -> AppConfig {
 
 #[command]
 async fn start_v2ray<R: Runtime>(app: AppHandle<R>) -> String {
-    let fly = app.state::<v2fly::FlyState>();
-
-    match fly.restart().await {
+    match app.fly_state().restart().await {
         Ok(_) => "".to_string(),
         Err(err) => err.to_string(),
     }
@@ -30,16 +28,12 @@ async fn start_v2ray<R: Runtime>(app: AppHandle<R>) -> String {
 
 #[command]
 async fn stop_v2ray<R: Runtime>(app: AppHandle<R>) {
-    let fly = app.state::<v2fly::FlyState>();
-
-    fly.stop().await;
+    app.fly_state().stop().await;
 }
 
 #[command]
 async fn get_v2ray_log<R: Runtime>(app: AppHandle<R>) -> Vec<String> {
-    let fly = app.state::<v2fly::FlyState>();
-
-    fly.read_log().await
+    app.fly_state().read_log().await
 }
 
 #[command]

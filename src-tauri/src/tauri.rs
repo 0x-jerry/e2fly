@@ -3,13 +3,11 @@ use tauri_plugin_autostart::{MacosLauncher, ManagerExt};
 use tauri_plugin_window_state::StateFlags;
 
 use crate::{
-    app,
-    conf,
+    app, conf,
     const_var::WINDOW_NAME,
-    ipc,
-    menu, proxy, tray,
+    ipc, menu, proxy, tray,
     utils::show_window,
-    v2fly::{self, FlyState},
+    v2fly::{self, FlyStateExt},
 };
 
 pub fn start_tauri() {
@@ -49,10 +47,8 @@ pub fn start_tauri() {
 
         v2fly::FlyState::init(app.handle());
 
-        let fly_state = app.state::<FlyState>();
-
         if app_conf.active.enabled {
-            block_on(fly_state.restart()).expect("start app");
+            block_on(app.handle().fly_state().restart()).expect("start app");
         }
 
         proxy::set_proxy(&app_conf);

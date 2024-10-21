@@ -1,5 +1,5 @@
 use tauri::async_runtime::Mutex;
-use tauri::{is_dev, AppHandle, Manager, Runtime};
+use tauri::{is_dev, AppHandle, Manager, Runtime, State};
 
 use crate::conf::{self};
 use crate::logger::Logger;
@@ -30,6 +30,18 @@ impl FlyState {
 
     pub async fn read_log(&self) -> Vec<String> {
         self.0.lock().await.read_log()
+    }
+}
+
+pub trait FlyStateExt {
+    fn fly_state(&self) -> State<'_, FlyState>;
+}
+
+impl<R: Runtime> FlyStateExt for AppHandle<R> {
+    fn fly_state(&self) -> State<'_, FlyState> {
+        let t = self.state::<FlyState>();
+
+        t
     }
 }
 

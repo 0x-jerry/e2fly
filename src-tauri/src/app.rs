@@ -1,7 +1,7 @@
-use tauri::{async_runtime::block_on, AppHandle, Manager, Runtime};
+use tauri::{async_runtime::block_on, AppHandle, Runtime};
 use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 
-use crate::{conf, proxy::set_proxy, v2fly};
+use crate::{conf, proxy::set_proxy, v2fly::FlyStateExt};
 
 pub fn before_exit_app<R: Runtime>(app: &AppHandle<R>) {
     let _ = app.save_window_state(StateFlags::all());
@@ -13,6 +13,5 @@ pub fn before_exit_app<R: Runtime>(app: &AppHandle<R>) {
         set_proxy(&conf);
     }
 
-    let fly = app.state::<v2fly::FlyState>();
-    block_on(fly.stop());
+    block_on(app.fly_state().stop());
 }
