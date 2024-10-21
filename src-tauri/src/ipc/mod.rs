@@ -1,9 +1,9 @@
-use tauri::{command, AppHandle, Builder, Manager, Runtime};
+use tauri::{command, AppHandle, Builder, Runtime};
 
 use crate::{
     conf::{self, model::AppConfig, save_v2fly_config},
     system_proxy::update_system_proxy,
-    v2fly::{self, FlyStateExt},
+    v2fly::FlyStateExt,
 };
 
 #[command]

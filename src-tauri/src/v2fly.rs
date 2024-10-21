@@ -54,12 +54,10 @@ impl FlyStateInner {
     pub fn new<R: Runtime>(app: &AppHandle<R>) -> FlyStateInner {
         let log_file = get_log_file_path(app);
 
-        let fly = FlyStateInner {
+        FlyStateInner {
             program: None,
             log_file,
-        };
-
-        fly
+        }
     }
 
     pub fn read_log(&self) -> Vec<String> {
@@ -113,9 +111,9 @@ impl FlyStateInner {
     }
 
     pub fn stop(&mut self) {
-        self.program
-            .as_mut()
-            .map(|p| p.kill().expect("kill failed"));
+        if let Some(p) = self.program.as_mut() {
+            p.kill().expect("kill failed")
+        }
     }
 }
 
@@ -128,7 +126,5 @@ fn get_log_file_path<R: Runtime>(app: &AppHandle<R>) -> PathBuf {
         "v2ray.log"
     };
 
-    let log_file_path = app_log_dir.join(file_name);
-
-    return log_file_path;
+    app_log_dir.join(file_name)
 }

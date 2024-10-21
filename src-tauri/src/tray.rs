@@ -62,7 +62,7 @@ pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
             } = event
             {
                 let app = tray.app_handle();
-                toggle_main_window(&app).expect("toggle window visible");
+                toggle_main_window(app).expect("toggle window visible");
             }
         })
         .build(app)?;
@@ -88,5 +88,5 @@ pub fn build_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<Menu<R>, Error>
 
     let tray_menu = Menu::with_items(app, &[&toggle, &check_updates, &quit])?;
 
-    return Ok(tray_menu);
+    Ok(tray_menu)
 }

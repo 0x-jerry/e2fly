@@ -17,18 +17,17 @@ impl<T: AsRef<Path>> From<T> for Logger {
             #[cfg(unix)]
             None,
         );
-        let logger = Self(log);
 
-        logger
+        Self(log)
     }
 }
 
-impl Into<Stdio> for Logger {
-    fn into(self) -> Stdio {
+impl From<Logger> for Stdio {
+    fn from(val: Logger) -> Self {
         let (mut reader, writer) = os_pipe::pipe().unwrap();
 
         std::thread::spawn(move || {
-            let mut log = self.0;
+            let mut log = val.0;
             let mut buffer = [0; 4096];
             loop {
                 let bytes_read = reader.read(&mut buffer).unwrap();

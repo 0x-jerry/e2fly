@@ -41,7 +41,7 @@ pub fn setup_win_menu<R: Runtime>(
     app.on_menu_event(|app, event| {
         match event.id().0.as_str() {
             "toggle-win" => {
-                toggle_main_window(&app).expect("toggle window");
+                toggle_main_window(app).expect("toggle window");
             }
             "check-update" => {
                 check_update(app);

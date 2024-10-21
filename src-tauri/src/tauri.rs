@@ -60,12 +60,12 @@ pub fn start_tauri() {
             let _ = app
                 .autolaunch()
                 .enable()
-                .map_err(|err| println!("enable autostart failed: {}", err.to_string()));
+                .map_err(|err| println!("enable autostart failed: {}", err));
         } else {
             let _ = app
                 .autolaunch()
                 .disable()
-                .map_err(|err| println!("disable autostart failed: {}", err.to_string()));
+                .map_err(|err| println!("disable autostart failed: {}", err));
 
             app.get_webview_window(WINDOW_NAME).map(|win| win.show());
         }
@@ -81,16 +81,15 @@ pub fn start_tauri() {
         // Triggered when a window is trying to close
         RunEvent::WindowEvent {
             label: _, event, ..
-        } => match event {
-            WindowEvent::CloseRequested { api, .. } => {
+        } => {
+            if let WindowEvent::CloseRequested { api, .. } = event {
                 api.prevent_close();
 
-                app_handle
-                    .get_webview_window(WINDOW_NAME)
-                    .map(|win| win.hide().unwrap());
+                if let Some(win) = app_handle.get_webview_window(WINDOW_NAME) {
+                    win.hide().unwrap()
+                }
             }
-            _ => (),
-        },
+        }
 
         RunEvent::Exit => {
             app::before_exit_app(app_handle);
