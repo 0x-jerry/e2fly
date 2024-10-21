@@ -1,4 +1,4 @@
-use tauri::{AppHandle, Runtime};
+use tauri::{async_runtime::block_on, AppHandle, Manager, Runtime};
 use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 
 use crate::{conf, proxy::set_proxy, v2fly};
@@ -13,5 +13,6 @@ pub fn before_exit_app<R: Runtime>(app: &AppHandle<R>) {
         set_proxy(&conf);
     }
 
-    v2fly::stop();
+    let fly = app.state::<v2fly::FlyState>();
+    block_on(fly.stop());
 }

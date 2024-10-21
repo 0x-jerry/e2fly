@@ -1,18 +1,15 @@
-use conf::model::AppConfig;
-use tauri::{is_dev, Manager, RunEvent, WindowEvent};
+use tauri::{async_runtime::block_on, is_dev, Manager, RunEvent, WindowEvent};
 use tauri_plugin_autostart::{MacosLauncher, ManagerExt};
 use tauri_plugin_window_state::StateFlags;
 
 use crate::{
-    app::{self},
+    app,
     conf,
     const_var::WINDOW_NAME,
-    ipc::{self},
-    menu,
-    proxy::{self},
-    tray,
+    ipc,
+    menu, proxy, tray,
     utils::show_window,
-    v2fly,
+    v2fly::{self, FlyState},
 };
 
 pub fn start_tauri() {
@@ -48,25 +45,19 @@ pub fn start_tauri() {
     let pkg_info = context.package_info().clone();
 
     let app = app.setup(move |app| {
-        // start v2ray
         let app_conf = conf::read();
-        start_init(&app_conf);
+        proxy::set_proxy(&app_conf);
+
+        v2fly::FlyState::init(app.handle());
+
+        let fly_state = app.state::<FlyState>();
+
+        if app_conf.active.enabled {
+            block_on(fly_state.restart()).expect("start app");
+        }
 
         tray::setup_tray_menu(app.handle())?;
         menu::setup_win_menu(app.handle(), pkg_info)?;
-
-        // ensure app log dir
-        let app_log_dir = app.path().app_log_dir().expect("get app log dir failed");
-
-        let file_name = if is_dev() {
-            "v2ray.dev.log"
-        } else {
-            "v2ray.log"
-        };
-
-        let log_file_path = app_log_dir.join(file_name);
-
-        v2fly::set_log_file(log_file_path);
 
         if app_conf.app.auto_startup {
             let _ = app
@@ -111,17 +102,4 @@ pub fn start_tauri() {
         }
         _ => (),
     })
-}
-
-/// 1. autostart v2ray
-/// 2. check system proxy
-fn start_init(conf: &AppConfig) {
-    conf::save(&conf);
-    proxy::set_proxy(&conf);
-
-    if conf.active.enabled {
-        if let Some(err) = v2fly::start(&conf).err() {
-            println!("{err:?}");
-        }
-    }
 }

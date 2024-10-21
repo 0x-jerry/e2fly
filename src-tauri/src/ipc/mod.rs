@@ -1,4 +1,4 @@
-use tauri::{command, AppHandle, Builder, Runtime};
+use tauri::{command, AppHandle, Builder, Manager, Runtime};
 
 use crate::{
     conf::{self, model::AppConfig, save_v2fly_config},
@@ -19,24 +19,27 @@ fn read_conf() -> AppConfig {
 }
 
 #[command]
-fn start_v2ray() -> String {
-    let app_conf = conf::read();
+async fn start_v2ray<R: Runtime>(app: AppHandle<R>) -> String {
+    let fly = app.state::<v2fly::FlyState>();
 
-    if let Some(err) = v2fly::start(&app_conf).err() {
-        return err.to_string();
+    match fly.restart().await {
+        Ok(_) => "".to_string(),
+        Err(err) => err.to_string(),
     }
-
-    "".to_string()
 }
 
 #[command]
-fn stop_v2ray() {
-    v2fly::stop();
+async fn stop_v2ray<R: Runtime>(app: AppHandle<R>) {
+    let fly = app.state::<v2fly::FlyState>();
+
+    fly.stop().await;
 }
 
 #[command]
-fn get_v2ray_log() -> Vec<String> {
-    return v2fly::read_logs();
+async fn get_v2ray_log<R: Runtime>(app: AppHandle<R>) -> Vec<String> {
+    let fly = app.state::<v2fly::FlyState>();
+
+    fly.read_log().await
 }
 
 #[command]
