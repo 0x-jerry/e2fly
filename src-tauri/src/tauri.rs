@@ -46,7 +46,6 @@ pub fn start_tauri() {
 
     let app = app.setup(move |app| {
         let app_conf = conf::read();
-        proxy::set_proxy(&app_conf);
 
         v2fly::FlyState::init(app.handle());
 
@@ -55,6 +54,8 @@ pub fn start_tauri() {
         if app_conf.active.enabled {
             block_on(fly_state.restart()).expect("start app");
         }
+
+        proxy::set_proxy(&app_conf);
 
         tray::setup_tray_menu(app.handle())?;
         menu::setup_win_menu(app.handle(), pkg_info)?;
