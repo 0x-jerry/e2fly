@@ -1,4 +1,4 @@
-use tauri::{AppHandle, Runtime, Url};
+use tauri::{async_runtime::block_on, AppHandle, Runtime, Url};
 use tauri_plugin_dialog::{DialogExt, MessageDialogButtons};
 use tauri_plugin_notification::NotificationExt;
 use tauri_plugin_updater::UpdaterExt;
@@ -7,12 +7,13 @@ use crate::{app::before_exit_app, conf::AppConfigExt};
 
 pub fn check_update<R: Runtime>(app: &AppHandle<R>) {
     let handle = app.clone();
-    tauri::async_runtime::spawn(async move {
-        update(handle).await.expect("update failed");
+
+    std::thread::spawn(move || {
+        update(handle).expect("update failed");
     });
 }
 
-async fn update<R: Runtime>(app: AppHandle<R>) -> Result<(), tauri_plugin_updater::Error> {
+fn update<R: Runtime>(app: AppHandle<R>) -> Result<(), tauri_plugin_updater::Error> {
     println!("start check update");
 
     let conf = app.app_config();
@@ -34,22 +35,22 @@ async fn update<R: Runtime>(app: AppHandle<R>) -> Result<(), tauri_plugin_update
 
     let updater = updater_builder.build()?;
 
-    if let Some(update) = updater.check().await? {
+    if let Some(update) = block_on(updater.check())? {
         let mut downloaded = 0;
 
         println!("start download");
 
-        let binary = update
-            .download(
-                |chunk_length, content_length| {
-                    downloaded += chunk_length;
-                    println!("downloaded {downloaded} from {content_length:?}");
-                },
-                || {
-                    println!("download finished");
-                },
-            )
-            .await?;
+        let binary = update.download(
+            |chunk_length, content_length| {
+                downloaded += chunk_length;
+                println!("downloaded {downloaded} from {content_length:?}");
+            },
+            || {
+                println!("download finished");
+            },
+        );
+
+        let binary = block_on(binary)?;
 
         let answer = app
             .dialog()
