@@ -3,7 +3,7 @@ use tauri_plugin_dialog::{DialogExt, MessageDialogButtons};
 use tauri_plugin_notification::NotificationExt;
 use tauri_plugin_updater::UpdaterExt;
 
-use crate::{app::before_exit_app, conf};
+use crate::{app::before_exit_app, conf::AppConfigExt};
 
 pub fn check_update<R: Runtime>(app: &AppHandle<R>) {
     let handle = app.clone();
@@ -15,7 +15,8 @@ pub fn check_update<R: Runtime>(app: &AppHandle<R>) {
 async fn update<R: Runtime>(app: AppHandle<R>) -> Result<(), tauri_plugin_updater::Error> {
     println!("start check update");
 
-    let conf = conf::read();
+    let conf = app.app_config();
+
     let mut updater_builder = app.updater_builder();
 
     if conf.active.enabled && conf.v2_fly.http.enabled {

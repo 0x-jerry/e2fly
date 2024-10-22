@@ -1,7 +1,7 @@
 use tauri::{AppHandle, Emitter, Manager, Runtime};
 
 use crate::{
-    conf,
+    conf::AppConfigExt,
     const_var::{TRAY_NAME, WINDOW_NAME},
     proxy,
     tray::build_tray_menu,
@@ -17,6 +17,6 @@ pub fn update_system_proxy<R: Runtime>(app: &AppHandle<R>) {
     app.get_webview_window(WINDOW_NAME)
         .map(|win| win.emit("config-changed", ""));
 
-    let conf = conf::read();
+    let conf = app.app_config();
     proxy::set_proxy(&conf);
 }

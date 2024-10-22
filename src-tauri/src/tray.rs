@@ -6,8 +6,8 @@ use tauri::{
 };
 
 use crate::{
-    conf, const_var::TRAY_NAME, system_proxy::update_system_proxy, updater::check_update,
-    utils::toggle_main_window,
+    conf::AppConfigExt, const_var::TRAY_NAME, system_proxy::update_system_proxy,
+    updater::check_update, utils::toggle_main_window,
 };
 
 pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
@@ -46,9 +46,12 @@ pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
                 check_update(app);
             }
             "toggle-system-proxy" => {
-                let mut app_conf = conf::read();
-                app_conf.proxy.system = !app_conf.proxy.system;
-                conf::save(&app_conf);
+                let app_conf = app.app_conf_state();
+
+                let mut conf = app_conf.clone_conf();
+                conf.proxy.system = !conf.proxy.system;
+
+                app_conf.save(&conf);
 
                 update_system_proxy(app);
             }
@@ -73,7 +76,10 @@ pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
 pub fn build_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<Menu<R>, Error> {
     let quit = MenuItem::with_id(app, "quit", "Quit", true, "CmdOrControl+Q".into())?;
 
-    let is_enabled_system_proxy = conf::read().proxy.system;
+    let app_conf = app.app_config();
+
+    let is_enabled_system_proxy = app_conf.proxy.system;
+
     let toggle = CheckMenuItem::with_id(
         app,
         "toggle-system-proxy",

@@ -1,9 +1,10 @@
-use tauri::{async_runtime::block_on, is_dev, Manager, RunEvent, WindowEvent};
+use tauri::{is_dev, Manager, RunEvent, WindowEvent};
 use tauri_plugin_autostart::{MacosLauncher, ManagerExt};
 use tauri_plugin_window_state::StateFlags;
 
 use crate::{
-    app, conf,
+    app,
+    conf::{self, AppConfigExt},
     const_var::WINDOW_NAME,
     ipc, menu, proxy, tray,
     utils::show_window,
@@ -43,18 +44,24 @@ pub fn start_tauri() {
     let pkg_info = context.package_info().clone();
 
     let app = app.setup(move |app| {
-        let app_conf = conf::read();
+        let app_handle = app.handle();
+        conf::AppConfigState::init(app_handle).expect("init app config state failed");
 
-        v2fly::FlyState::init(app.handle());
+        let app_conf = app_handle.app_config();
+
+        v2fly::FlyState::init(app_handle);
 
         if app_conf.active.enabled {
-            block_on(app.handle().fly_state().restart()).expect("start app");
+            app_handle
+                .fly_state()
+                .restart()
+                .expect("restart v2ray failed");
         }
 
         proxy::set_proxy(&app_conf);
 
-        tray::setup_tray_menu(app.handle())?;
-        menu::setup_win_menu(app.handle(), pkg_info)?;
+        tray::setup_tray_menu(app_handle)?;
+        menu::setup_win_menu(app_handle, pkg_info)?;
 
         if app_conf.app.auto_startup {
             let _ = app

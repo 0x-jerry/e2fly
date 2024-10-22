@@ -1,100 +1,107 @@
-use std::{fs, path::PathBuf};
-
 use model::AppConfig;
-use tauri::is_dev;
+use std::{fs, path::PathBuf};
+use tauri::{async_runtime::Mutex, is_dev, AppHandle, Manager, Result, Runtime, State};
+use tokio::sync::MutexGuard;
 
 pub mod model;
-pub mod model_impl;
 
-pub const APP_NAME: &str = "e2fly.beta";
 const CONFIG_NAME: &str = "config.json";
 
-fn get_config_dir() -> PathBuf {
-    let config_dir = if is_dev() {
-        PathBuf::from("../test-conf")
-    } else {
-        let name = format!(".{}", APP_NAME);
-
-        let dir_path = dirs::home_dir()
-            .expect("Invalid homedir path")
-            .as_path()
-            .join(name);
-
-        dir_path
-    };
-
-    // ensure config folder
-    if !config_dir.exists() {
-        fs::create_dir_all(&config_dir).expect("Create config folder failed!");
-    }
-
-    config_dir.canonicalize().ok().unwrap()
+pub struct AppConfigState {
+    conf: Mutex<AppConfig>,
+    conf_dir: PathBuf,
 }
 
-pub fn get_v2fly_conf_path() -> PathBuf {
-    get_config_dir().join("v2fly.conf.json")
-}
+impl AppConfigState {
+    pub fn init<R: Runtime>(app: &AppHandle<R>) -> Result<()> {
+        let config_dir = if is_dev() {
+            PathBuf::from("../test-conf")
+        } else {
+            app.path().app_config_dir()?
+        };
 
-pub fn get_config_path() -> PathBuf {
-    let config_dir = get_config_dir();
-
-    config_dir.join(CONFIG_NAME)
-}
-
-pub fn save_v2fly_config(content: String) {
-    let conf_path = get_v2fly_conf_path();
-
-    fs::write(conf_path, content).expect("Write v2ray config file failed");
-}
-
-pub fn read() -> AppConfig {
-    let conf_path = get_config_path();
-
-    let setting_file = fs::read_to_string(conf_path);
-
-    if setting_file.is_err() {
-        println!("Open config file failed!");
-
-        return AppConfig::new();
-    }
-
-    let conf = serde_json::from_str(setting_file.unwrap().as_str());
-
-    match conf {
-        Ok(c) => c,
-        Err(err) => {
-            println!("Parse app config failed! {err:?}");
-            AppConfig::new()
+        // ensure config folder
+        if !config_dir.exists() {
+            fs::create_dir_all(&config_dir)?;
         }
+
+        let conf_path = config_dir.canonicalize()?;
+
+        let app_conf = AppConfigState {
+            conf: Default::default(),
+            conf_dir: conf_path,
+        };
+
+        app_conf.read();
+
+        app.manage(app_conf);
+
+        Ok(())
+    }
+
+    pub fn v2ray_config_path(&self) -> PathBuf {
+        self.conf_dir.join("v2fly.conf.json")
+    }
+
+    pub fn save_v2ray_config(&self, content: String) {
+        let conf_path = self.v2ray_config_path();
+
+        fs::write(conf_path, content).expect("Write v2ray config file failed");
+    }
+
+    fn config_file(&self) -> PathBuf {
+        self.conf_dir.join(CONFIG_NAME)
+    }
+
+    /// Read config from config file
+    pub fn read(&self) {
+        let save_file = self.config_file();
+
+        let conf = if save_file.exists() {
+            let content = fs::read_to_string(save_file).expect("Read v2ray config file failed");
+            serde_json::from_str(&content).unwrap()
+        } else {
+            AppConfig::default()
+        };
+
+        self.conf.blocking_lock().clone_from(&conf);
+    }
+
+    pub fn save(&self, new_conf: &AppConfig) {
+        self.conf.blocking_lock().clone_from(new_conf);
+
+        let save_file = self.conf_dir.join(CONFIG_NAME);
+        let content = serde_json::to_string(&new_conf).unwrap();
+
+        fs::write(save_file, content).expect("Write v2ray config file failed");
+    }
+
+    pub fn clone_conf(&self) -> AppConfig {
+        self.conf.blocking_lock().clone()
+    }
+
+    pub fn get(&self) -> MutexGuard<'_, AppConfig> {
+        self.conf.blocking_lock()
     }
 }
 
-pub fn save(conf: &AppConfig) {
-    let conf_path = get_config_path();
-
-    match serde_json::to_string(conf) {
-        Ok(txt) => {
-            fs::write(conf_path, txt).expect("Write config file failed");
-        }
-        Err(err) => {
-            println!("Build config filed {err}, config is: {conf:?}");
-        }
-    }
+pub trait AppConfigExt {
+    fn app_conf_state(&self) -> State<'_, AppConfigState>;
+    fn app_config(&self) -> AppConfig;
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+impl<R: Runtime> AppConfigExt for AppHandle<R> {
+    fn app_conf_state(&self) -> State<'_, AppConfigState> {
+        let t = self.state::<AppConfigState>();
 
-    #[test]
-    fn test_path() {
-        println!("{:?}", get_config_dir());
+        t
     }
 
-    #[test]
-    fn read_config() {
-        let conf = read();
+    fn app_config(&self) -> AppConfig {
+        let binding = self.app_conf_state();
 
-        println!("{:?}", conf);
+        let t = binding.conf.blocking_lock();
+
+        t.clone()
     }
 }

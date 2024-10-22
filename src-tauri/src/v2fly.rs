@@ -1,7 +1,7 @@
 use tauri::async_runtime::Mutex;
 use tauri::{is_dev, AppHandle, Manager, Runtime, State};
 
-use crate::conf::{self};
+use crate::conf::AppConfigExt;
 use crate::logger::Logger;
 use crate::utils::{hide_windows_cmd_window, tail_from_file};
 use std::ffi::OsStr;
@@ -9,37 +9,49 @@ use std::fs::File;
 use std::path::PathBuf;
 use std::process::{Child, Command};
 
-pub struct FlyState(Mutex<FlyStateInner>);
+pub struct FlyState<R: Runtime> {
+    inner: Mutex<FlyStateInner>,
+    app_handle: AppHandle<R>,
+}
 
-impl FlyState {
-    pub fn init<R: Runtime>(app: &AppHandle<R>) {
+impl<R: Runtime> FlyState<R> {
+    pub fn init(app: &AppHandle<R>) {
         let fly = FlyStateInner::new(app);
 
-        let fly_state = FlyState(Mutex::new(fly));
+        let fly_state = FlyState {
+            inner: Mutex::new(fly),
+            app_handle: app.clone(),
+        };
 
         app.manage(fly_state);
     }
 
-    pub async fn restart(&self) -> Result<(), std::io::Error> {
-        self.0.lock().await.restart()
+    pub fn restart(&self) -> Result<(), std::io::Error> {
+        let app_conf_state = self.app_handle.app_conf_state();
+        let app_conf = app_conf_state.get();
+
+        self.inner.blocking_lock().restart(
+            app_conf.v2_fly.bin.clone(),
+            app_conf_state.v2ray_config_path(),
+        )
     }
 
-    pub async fn stop(&self) {
-        self.0.lock().await.stop();
+    pub fn stop(&self) {
+        self.inner.blocking_lock().stop();
     }
 
-    pub async fn read_log(&self) -> Vec<String> {
-        self.0.lock().await.read_log()
+    pub fn read_log(&self) -> Vec<String> {
+        self.inner.blocking_lock().read_log()
     }
 }
 
-pub trait FlyStateExt {
-    fn fly_state(&self) -> State<'_, FlyState>;
+pub trait FlyStateExt<R: Runtime> {
+    fn fly_state(&self) -> State<'_, FlyState<R>>;
 }
 
-impl<R: Runtime> FlyStateExt for AppHandle<R> {
-    fn fly_state(&self) -> State<'_, FlyState> {
-        let t = self.state::<FlyState>();
+impl<R: Runtime> FlyStateExt<R> for AppHandle<R> {
+    fn fly_state(&self) -> State<'_, FlyState<R>> {
+        let t = self.state::<FlyState<R>>();
 
         t
     }
@@ -73,15 +85,12 @@ impl FlyStateInner {
         }
     }
 
-    pub fn restart(&mut self) -> Result<(), std::io::Error> {
+    pub fn restart(&mut self, bin: String, conf_path: PathBuf) -> Result<(), std::io::Error> {
         self.stop();
 
-        let config = conf::read();
-
-        let conf_path = conf::get_v2fly_conf_path();
         let args = ["run", "-c", conf_path.to_str().unwrap()];
 
-        self.start_with_args(config.v2_fly.bin, args)
+        self.start_with_args(bin, args)
     }
 
     fn start_with_args<Str, Args>(&mut self, bin: Str, args: Args) -> Result<(), std::io::Error>
