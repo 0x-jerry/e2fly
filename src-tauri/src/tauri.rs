@@ -84,16 +84,14 @@ pub fn start_tauri() {
         .expect("error while building tauri application");
 
     app.run(|app_handle, e| match e {
-        // Triggered when a window is trying to close
         RunEvent::WindowEvent {
-            label: _, event, ..
+            event: WindowEvent::CloseRequested { api, .. },
+            ..
         } => {
-            if let WindowEvent::CloseRequested { api, .. } = event {
-                api.prevent_close();
+            api.prevent_close();
 
-                if let Some(win) = app_handle.get_webview_window(WINDOW_NAME) {
-                    win.hide().unwrap()
-                }
+            if let Some(win) = app_handle.get_webview_window(WINDOW_NAME) {
+                win.hide().unwrap()
             }
         }
 
