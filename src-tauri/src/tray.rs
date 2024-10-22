@@ -2,8 +2,9 @@ use tauri::{
     image::Image,
     menu::{CheckMenuItem, Menu, MenuItem},
     tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
-    AppHandle, Error, Runtime,
+    AppHandle, Error, Manager, Runtime,
 };
+use tauri_plugin_shell::ShellExt;
 
 use crate::{
     conf::AppConfigExt, const_var::TRAY_NAME, system_proxy::update_system_proxy,
@@ -55,6 +56,13 @@ pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
 
                 update_system_proxy(app);
             }
+            "open-config-folder" => {
+                let app_config_dir = app.path().app_config_dir().expect("get app config dir");
+
+                app.shell()
+                    .open(app_config_dir.to_str().unwrap(), None)
+                    .expect("open config folder");
+            }
             _ => (),
         })
         .on_tray_icon_event(|tray, event| {
@@ -92,7 +100,15 @@ pub fn build_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<Menu<R>, Error>
     let check_updates =
         MenuItem::with_id(app, "check-update", "Check for updates", true, None::<&str>)?;
 
-    let tray_menu = Menu::with_items(app, &[&toggle, &check_updates, &quit])?;
+    let open_config_folder = MenuItem::with_id(
+        app,
+        "open-config-folder",
+        "Open config folder",
+        true,
+        None::<&str>,
+    )?;
+
+    let tray_menu = Menu::with_items(app, &[&toggle, &open_config_folder, &check_updates, &quit])?;
 
     Ok(tray_menu)
 }
