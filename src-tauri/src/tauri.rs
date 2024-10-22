@@ -41,9 +41,7 @@ pub fn start_tauri() {
 
     let context = tauri::generate_context!();
 
-    let pkg_info = context.package_info().clone();
-
-    let app = app.setup(move |app| {
+    let app = app.setup(|app| {
         let app_handle = app.handle();
         conf::AppConfigState::init(app_handle).expect("init app config state failed");
 
@@ -61,7 +59,8 @@ pub fn start_tauri() {
         proxy::set_proxy(&app_conf);
 
         tray::setup_tray_menu(app_handle)?;
-        menu::setup_win_menu(app_handle, pkg_info)?;
+
+        menu::setup_win_menu(app_handle)?;
 
         if app_conf.app.auto_startup {
             let _ = app
