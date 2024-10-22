@@ -61,6 +61,7 @@
         "fullscreen": false,
         "resizable": false,
         "maximizable": false,
+        "visibleOnAllWorkspaces": true,
         "title": "E2Fly",
         "height": 640,
         "width": 350
