@@ -12,7 +12,7 @@ fn get_available_network_types() -> Vec<&'static str> {
     let types: Vec<&str> = NETWORK_TYPES
         .iter()
         .filter(|x| run_command(PROXY_CMD, &["-getwebproxy", x]).is_ok())
-        .map(|x| *x)
+        .copied()
         .collect();
 
     types

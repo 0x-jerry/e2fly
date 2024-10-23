@@ -15,7 +15,7 @@ fn save_conf<R: Runtime>(app: AppHandle<R>, conf: AppConfig) {
 
 #[command]
 fn read_conf<R: Runtime>(app: AppHandle<R>) -> AppConfig {
-    app.app_conf_state().clone_conf()
+    app.app_config()
 }
 
 #[command]

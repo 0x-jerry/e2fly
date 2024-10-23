@@ -25,8 +25,8 @@ os_pipe = "1.2.1"
 file-rotate = "0.7.6"
 tauri-plugin-notification = "2"
 tauri-plugin-dialog = "2"
-derive_more = { version = "1.0.0", features = ["deref"] }
-tokio = "1.41.0"
+# derive_more = { version = "1.0.0", features = ["deref"] }
+# tokio = "1.41.0"
 
 [target."cfg(not(any(target_os = \"android\", target_os = \"ios\")))".dependencies]
 tauri-plugin-autostart = "2"

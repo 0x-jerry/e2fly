@@ -1,7 +1,10 @@
 use model::AppConfig;
-use std::{fs, path::PathBuf};
-use tauri::{async_runtime::Mutex, is_dev, AppHandle, Manager, Result, Runtime, State};
-use tokio::sync::MutexGuard;
+use std::{
+    fs,
+    path::PathBuf,
+    sync::{Mutex, MutexGuard},
+};
+use tauri::{is_dev, AppHandle, Manager, Result, Runtime, State};
 
 pub mod model;
 
@@ -64,11 +67,11 @@ impl AppConfigState {
             AppConfig::default()
         };
 
-        self.conf.blocking_lock().clone_from(&conf);
+        self.conf.lock().unwrap().clone_from(&conf);
     }
 
     pub fn save(&self, new_conf: &AppConfig) {
-        self.conf.blocking_lock().clone_from(new_conf);
+        self.conf.lock().unwrap().clone_from(new_conf);
 
         let save_file = self.conf_dir.join(CONFIG_NAME);
         let content = serde_json::to_string(&new_conf).unwrap();
@@ -76,32 +79,28 @@ impl AppConfigState {
         fs::write(save_file, content).expect("Write v2ray config file failed");
     }
 
-    pub fn clone_conf(&self) -> AppConfig {
-        self.conf.blocking_lock().clone()
-    }
-
-    pub fn get(&self) -> MutexGuard<'_, AppConfig> {
-        self.conf.blocking_lock()
+    pub fn get(&self) -> MutexGuard<AppConfig> {
+        self.conf.lock().unwrap()
     }
 }
 
 pub trait AppConfigExt {
-    fn app_conf_state(&self) -> State<'_, AppConfigState>;
+    fn app_conf_state(&self) -> State<AppConfigState>;
     fn app_config(&self) -> AppConfig;
 }
 
 impl<R: Runtime> AppConfigExt for AppHandle<R> {
-    fn app_conf_state(&self) -> State<'_, AppConfigState> {
+    fn app_conf_state(&self) -> State<AppConfigState> {
         let t = self.state::<AppConfigState>();
 
         t
     }
 
     fn app_config(&self) -> AppConfig {
-        let binding = self.app_conf_state();
+        let t = self.app_conf_state();
 
-        let t = binding.conf.blocking_lock();
+        let u = t.get();
 
-        t.clone()
+        u.clone()
     }
 }
