@@ -16,6 +16,7 @@ impl ProxyAction for ProxyImpl {
     }
 }
 
+// https://ss64.com/mac/networksetup.html
 const PROXY_CMD: &str = "networksetup";
 
 const NETWORK_TYPES: [&str; 3] = ["Ethernet", "Thunderbolt Ethernet", "Wi-Fi"];

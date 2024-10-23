@@ -16,12 +16,12 @@ impl ProxyAction for ProxyImpl {
     }
 }
 
+// https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/reg
 // https://superuser.com/a/1323579
 // reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 1
 // reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer /t REG_SZ /d name:port
 // reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyUser /t REG_SZ /d username
 // reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyPass /t REG_SZ /d password
-// netsh winhttp import proxy source=ie
 
 const INTERNET_SETTING_KEY: &str =
     "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings";
