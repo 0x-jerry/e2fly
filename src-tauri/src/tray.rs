@@ -1,6 +1,6 @@
 use tauri::{
     image::Image,
-    menu::{CheckMenuItem, Menu, MenuItem},
+    menu::{CheckMenuItem, Menu, MenuItem, PredefinedMenuItem},
     tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
     AppHandle, Error, Manager, Runtime,
 };
@@ -103,7 +103,9 @@ pub fn build_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<Menu<R>, Error>
         None::<&str>,
     )?;
 
-    let tray_menu = Menu::with_items(app, &[&toggle, &open_config_folder, &check_updates])?;
+    let quit = PredefinedMenuItem::quit(app, Some(&"Quit")).unwrap();
+
+    let tray_menu = Menu::with_items(app, &[&toggle, &open_config_folder, &check_updates, &quit])?;
 
     Ok(tray_menu)
 }
