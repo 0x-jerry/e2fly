@@ -40,16 +40,13 @@ pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
         .menu_on_left_click(false)
         .menu(&tray_menu)
         .on_menu_event(move |app, event| match event.id().as_ref() {
-            "quit" => {
-                app.exit(0);
-            }
             "check-updates" => {
                 check_update(app);
             }
             "toggle-system-proxy" => {
                 let app_conf = app.app_conf_state();
 
-                let mut conf = app_conf.clone_conf();
+                let mut conf = app_conf.get().clone();
                 conf.proxy.system = !conf.proxy.system;
 
                 app_conf.save(&conf);
@@ -82,8 +79,6 @@ pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
 }
 
 pub fn build_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<Menu<R>, Error> {
-    let quit = MenuItem::with_id(app, "quit", "Quit", true, "CmdOrControl+Q".into())?;
-
     let app_conf = app.app_config();
 
     let is_enabled_system_proxy = app_conf.proxy.system;
@@ -108,7 +103,7 @@ pub fn build_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<Menu<R>, Error>
         None::<&str>,
     )?;
 
-    let tray_menu = Menu::with_items(app, &[&toggle, &open_config_folder, &check_updates, &quit])?;
+    let tray_menu = Menu::with_items(app, &[&toggle, &open_config_folder, &check_updates])?;
 
     Ok(tray_menu)
 }

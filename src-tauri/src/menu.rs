@@ -3,7 +3,7 @@ use tauri::{
     AppHandle, Error, Runtime,
 };
 
-use crate::{updater::check_update, utils::toggle_main_window};
+use crate::updater::check_update;
 
 pub fn setup_win_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
     let app_info = app.config();
@@ -24,12 +24,9 @@ pub fn setup_win_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
                 .undo()
                 .build()?,
             &SubmenuBuilder::new(app, "About")
+                .quit()
+                .close_window()
                 .item(&MenuItemBuilder::with_id("check-updates", "Check for updates").build(app)?)
-                .item(
-                    &MenuItemBuilder::with_id("toggle-win", "Close window")
-                        .accelerator("CmdOrControl+W")
-                        .build(app)?,
-                )
                 .about(Some(about_meta))
                 .build()?,
         ],
@@ -39,9 +36,6 @@ pub fn setup_win_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
 
     app.on_menu_event(|app, event| {
         match event.id().0.as_str() {
-            "toggle-win" => {
-                toggle_main_window(app).expect("toggle window");
-            }
             "check-update" => {
                 check_update(app);
             }
