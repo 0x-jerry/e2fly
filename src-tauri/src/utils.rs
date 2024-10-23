@@ -1,6 +1,4 @@
 use rev_buf_reader::RevBufReader;
-#[cfg(windows)]
-use std::os::windows::process::CommandExt;
 use std::{
     fs::File,
     io::{self, BufRead, Read},
@@ -36,6 +34,7 @@ pub fn hide_windows_cmd_window(cmd: &mut Command) {
 
     #[cfg(windows)]
     {
+        use std::os::windows::process::CommandExt;
         const CREATE_NO_WINDOW: u32 = 0x08000000;
 
         cmd.creation_flags(CREATE_NO_WINDOW);
