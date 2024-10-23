@@ -53,7 +53,7 @@ pub fn tail_from_file(file: &File, limit: usize) -> Vec<String> {
 pub fn toggle_main_window<R: Runtime>(app: &AppHandle<R>) -> Result<()> {
     app.get_webview_window(WINDOW_NAME)
         .map(|win| -> Result<()> {
-            if win.is_visible()? {
+            if win.is_visible()? && !win.is_minimized()? {
                 win.hide()?;
             } else {
                 show_window(&win)?;
@@ -67,6 +67,11 @@ pub fn toggle_main_window<R: Runtime>(app: &AppHandle<R>) -> Result<()> {
 pub fn show_window<R: Runtime>(win: &WebviewWindow<R>) -> Result<()> {
     win.set_always_on_top(true)?;
     win.show()?;
+
+    if win.is_minimized()? {
+        win.unminimize()?;
+    }
+
     win.set_focus()?;
     win.set_always_on_top(false)?;
 
