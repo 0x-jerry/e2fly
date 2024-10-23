@@ -2,7 +2,19 @@ use std::io;
 
 use crate::utils::run_command;
 
-use super::{ProxyConf, SysProxyType};
+use super::{ProxyAction, SysProxyType};
+
+pub struct ProxyImpl;
+
+impl ProxyAction for ProxyImpl {
+    fn enable(conf: SysProxyType) -> io::Result<()> {
+        enable_proxy(conf)
+    }
+
+    fn disable(_conf: SysProxyType) -> io::Result<()> {
+        disable_proxy()
+    }
+}
 
 // https://superuser.com/a/1323579
 // reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 1
@@ -14,7 +26,19 @@ use super::{ProxyConf, SysProxyType};
 const INTERNET_SETTING_KEY: &str =
     "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings";
 
-pub fn enable_proxy(_proxy_type: SysProxyType, conf: ProxyConf) -> io::Result<()> {
+/// only support http proxy
+fn enable_proxy(proxy_type: SysProxyType) -> io::Result<()> {
+    let conf = match proxy_type {
+        SysProxyType::Http(proxy_conf) => proxy_conf,
+        _ => None,
+    };
+
+    if conf.is_none() {
+        return Ok(());
+    }
+
+    let conf = conf.unwrap();
+
     let addr = format!("{}:{}", conf.addr, conf.port);
 
     run_command(
@@ -50,7 +74,7 @@ pub fn enable_proxy(_proxy_type: SysProxyType, conf: ProxyConf) -> io::Result<()
     Ok(())
 }
 
-pub fn disable_proxy(_proxy_type: SysProxyType) -> io::Result<()> {
+fn disable_proxy() -> io::Result<()> {
     run_command(
         "reg",
         &[

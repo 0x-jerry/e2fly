@@ -1,64 +1,58 @@
 use crate::conf::model::AppConfig;
 use std::io;
 
-#[cfg_attr(target_os = "macos", path = "mac.rs")]
-#[cfg_attr(target_os = "windows", path = "win.rs")]
-mod proxy_impl;
+#[cfg(unix)]
+mod mac;
+#[cfg(unix)]
+use mac::ProxyImpl;
 
-#[derive(Debug, Copy, Clone)]
-pub struct ProxyConf<'a> {
-    pub addr: &'a str,
-    pub port: &'a str,
+#[cfg(windows)]
+mod win;
+#[cfg(windows)]
+use win::ProxyImpl;
+
+#[derive(Debug, Clone)]
+pub struct ProxyConf {
+    pub addr: String,
+    pub port: String,
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Clone)]
 pub enum SysProxyType {
-    Http,
-    Socks,
+    Http(Option<ProxyConf>),
+    Socks(Option<ProxyConf>),
 }
 
-pub fn enable_proxy(proxy_type: SysProxyType, conf: ProxyConf) -> io::Result<()> {
-    proxy_impl::enable_proxy(proxy_type, conf)?;
-
-    Ok(())
+pub trait ProxyAction {
+    fn enable(conf: SysProxyType) -> io::Result<()>;
+    fn disable(conf: SysProxyType) -> io::Result<()>;
 }
 
-pub fn disable_proxy(proxy_type: SysProxyType) -> io::Result<()> {
-    proxy_impl::disable_proxy(proxy_type)?;
-
-    Ok(())
-}
-
-pub fn set_proxy(conf: &AppConfig) {
+pub fn set_proxy(conf: &AppConfig) -> io::Result<()> {
     if !conf.proxy.system {
-        disable_proxy(SysProxyType::Http).expect("disable http proxy failed");
-        disable_proxy(SysProxyType::Socks).expect("disable socks proxy failed");
-        return;
+        ProxyImpl::disable(SysProxyType::Http(None))?;
+        ProxyImpl::disable(SysProxyType::Socks(None))?;
+
+        return Ok(());
     }
 
     let http = &conf.v2_fly.http;
 
     if http.enabled {
-        enable_proxy(
-            SysProxyType::Http,
-            ProxyConf {
-                addr: http.address.as_str(),
-                port: http.port.to_string().as_str(),
-            },
-        )
-        .expect("set http proxy failed");
+        ProxyImpl::enable(SysProxyType::Http(Some(ProxyConf {
+            addr: http.address.clone(),
+            port: http.port.to_string(),
+        })))?;
     }
 
     let socks = &conf.v2_fly.socks;
 
     if socks.enabled {
-        enable_proxy(
-            SysProxyType::Socks,
-            ProxyConf {
-                addr: socks.address.as_str(),
-                port: socks.port.to_string().as_str(),
-            },
-        )
-        .expect("set http proxy failed");
+        ProxyImpl::enable(SysProxyType::Socks(Some(ProxyConf {
+            addr: socks.address.clone(),
+            port: socks.port.to_string(),
+        })))?;
     }
+
+    Ok(())
 }
