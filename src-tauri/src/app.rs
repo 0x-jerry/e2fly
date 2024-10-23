@@ -10,7 +10,7 @@ pub fn before_exit_app<R: Runtime>(app: &AppHandle<R>) {
 
     if conf.proxy.system {
         conf.proxy.system = false;
-        set_proxy(&conf);
+        set_proxy(&conf).unwrap_or_default();
     }
 
     app.fly_state().stop();

@@ -20,6 +20,7 @@ pub struct ProxyConf {
 #[derive(Debug, Clone)]
 pub enum SysProxyType {
     Http(Option<ProxyConf>),
+    #[allow(dead_code)]
     Socks(Option<ProxyConf>),
 }
 

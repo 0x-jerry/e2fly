@@ -56,7 +56,7 @@ pub fn start_tauri() {
                 .expect("restart v2ray failed");
         }
 
-        proxy::set_proxy(&app_conf);
+        proxy::set_proxy(&app_conf).unwrap_or_default();
 
         tray::setup_tray_menu(app_handle)?;
 

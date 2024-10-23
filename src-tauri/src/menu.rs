@@ -35,6 +35,7 @@ pub fn setup_win_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
     app.set_menu(menu)?;
 
     app.on_menu_event(|app, event| {
+        #[allow(clippy::single_match)]
         match event.id().0.as_str() {
             "check-update" => {
                 check_update(app);

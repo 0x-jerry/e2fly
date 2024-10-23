@@ -18,5 +18,5 @@ pub fn update_system_proxy<R: Runtime>(app: &AppHandle<R>) {
         .map(|win| win.emit("config-changed", ""));
 
     let conf = app.app_config();
-    proxy::set_proxy(&conf);
+    proxy::set_proxy(&conf).expect("set proxy failed");
 }
