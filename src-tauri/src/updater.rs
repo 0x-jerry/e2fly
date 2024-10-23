@@ -9,7 +9,18 @@ pub fn check_update<R: Runtime>(app: &AppHandle<R>) {
     let handle = app.clone();
 
     std::thread::spawn(move || {
-        update(handle).expect("update failed");
+        let new_handle = handle.clone();
+
+        let _ = update(handle).inspect_err(|err| {
+            let msg = format!("Check update failed: {}", err.to_string());
+            new_handle
+                .notification()
+                .builder()
+                .title("E2Fly")
+                .body(msg)
+                .show()
+                .unwrap();
+        });
     });
 }
 
