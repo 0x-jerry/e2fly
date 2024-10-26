@@ -12,7 +12,7 @@ pub fn check_update<R: Runtime>(app: &AppHandle<R>) {
         let new_handle = handle.clone();
 
         let _ = update(handle).inspect_err(|err| {
-            let msg = format!("Check update failed: {}", err.to_string());
+            let msg = format!("Check update failed: {}", err);
             new_handle
                 .notification()
                 .builder()

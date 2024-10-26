@@ -1,6 +1,6 @@
 use tauri::{
     image::Image,
-    menu::{CheckMenuItem, Menu, MenuItem, PredefinedMenuItem},
+    menu::{CheckMenuItem, Menu, MenuId, MenuItem, PredefinedMenuItem},
     tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
     AppHandle, Error, Manager, Runtime,
 };
@@ -13,6 +13,52 @@ use crate::{
     updater::check_update,
     utils::toggle_main_window,
 };
+
+#[derive(Clone, Copy)]
+enum TrayMenuId {
+    ToggleSystemProxy,
+    OpenConfigFolder,
+    CheckUpdate,
+    About,
+    Quit,
+}
+
+impl TrayMenuId {
+    pub fn from_menu_id(id: &MenuId) -> Option<TrayMenuId> {
+        match id.as_ref() {
+            "toggle-system-proxy" => Some(TrayMenuId::ToggleSystemProxy),
+            "open-config-folder" => Some(TrayMenuId::OpenConfigFolder),
+            "check-updates" => Some(TrayMenuId::CheckUpdate),
+            "about" => Some(TrayMenuId::About),
+            "quit" => Some(TrayMenuId::Quit),
+            _ => None,
+        }
+    }
+}
+
+impl From<TrayMenuId> for MenuId {
+    fn from(value: TrayMenuId) -> Self {
+        match value {
+            TrayMenuId::ToggleSystemProxy => "toggle-system-proxy".into(),
+            TrayMenuId::OpenConfigFolder => "open-config-folder".into(),
+            TrayMenuId::CheckUpdate => "check-updates".into(),
+            TrayMenuId::About => "about".into(),
+            TrayMenuId::Quit => "quit".into(),
+        }
+    }
+}
+
+impl AsRef<str> for TrayMenuId {
+    fn as_ref(&self) -> &str {
+        match self {
+            TrayMenuId::ToggleSystemProxy => "System Proxy",
+            TrayMenuId::OpenConfigFolder => "Open Config Folder",
+            TrayMenuId::CheckUpdate => "Check for Updates",
+            TrayMenuId::About => "About",
+            TrayMenuId::Quit => "Quit",
+        }
+    }
+}
 
 pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
     let version = app.config().version.clone().unwrap_or_default();
@@ -42,33 +88,38 @@ pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
     system_tray
         .menu_on_left_click(false)
         .menu(&tray_menu)
-        .on_menu_event(move |app, event| match event.id().as_ref() {
-            "check-updates" => {
-                check_update(app);
-            }
-            "toggle-system-proxy" => {
-                let app_conf = app.app_conf_state();
+        .on_menu_event(move |app, event| {
+            if let Some(id) = TrayMenuId::from_menu_id(event.id()) {
+                match id {
+                    TrayMenuId::CheckUpdate => {
+                        check_update(app);
+                    }
+                    TrayMenuId::ToggleSystemProxy => {
+                        let app_conf = app.app_conf_state();
 
-                let mut conf = app_conf.get().clone();
-                conf.proxy.system = !conf.proxy.system;
+                        let mut conf = app_conf.get().clone();
+                        conf.proxy.system = !conf.proxy.system;
 
-                app_conf.save(&conf);
+                        app_conf.save(&conf);
 
-                update_system_proxy(app);
-            }
-            "open-config-folder" => {
-                let app_config_dir = app.path().app_config_dir().expect("get app config dir");
+                        update_system_proxy(app);
+                    }
+                    TrayMenuId::OpenConfigFolder => {
+                        let app_config_dir =
+                            app.path().app_config_dir().expect("get app config dir");
 
-                app.shell()
-                    .open(app_config_dir.to_str().unwrap(), None)
-                    .expect("open config folder");
+                        app.shell()
+                            .open(app_config_dir.to_str().unwrap(), None)
+                            .expect("open config folder");
+                    }
+                    TrayMenuId::About => {
+                        app.shell()
+                            .open(HOME_PAGE_URL, None)
+                            .expect("open home page");
+                    }
+                    _ => (),
+                }
             }
-            "about" => {
-                app.shell()
-                    .open(HOME_PAGE_URL, None)
-                    .expect("open home page");
-            }
-            _ => (),
         })
         .on_tray_icon_event(|tray, event| {
             if let TrayIconEvent::Click {
@@ -89,44 +140,31 @@ pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
 pub fn build_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<Menu<R>, Error> {
     let app_conf = app.app_config();
 
-    let is_enabled_system_proxy = app_conf.proxy.system;
-
-    let toggle = CheckMenuItem::with_id(
+    let toggle_system = CheckMenuItem::with_id(
         app,
-        "toggle-system-proxy",
-        "System proxy",
+        TrayMenuId::ToggleSystemProxy,
+        TrayMenuId::ToggleSystemProxy,
         true,
-        is_enabled_system_proxy,
+        app_conf.proxy.system,
         None::<&str>,
     )?;
-
-    let check_updates =
-        MenuItem::with_id(app, "check-update", "Check for updates", true, None::<&str>)?;
-
-    let open_config_folder = MenuItem::with_id(
-        app,
-        "open-config-folder",
-        "Open config folder",
-        true,
-        None::<&str>,
-    )?;
-
-    let quit = PredefinedMenuItem::quit(app, Some(&"Quit")).unwrap();
-
-    let about = MenuItem::with_id(app, "about", "About", true, None::<&str>)?;
 
     let tray_menu = Menu::with_items(
         app,
         &[
-            &toggle,
-            &open_config_folder,
+            &toggle_system,
+            &create_menu_item(app, TrayMenuId::OpenConfigFolder)?,
             &PredefinedMenuItem::separator(app)?,
-            &check_updates,
-            &about,
+            &create_menu_item(app, TrayMenuId::CheckUpdate)?,
+            &create_menu_item(app, TrayMenuId::About)?,
             &PredefinedMenuItem::separator(app)?,
-            &quit,
+            &PredefinedMenuItem::quit(app, Some(TrayMenuId::Quit.as_ref()))?,
         ],
     )?;
 
     Ok(tray_menu)
+}
+
+fn create_menu_item<R: Runtime>(app: &AppHandle<R>, id: TrayMenuId) -> Result<MenuItem<R>, Error> {
+    MenuItem::with_id(app, id, id.as_ref(), true, None::<&str>)
 }
