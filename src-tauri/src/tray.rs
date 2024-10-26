@@ -66,23 +66,6 @@ pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
     let tooltip_msg = format!("E2Fly v{}", version);
 
     let system_tray = TrayIconBuilder::<R>::with_id(TRAY_NAME).tooltip(tooltip_msg);
-
-    #[cfg(windows)]
-    let system_tray = {
-        let icon_img =
-            Image::from_bytes(include_bytes!("../icons/icon.ico")).expect("load icon image");
-
-        system_tray.icon(icon_img)
-    };
-
-    #[cfg(not(windows))]
-    let system_tray = {
-        let icon_img = Image::from_bytes(include_bytes!("../icons/logoTemplate.png"))
-            .expect("load icon image");
-
-        system_tray.icon_as_template(true).icon(icon_img)
-    };
-
     let tray_menu = build_tray_menu(app).expect("build tray menu");
 
     system_tray
@@ -133,6 +116,40 @@ pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
             }
         })
         .build(app)?;
+
+    update_tray_icon_image(app)?;
+
+    Ok(())
+}
+
+pub fn update_tray_icon_image<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
+    let tray = app.tray_by_id(TRAY_NAME).expect("get tray icon");
+
+    let is_enabled_system_proxy = app.app_config().proxy.system;
+
+    #[cfg(not(unix))]
+    {
+        let icon_img = if is_enabled_system_proxy {
+            Image::from_bytes(include_bytes!("../icons/enabled/icon.ico")).expect("load icon image")
+        } else {
+            Image::from_bytes(include_bytes!("../icons/icon.ico")).expect("load icon image")
+        };
+
+        tray.set_icon(Some(icon_img))?
+    };
+
+    #[cfg(unix)]
+    {
+        let icon_img = if is_enabled_system_proxy {
+            Image::from_bytes(include_bytes!("../icons/enabled/logoTemplate.png"))
+                .expect("load icon image")
+        } else {
+            Image::from_bytes(include_bytes!("../icons/logoTemplate.png")).expect("load icon image")
+        };
+
+        tray.set_icon_as_template(true)?;
+        tray.set_icon(Some(icon_img))?;
+    }
 
     Ok(())
 }

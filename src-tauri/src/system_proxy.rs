@@ -4,7 +4,7 @@ use crate::{
     conf::AppConfigExt,
     const_var::{TRAY_NAME, WINDOW_NAME},
     proxy,
-    tray::build_tray_menu,
+    tray::{build_tray_menu, update_tray_icon_image},
 };
 
 pub fn update_system_proxy<R: Runtime>(app: &AppHandle<R>) {
@@ -19,4 +19,6 @@ pub fn update_system_proxy<R: Runtime>(app: &AppHandle<R>) {
 
     let conf = app.app_config();
     proxy::set_proxy(&conf).expect("set proxy failed");
+
+    update_tray_icon_image(app).expect("update tray icon");
 }
