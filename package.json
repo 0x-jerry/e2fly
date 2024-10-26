@@ -20,7 +20,7 @@
     "build": "tauri build",
     "dev:web": "vite",
     "build:web": "vite build",
-    "g:icons": "tauri icon assets/logo.png",
+    "g:icons": "tauri icon assets/logo.png -o src-tauri/icons && tauri icon assets/enabled/logo.png -o src-tauri/icons/enabled",
     "g:types": "tsx scripts/gen-config-types.ts",
     "release": "x-release"
   },
