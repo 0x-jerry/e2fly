@@ -9,6 +9,7 @@ use tauri::{is_dev, AppHandle, Manager, Result, Runtime, State};
 pub mod model;
 
 const CONFIG_NAME: &str = "config.json";
+pub const HOME_PAGE_URL: &str = "https://github.com/0x-jerry/e2fly";
 
 pub struct AppConfigState {
     conf: Mutex<AppConfig>,

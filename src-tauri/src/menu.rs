@@ -1,17 +1,11 @@
 use tauri::{
-    menu::{AboutMetadataBuilder, Menu, MenuItemBuilder, SubmenuBuilder},
+    menu::{Menu, MenuItemBuilder, SubmenuBuilder},
     AppHandle, Error, Runtime,
 };
 
 use crate::updater::check_update;
 
 pub fn setup_win_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
-    let app_info = app.config();
-
-    let about_meta = AboutMetadataBuilder::new()
-        .version(Some(app_info.version.clone().unwrap()))
-        .build();
-
     let menu = Menu::with_items(
         app,
         &[
@@ -27,7 +21,6 @@ pub fn setup_win_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
                 .quit()
                 .close_window()
                 .item(&MenuItemBuilder::with_id("check-updates", "Check for updates").build(app)?)
-                .about(Some(about_meta))
                 .build()?,
         ],
     )?;

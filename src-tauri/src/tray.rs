@@ -7,8 +7,11 @@ use tauri::{
 use tauri_plugin_shell::ShellExt;
 
 use crate::{
-    conf::AppConfigExt, const_var::TRAY_NAME, system_proxy::update_system_proxy,
-    updater::check_update, utils::toggle_main_window,
+    conf::{AppConfigExt, HOME_PAGE_URL},
+    const_var::TRAY_NAME,
+    system_proxy::update_system_proxy,
+    updater::check_update,
+    utils::toggle_main_window,
 };
 
 pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
@@ -60,6 +63,11 @@ pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
                     .open(app_config_dir.to_str().unwrap(), None)
                     .expect("open config folder");
             }
+            "about" => {
+                app.shell()
+                    .open(HOME_PAGE_URL, None)
+                    .expect("open home page");
+            }
             _ => (),
         })
         .on_tray_icon_event(|tray, event| {
@@ -105,7 +113,20 @@ pub fn build_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<Menu<R>, Error>
 
     let quit = PredefinedMenuItem::quit(app, Some(&"Quit")).unwrap();
 
-    let tray_menu = Menu::with_items(app, &[&toggle, &open_config_folder, &check_updates, &quit])?;
+    let about = MenuItem::with_id(app, "about", "About", true, None::<&str>)?;
+
+    let tray_menu = Menu::with_items(
+        app,
+        &[
+            &toggle,
+            &open_config_folder,
+            &PredefinedMenuItem::separator(app)?,
+            &check_updates,
+            &about,
+            &PredefinedMenuItem::separator(app)?,
+            &quit,
+        ],
+    )?;
 
     Ok(tray_menu)
 }
