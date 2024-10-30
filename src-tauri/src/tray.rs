@@ -147,8 +147,8 @@ pub fn update_tray_icon_image<R: Runtime>(app: &AppHandle<R>) -> Result<(), Erro
             Image::from_bytes(include_bytes!("../icons/logoTemplate.png")).expect("load icon image")
         };
 
-        tray.set_icon_as_template(true)?;
         tray.set_icon(Some(icon_img))?;
+        tray.set_icon_as_template(true)?;
     }
 
     Ok(())
