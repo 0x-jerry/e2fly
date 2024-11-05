@@ -104,6 +104,7 @@ enum OutboundTag {
   DIRECT = 'direct',
   PROXY = 'proxy',
   BLOCK = 'block',
+  DNS = 'dns-output',
 }
 
 function getOutboundDirectConf(): V4.outbounds.OutboundObject {
@@ -129,7 +130,7 @@ function getHttpInbound(port: number, allowLAN?: boolean): V4.inbounds.InboundOb
     port: port,
     sniffing: {
       enabled: true,
-      destOverride: ['tls', 'http', 'fakedns', 'quic'],
+      destOverride: ['fakedns+others', 'tls', 'http', 'quic'],
     },
   }
 }
@@ -145,7 +146,7 @@ function getSocksInbound(port: number, allowLAN?: boolean): V4.inbounds.InboundO
     },
     sniffing: {
       enabled: true,
-      destOverride: ['tls', 'http', 'fakedns', 'quic'],
+      destOverride: ['fakedns+others', 'tls', 'http', 'quic'],
     },
   }
 }
@@ -247,14 +248,14 @@ export async function getV2rayConfig(
     dns: {
       servers: [
         {
-          address: '223.5.5.5',
-          domains: ['geosite:cn'],
-          expectIPs: ['geoip:cn'],
-        },
-        {
           address: 'fakedns',
           domains: ['geosite:geolocation-!cn'],
           expectIPs: ['geoip:!cn'],
+        },
+        {
+          address: '223.5.5.5',
+          domains: ['geosite:cn'],
+          expectIPs: ['geoip:cn'],
         },
         {
           address: 'https://1.1.1.1/dns-query',
@@ -262,6 +263,7 @@ export async function getV2rayConfig(
           expectIPs: ['geoip:!cn'],
         },
         '223.5.5.5',
+        '1.1.1.1',
         'localhost',
       ],
     },
