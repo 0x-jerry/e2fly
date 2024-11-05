@@ -43,27 +43,28 @@ export interface V2rayConfOption {
  * @returns
  */
 export function getOutboundConfFromBase64(opt: V2rayConfOption): V4.outbounds.OutboundObject {
-  const [_protocol, conf] = opt.b64.split('://')
+  const [protocol, conf] = opt.b64.split('://')
 
   const config: V2rayBase64 = JSON.parse(window.atob(conf))
 
   const outbound: V4.outbounds.OutboundObject = {
-    protocol: 'vmess',
+    protocol,
     streamSettings: {
       wsSettings: {
-        path: config.path,
-        headers: {
-          host: config.host,
-        },
+        path: config.path + '?ed=2560',
       },
       tlsSettings: {
         serverName: config.host,
+        fingerprint: 'chrome',
         allowInsecure: false,
       },
       security: 'tls',
       network: 'ws',
     },
-    settings: {
+  }
+
+  if (protocol === 'vmess') {
+    outbound.settings = {
       _t: 'vmess',
       vnext: [
         {
@@ -79,7 +80,25 @@ export function getOutboundConfFromBase64(opt: V2rayConfOption): V4.outbounds.Ou
           ],
         },
       ],
-    },
+    }
+  }
+
+  if (protocol === 'vless') {
+    outbound.settings = {
+      _t: 'vless',
+      vnext: [
+        {
+          address: config.add,
+          port: config.port,
+          users: [
+            {
+              id: config.id,
+              encryption: 'none',
+            },
+          ],
+        },
+      ],
+    }
   }
 
   if (opt.mux) {
@@ -94,9 +113,9 @@ export function getOutboundConfFromBase64(opt: V2rayConfOption): V4.outbounds.Ou
 
 //  ----------
 
-export async function getLogConf(): Promise<V4.overview.LogObject> {
+export function getLogConf(): V4.overview.LogObject {
   return {
-    loglevel: 'warning',
+    loglevel: 'debug',
   }
 }
 
@@ -234,7 +253,7 @@ export async function getV2rayConfig(
   }
 
   return {
-    log: await getLogConf(),
+    log: getLogConf(),
     inbounds,
     outbounds: [
       {

@@ -73,7 +73,7 @@ function getLabel(itemConf: string) {
   const item: V4.outbounds.OutboundObject = JSON.parse(itemConf)
   const protocol = item.protocol
 
-  if (protocol === 'vmess') {
+  if (protocol === 'vmess' || protocol === 'vless') {
     const address = item.settings?.vnext?.[0].address
     const port = item.settings?.vnext?.[0].port
 
