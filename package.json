@@ -47,7 +47,7 @@
     "@0x-jerry/v2ray-schema": "^1.0.5",
     "@0x-jerry/x-release": "^2.2.2",
     "@iconify-json/carbon": "^1.2.3",
-    "@intlify/unplugin-vue-i18n": "^5.2.0",
+    "@intlify/unplugin-vue-i18n": "^6.0.0",
     "@tauri-apps/cli": "^2.0.3",
     "@types/fs-extra": "^11.0.4",
     "@vitejs/plugin-vue": "^5.1.4",
