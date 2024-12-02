@@ -58,7 +58,7 @@
     "normalize.css": "^8.0.1",
     "tsx": "^4.19.1",
     "typescript": "^5.6.3",
-    "unocss": "^0.63.4",
+    "unocss": "^0.65.0",
     "unplugin-auto-import": "^0.18.3",
     "unplugin-icons": "^0.19.3",
     "unplugin-vue-components": "^0.27.4",
