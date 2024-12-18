@@ -4,7 +4,7 @@ use tauri::{
     tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
     AppHandle, Error, Manager, Runtime,
 };
-use tauri_plugin_shell::ShellExt;
+use tauri_plugin_opener::OpenerExt;
 
 use crate::{
     conf::{AppConfigExt, HOME_PAGE_URL},
@@ -91,13 +91,13 @@ pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
                         let app_config_dir =
                             app.path().app_config_dir().expect("get app config dir");
 
-                        app.shell()
-                            .open(app_config_dir.to_str().unwrap(), None)
+                        app.opener()
+                            .open_path(app_config_dir.to_str().unwrap(), None::<&str>)
                             .expect("open config folder");
                     }
                     TrayMenuId::About => {
-                        app.shell()
-                            .open(HOME_PAGE_URL, None)
+                        app.opener()
+                            .open_url(HOME_PAGE_URL, None::<&str>)
                             .expect("open home page");
                     }
                     _ => (),
