@@ -1,25 +1,17 @@
 <script lang="ts" setup>
 import { ipc } from '@/ipc'
 import { useInterval } from '@/hooks'
-import { path,  } from '@tauri-apps/api'
-import * as shell from "@tauri-apps/plugin-shell"
-
-interface LogLine {
-  id: number
-  content: string
-}
+import { path } from '@tauri-apps/api'
+import * as shell from '@tauri-apps/plugin-shell'
 
 const state = reactive({
-  logs: [] as LogLine[],
+  logs: [] as string[],
 })
 
 async function getLogs() {
   const logs = await ipc.getV2flyLogs()
 
-  state.logs = logs.map((x, idx) => ({
-    id: idx,
-    content: x + '\n',
-  }))
+  state.logs = logs.map((line) => line + '\n')
 }
 
 useInterval(() => getLogs(), 1000)
@@ -38,7 +30,7 @@ async function openLogFolder() {
       </Button>
     </div>
     <div class="px-3 overflow-auto flex-1">
-      <pre><code v-for="o in state.logs" :key="o.id" >{{o.content}}</code></pre>
+      <pre><code v-for="line in state.logs" :key="line" >{{ line }}</code></pre>
     </div>
   </div>
 </template>
