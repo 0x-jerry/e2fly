@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@0x-jerry/utils": "^4.2.2",
-    "@0x-jerry/v2ray-schema": "^1.0.5",
+    "@0x-jerry/v2ray-schema": "^2.0.0",
     "@0x-jerry/x-release": "^2.2.2",
     "@iconify-json/carbon": "^1.2.8",
     "@intlify/unplugin-vue-i18n": "^6.0.3",

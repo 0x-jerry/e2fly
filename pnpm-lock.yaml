@@ -61,8 +61,8 @@ importers:
         specifier: ^4.2.2
         version: 4.2.2
       '@0x-jerry/v2ray-schema':
-        specifier: ^1.0.5
-        version: 1.0.5
+        specifier: ^2.0.0
+        version: 2.0.0
       '@0x-jerry/x-release':
         specifier: ^2.2.2
         version: 2.2.2
@@ -132,8 +132,8 @@ packages:
   '@0x-jerry/utils@4.2.2':
     resolution: {integrity: sha512-5msyxVu5P0R9zKkdGE98jRCEQuriOif3xG1LOC30o+qjIqJN8mU5wM+uOocjCuA5ke0WVgqo24nZHwTWunivJg==}
 
-  '@0x-jerry/v2ray-schema@1.0.5':
-    resolution: {integrity: sha512-uwgM+12s0gL+Eun2gtxYIRyNl/Qm5VJ3FefqNyjpafYoe3HXYUIbe1GjRcZVrE+PFpNTAOKrLktG/iCMoc3lVw==}
+  '@0x-jerry/v2ray-schema@2.0.0':
+    resolution: {integrity: sha512-/sajgIVSPVP8Hnup/7GCGyeEFBVRq3MkQVGj08wyvyuucWn4rifMhZtxuPsU7iKM2TxP/ac+ccX9Mlkv4ORL1Q==}
 
   '@0x-jerry/vue-kit@2.3.1':
     resolution: {integrity: sha512-FMMSyONu1Arzs5huNZi5IbvGJsEITUuxerOCCiqCKt0Zyxa6xcVuzWhbCPLnhog/DI/r1DAh9MjeKmGPhvBJGg==}
@@ -2157,9 +2157,9 @@ snapshots:
       nanoid: 5.1.2
       picocolors: 1.1.1
 
-  '@0x-jerry/v2ray-schema@1.0.5':
+  '@0x-jerry/v2ray-schema@2.0.0':
     dependencies:
-      '@0x-jerry/utils': 2.5.0
+      '@0x-jerry/utils': 4.2.2
       '@biomejs/biome': 1.9.4
       remark: 15.0.1
     transitivePeerDependencies:
