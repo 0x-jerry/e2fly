@@ -1,13 +1,13 @@
 import {
   defineConfig,
   presetAttributify,
-  presetUno,
+  presetWind3,
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
 
 // https://github.com/unocss/unocss
 export default defineConfig({
-  presets: [presetAttributify(), presetUno()],
+  presets: [presetWind3(), presetAttributify() ],
   transformers: [transformerDirectives(), transformerVariantGroup()],
 })
