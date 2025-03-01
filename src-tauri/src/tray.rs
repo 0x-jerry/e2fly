@@ -69,7 +69,7 @@ pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
     let tray_menu = build_tray_menu(app).expect("build tray menu");
 
     system_tray
-        .menu_on_left_click(false)
+        .show_menu_on_left_click(false)
         .menu(&tray_menu)
         .on_menu_event(move |app, event| {
             if let Some(id) = TrayMenuId::from_menu_id(event.id()) {

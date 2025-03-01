@@ -14,7 +14,6 @@ impl<T: AsRef<Path>> From<T> for Logger {
             AppendCount::new(2),
             ContentLimit::Lines(10000),
             Compression::None,
-            #[cfg(unix)]
             None,
         );
 

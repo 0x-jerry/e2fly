@@ -123,52 +123,28 @@ async function saveCurrentConfig() {
 
 <template>
   <div class="flex flex-col">
-    <div
-      class="cards"
-      grid="~"
-      style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))"
-      gap="x-2 y-1"
-    >
+    <div class="cards" grid="~" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))" gap="x-2 y-1">
       <LoadingPanel :loading="switchConfig.isLoading">
-        <div
-          v-for="item in store.config.outbound"
-          @click="switchConfig(item)"
-          :key="item.id"
-          class="v2fly-item-btn"
+        <div v-for="item in store.config.outbound" @click="switchConfig(item)" :key="item.id" class="v2fly-item-btn"
           :class="{
             'is-active': isActiveOutboundConfig(item),
-          }"
-        >
+          }">
           <div flex="1">{{ getLabel(item.config) }}</div>
           <div class="flex gap-2 text-xs items-center" flex="~">
             <i-carbon-code class="icon" @click.stop="showConfig(item)" />
             <i-carbon-copy class="icon" @click.stop="copyConfig(item)" />
-            <i-carbon-trash-can
-              class="icon"
-              v-if="!isActiveOutboundConfig(item)"
-              @click.stop="removeOutbound(item)"
-            />
+            <i-carbon-trash-can class="icon" v-if="!isActiveOutboundConfig(item)" @click.stop="removeOutbound(item)" />
             <i-carbon-circle-filled class="text-green-500" v-if="isActiveOutboundConfig(item)" />
           </div>
         </div>
       </LoadingPanel>
     </div>
 
-    <Button
-      @click="toggleV2fly"
-      border="rounded-0"
-      :loading="toggleV2fly.isLoading"
-      :severity="!store.config.active.enabled ? 'primary' : 'danger'"
-      :label="
-        store.config.active.enabled ? $t('page.server.disconnect') : $t('page.server.reconnect')
-      "
-    />
-    <textarea
-      class="w-full border-gray-300 bg-gray-100 resize-y outline-none border-x-0 text-sm px-3"
-      rows="6"
-      :placeholder="$t('page.server.link-placeholder')"
-      v-model="v2flyConf.b64"
-    ></textarea>
+    <Button @click="toggleV2fly" border="rounded-0" :loading="toggleV2fly.isLoading"
+      :severity="!store.config.active.enabled ? 'primary' : 'danger'" :label="store.config.active.enabled ? $t('page.server.disconnect') : $t('page.server.reconnect')
+        " />
+    <textarea class="w-full border-gray-300 bg-gray-100 resize-y outline-none border-x-0 text-sm px-3" rows="6"
+      :placeholder="$t('page.server.link-placeholder')" v-model="v2flyConf.b64"></textarea>
     <div class="px-4 my-2">
       <BinaryCheckbox v-model="v2flyConf.mux">Mux</BinaryCheckbox>
     </div>
@@ -178,14 +154,10 @@ async function saveCurrentConfig() {
     <div class="mt-3" text="xs gray-3 center">version: v{{ version }}</div>
   </div>
 
-  <Drawer
-    v-model:visible="preview.show"
-    position="full"
-    :pt="{
-      content: 'p-0',
-      header: 'py-1',
-    }"
-  >
+  <Drawer v-model:visible="preview.show" position="full" :pt="{
+    content: 'p-0',
+    header: 'py-1',
+  }">
     <template #header>
       <div class="flex gap-2 items-center">
         <h2 class="m-0">Edit Config</h2>
