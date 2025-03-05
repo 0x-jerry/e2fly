@@ -1,40 +1,13 @@
-import type { V4, V4Config } from '@0x-jerry/v2ray-schema'
+import type { V2FlyConfig } from '@0x-jerry/v2ray-schema'
 import { AppConfig } from '@/config'
-
-interface V2rayBase64 {
-  port: number
-  tls: string
-  /**
-   * alert id
-   */
-  aid: number
-  /**
-   * version
-   */
-  v: string
-  host: string
-  type: string
-  path: string
-  /**
-   * network
-   */
-  net: string
-  /**
-   * address
-   */
-  add: string
-  /**
-   * name
-   */
-  ps: string
-  /**
-   * uuid
-   */
-  id: string
-}
+import { OutboundObject } from '@0x-jerry/v2ray-schema/types/outbound'
+import { LogObject } from '@0x-jerry/v2ray-schema/types/log'
+import { InboundObject } from '@0x-jerry/v2ray-schema/types/inbound'
+import { RoutingObject, RuleObject } from '@0x-jerry/v2ray-schema/types/routing'
+import * as x2sp from '@0x-jerry/x2sp'
 
 export interface V2rayConfOption {
-  b64: string
+  sharingString: string
   mux: boolean
 }
 
@@ -42,38 +15,33 @@ export interface V2rayConfOption {
  * Only support vmess protocol for now.
  * @returns
  */
-export function getOutboundConfFromBase64(opt: V2rayConfOption): V4.outbounds.OutboundObject {
-  const [protocol, conf] = opt.b64.split('://')
+export function getOutboundConfFromBase64(opt: V2rayConfOption): OutboundObject {
+  const config = x2sp.decode(opt.sharingString)
 
-  const config: V2rayBase64 = JSON.parse(window.atob(conf))
-
-  const outbound: V4.outbounds.OutboundObject = {
-    protocol,
+  const outbound: OutboundObject = {
+    protocol: config.protocol,
     streamSettings: {
       wsSettings: {
-        path: config.path + '?ed=2560',
+        path: config.transport?.path,
       },
       tlsSettings: {
         serverName: config.host,
-        fingerprint: 'chrome',
-        allowInsecure: false,
       },
-      security: 'tls',
-      network: 'ws',
+      security: config.transport?.security,
+      network: config.transport?.type,
     },
   }
 
-  if (protocol === 'vmess') {
+  if (config.protocol === 'vmess') {
     outbound.settings = {
       _t: 'vmess',
       vnext: [
         {
-          address: config.add,
+          address: config.host,
           port: config.port,
           users: [
             {
-              alterId: config.aid,
-              id: config.id,
+              id: config.uuid,
               security: 'auto',
               level: 0,
             },
@@ -83,16 +51,16 @@ export function getOutboundConfFromBase64(opt: V2rayConfOption): V4.outbounds.Ou
     }
   }
 
-  if (protocol === 'vless') {
+  if (config.protocol === 'vless') {
     outbound.settings = {
       _t: 'vless',
       vnext: [
         {
-          address: config.add,
+          address: config.host,
           port: config.port,
           users: [
             {
-              id: config.id,
+              id: config.uuid,
               encryption: 'none',
             },
           ],
@@ -113,7 +81,7 @@ export function getOutboundConfFromBase64(opt: V2rayConfOption): V4.outbounds.Ou
 
 //  ----------
 
-export function getLogConf(): V4.overview.LogObject {
+export function getLogConf(): LogObject {
   return {
     loglevel: 'debug',
   }
@@ -126,7 +94,7 @@ enum OutboundTag {
   DNS = 'dns-output',
 }
 
-function getOutboundDirectConf(): V4.outbounds.OutboundObject {
+function getOutboundDirectConf(): OutboundObject {
   return {
     tag: OutboundTag.DIRECT,
     protocol: 'freedom',
@@ -134,7 +102,7 @@ function getOutboundDirectConf(): V4.outbounds.OutboundObject {
   }
 }
 
-function getOutboundBlockConf(): V4.outbounds.OutboundObject {
+function getOutboundBlockConf(): OutboundObject {
   return {
     tag: OutboundTag.BLOCK,
     protocol: 'blackhole',
@@ -142,7 +110,7 @@ function getOutboundBlockConf(): V4.outbounds.OutboundObject {
   }
 }
 
-function getHttpInbound(port: number, allowLAN?: boolean): V4.inbounds.InboundObject {
+function getHttpInbound(port: number, allowLAN?: boolean): InboundObject {
   return {
     protocol: 'http',
     listen: allowLAN ? '0.0.0.0' : '127.0.0.1',
@@ -154,7 +122,7 @@ function getHttpInbound(port: number, allowLAN?: boolean): V4.inbounds.InboundOb
   }
 }
 
-function getSocksInbound(port: number, allowLAN?: boolean): V4.inbounds.InboundObject {
+function getSocksInbound(port: number, allowLAN?: boolean): InboundObject {
   return {
     protocol: 'socks',
     listen: allowLAN ? '0.0.0.0' : '127.0.0.1',
@@ -170,7 +138,7 @@ function getSocksInbound(port: number, allowLAN?: boolean): V4.inbounds.InboundO
   }
 }
 
-function getRoutingConf(rules?: V4.routing.RuleObject[]): V4.routing.RoutingObject {
+function getRoutingConf(rules?: RuleObject[]): RoutingObject {
   const extraRules = rules || []
 
   // https://www.v2fly.org/config/routing.html#%E9%A2%84%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D%E5%88%97%E8%A1%A8
@@ -186,7 +154,6 @@ function getRoutingConf(rules?: V4.routing.RuleObject[]): V4.routing.RoutingObje
 
   return {
     domainStrategy: 'IPIfNonMatch',
-    domainMatcher: 'mph',
     rules: [
       {
         type: 'field',
@@ -207,13 +174,13 @@ function getRoutingConf(rules?: V4.routing.RuleObject[]): V4.routing.RoutingObje
 
 export async function getV2rayConfig(
   opt: AppConfig,
-  outbound: V4.outbounds.OutboundObject,
-): Promise<V4Config> {
+  outbound: OutboundObject,
+): Promise<V2FlyConfig> {
   const { v2fly, proxy } = opt
 
   const { routes } = v2fly
 
-  const inbounds: V4.inbounds.InboundObject[] = []
+  const inbounds: InboundObject[] = []
 
   if (v2fly.http.enabled) {
     inbounds.push(getHttpInbound(v2fly.http.port, proxy.lan))
@@ -223,7 +190,7 @@ export async function getV2rayConfig(
     inbounds.push(getSocksInbound(v2fly.socks.port, proxy.lan))
   }
 
-  const extraRules: V4.routing.RuleObject[] = []
+  const extraRules: RuleObject[] = []
 
   // enable bypass CN mainland
   if (routes.bypassCN) {

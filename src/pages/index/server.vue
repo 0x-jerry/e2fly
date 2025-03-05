@@ -3,18 +3,18 @@ import { getOutboundConfFromBase64 } from '@/logic/v2fly'
 import { ipc } from '@/ipc'
 import { actions, store } from '@/store'
 import { nanoid, remove } from '@0x-jerry/utils'
-import type { V4 } from '@0x-jerry/v2ray-schema'
 import { Outbound } from '@/config'
 import { version } from '../../../package.json'
 import { useToast } from 'primevue/usetoast'
 import { useLoading } from '@0x-jerry/vue-kit'
 import LoadingPanel from '@/components/LoadingPanel.vue'
 import Drawer from 'primevue/drawer'
+import { OutboundObject } from '@0x-jerry/v2ray-schema/types/outbound'
 
 const toast = useToast()
 
 const v2flyConf = reactive({
-  b64: '',
+  sharingString: '',
   mux: false,
 })
 
@@ -24,7 +24,7 @@ async function addConfig() {
     label: 'default',
     config: JSON.stringify(
       getOutboundConfFromBase64({
-        b64: v2flyConf.b64,
+        sharingString: v2flyConf.sharingString,
         mux: v2flyConf.mux,
       }),
     ),
@@ -32,7 +32,7 @@ async function addConfig() {
 
   await ipc.saveConfig(toRaw(store.config))
 
-  v2flyConf.b64 = ''
+  v2flyConf.sharingString = ''
 }
 
 const toggleV2fly = useLoading(async () => {
@@ -70,7 +70,7 @@ const switchConfig = useLoading(async (item: E2FlyConfigOutbound) => {
 })
 
 function getLabel(itemConf: string) {
-  const item: V4.outbounds.OutboundObject = JSON.parse(itemConf)
+  const item: OutboundObject = JSON.parse(itemConf)
   const protocol = item.protocol
 
   if (protocol === 'vmess' || protocol === 'vless') {
@@ -144,7 +144,7 @@ async function saveCurrentConfig() {
       :severity="!store.config.active.enabled ? 'primary' : 'danger'" :label="store.config.active.enabled ? $t('page.server.disconnect') : $t('page.server.reconnect')
         " />
     <textarea class="w-full border-gray-300 bg-gray-100 resize-y outline-none border-x-0 text-sm px-3" rows="6"
-      :placeholder="$t('page.server.link-placeholder')" v-model="v2flyConf.b64"></textarea>
+      :placeholder="$t('page.server.link-placeholder')" v-model="v2flyConf.sharingString"></textarea>
     <div class="px-4 my-2">
       <BinaryCheckbox v-model="v2flyConf.mux">Mux</BinaryCheckbox>
     </div>
