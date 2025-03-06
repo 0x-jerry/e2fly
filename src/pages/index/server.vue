@@ -76,8 +76,9 @@ function getLabel(itemConf: string) {
   if (protocol === 'vmess' || protocol === 'vless') {
     const address = item.settings?.vnext?.[0].address
     const port = item.settings?.vnext?.[0].port
+    const networkType = item.streamSettings?.network
 
-    return `${protocol}://${address}:${port}`
+    return `${protocol}+${networkType}://${address}:${port}`
   }
 }
 
