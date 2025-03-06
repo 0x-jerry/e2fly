@@ -3,7 +3,7 @@ page:
     disconnect: Disconnect
     reconnect: Reconnect
     add: Add
-    link-placeholder: Please input shared link, only support vmess for now.
+    link-placeholder: Please input shared link, only support vmess/vless for now.
   setting:
     save: Save
     port: Port

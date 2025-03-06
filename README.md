@@ -18,7 +18,7 @@ Em..., There are no excited features. It just works as expected.
 - [x] Support Mac
 - [x] Support Window
 - [ ] Support Linux
-- [ ] Support more protocol, current only support vmess protocol
+- [ ] Support more protocol, current only support vmess/vless protocol
 - [x] Auto update, [docs](https://tauri.app/v1/guides/distribution/updater)
 
 ## Contribute
