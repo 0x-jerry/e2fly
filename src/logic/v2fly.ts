@@ -21,15 +21,20 @@ export function getOutboundConfFromBase64(opt: V2rayConfOption): OutboundObject 
   const outbound: OutboundObject = {
     protocol: config.protocol,
     streamSettings: {
-      wsSettings: {
-        path: config.transport?.path,
-      },
-      tlsSettings: {
-        serverName: config.host,
-      },
       security: config.transport?.security,
       network: config.transport?.type,
     },
+  }
+
+  if (config.transport?.type === 'ws') {
+    outbound.streamSettings!.wsSettings = {
+      path: config.transport.path,
+    }
+  } else if (config.transport?.type === 'xhttp') {
+    outbound.streamSettings!.xhttpSettings = {
+      path: config.transport.path,
+      extra: config.transport.extra
+    }
   }
 
   if (config.protocol === 'vmess') {
