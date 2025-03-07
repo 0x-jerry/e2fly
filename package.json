@@ -46,7 +46,7 @@
   "devDependencies": {
     "@0x-jerry/utils": "^5.0.0",
     "@0x-jerry/v2ray-schema": "^2.0.0",
-    "@0x-jerry/x-release": "^2.3.0",
+    "@0x-jerry/x-release": "^2.4.0",
     "@iconify-json/carbon": "^1.2.8",
     "@intlify/unplugin-vue-i18n": "^6.0.3",
     "@tauri-apps/cli": "^2.3.1",
