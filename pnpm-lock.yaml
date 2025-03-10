@@ -85,8 +85,8 @@ importers:
         specifier: ^5.2.1
         version: 5.2.1(vite@6.2.6(@types/node@22.13.9)(jiti@2.4.2)(less@4.2.2)(tsx@4.19.3)(yaml@2.7.0))(vue@3.5.13(typescript@5.8.2))
       '@vueuse/core':
-        specifier: ^12.8.2
-        version: 12.8.2(typescript@5.8.2)
+        specifier: ^13.0.0
+        version: 13.0.0(vue@3.5.13(typescript@5.8.2))
       fs-extra:
         specifier: ^11.3.0
         version: 11.3.0
@@ -110,7 +110,7 @@ importers:
         version: 66.1.0-beta.3(postcss@8.5.3)(vite@6.2.6(@types/node@22.13.9)(jiti@2.4.2)(less@4.2.2)(tsx@4.19.3)(yaml@2.7.0))(vue@3.5.13(typescript@5.8.2))
       unplugin-auto-import:
         specifier: ^19.1.1
-        version: 19.1.1(@vueuse/core@12.8.2(typescript@5.8.2))
+        version: 19.1.1(@vueuse/core@13.0.0(vue@3.5.13(typescript@5.8.2)))
       unplugin-icons:
         specifier: ^22.1.0
         version: 22.1.0(@vue/compiler-sfc@3.5.13)
@@ -1112,11 +1112,24 @@ packages:
   '@vueuse/core@12.8.2':
     resolution: {integrity: sha512-HbvCmZdzAu3VGi/pWYm5Ut+Kd9mn1ZHnn4L5G8kOQTPs/IwIAmJoBrmYk2ckLArgMXZj0AW3n5CAejLUO+PhdQ==}
 
+  '@vueuse/core@13.0.0':
+    resolution: {integrity: sha512-rkgb4a8/0b234lMGCT29WkCjPfsX0oxrIRR7FDndRoW3FsaC9NBzefXg/9TLhAgwM11f49XnutshM4LzJBrQ5g==}
+    peerDependencies:
+      vue: ^3.5.0
+
   '@vueuse/metadata@12.8.2':
     resolution: {integrity: sha512-rAyLGEuoBJ/Il5AmFHiziCPdQzRt88VxR+Y/A/QhJ1EWtWqPBBAxTAFaSkviwEuOEZNtW8pvkPgoCZQ+HxqW1A==}
 
+  '@vueuse/metadata@13.0.0':
+    resolution: {integrity: sha512-TRNksqmvtvqsuHf7bbgH9OSXEV2b6+M3BSN4LR5oxWKykOFT9gV78+C2/0++Pq9KCp9KQ1OQDPvGlWNQpOb2Mw==}
+
   '@vueuse/shared@12.8.2':
     resolution: {integrity: sha512-dznP38YzxZoNloI0qpEfpkms8knDtaoQ6Y/sfS0L7Yki4zh40LFHEhur0odJC6xTHG5dxWVPiUWBXn+wCG2s5w==}
+
+  '@vueuse/shared@13.0.0':
+    resolution: {integrity: sha512-9MiHhAPw+sqCF/RLo8V6HsjRqEdNEWVpDLm2WBRW2G/kSQjb8X901sozXpSCaeLG0f7TEfMrT4XNaA5m1ez7Dg==}
+    peerDependencies:
+      vue: ^3.5.0
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -3083,13 +3096,26 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
+  '@vueuse/core@13.0.0(vue@3.5.13(typescript@5.8.2))':
+    dependencies:
+      '@types/web-bluetooth': 0.0.21
+      '@vueuse/metadata': 13.0.0
+      '@vueuse/shared': 13.0.0(vue@3.5.13(typescript@5.8.2))
+      vue: 3.5.13(typescript@5.8.2)
+
   '@vueuse/metadata@12.8.2': {}
+
+  '@vueuse/metadata@13.0.0': {}
 
   '@vueuse/shared@12.8.2(typescript@5.8.2)':
     dependencies:
       vue: 3.5.13(typescript@5.8.2)
     transitivePeerDependencies:
       - typescript
+
+  '@vueuse/shared@13.0.0(vue@3.5.13(typescript@5.8.2))':
+    dependencies:
+      vue: 3.5.13(typescript@5.8.2)
 
   acorn-jsx@5.3.2(acorn@8.14.1):
     dependencies:
@@ -4165,7 +4191,7 @@ snapshots:
       - supports-color
       - vue
 
-  unplugin-auto-import@19.1.1(@vueuse/core@12.8.2(typescript@5.8.2)):
+  unplugin-auto-import@19.1.1(@vueuse/core@13.0.0(vue@3.5.13(typescript@5.8.2))):
     dependencies:
       local-pkg: 1.1.1
       magic-string: 0.30.17
@@ -4174,7 +4200,7 @@ snapshots:
       unplugin: 2.2.0
       unplugin-utils: 0.2.4
     optionalDependencies:
-      '@vueuse/core': 12.8.2(typescript@5.8.2)
+      '@vueuse/core': 13.0.0(vue@3.5.13(typescript@5.8.2))
 
   unplugin-icons@22.1.0(@vue/compiler-sfc@3.5.13):
     dependencies:

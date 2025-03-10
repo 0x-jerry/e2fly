@@ -52,7 +52,7 @@
     "@tauri-apps/cli": "^2.3.1",
     "@types/fs-extra": "^11.0.4",
     "@vitejs/plugin-vue": "^5.2.1",
-    "@vueuse/core": "^12.8.2",
+    "@vueuse/core": "^13.0.0",
     "fs-extra": "^11.3.0",
     "less": "^4.2.2",
     "node-fetch": "^3.3.2",
