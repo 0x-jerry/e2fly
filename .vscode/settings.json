@@ -1,0 +1,6 @@
+{
+  "rust-analyzer.showUnlinkedFileNotification": false,
+  "i18n-ally.localesPaths": ["src/locales"],
+  "i18n-ally.keystyle": "nested",
+  "rust-analyzer.cargo.targetDir": "./target-analyzer"
+}
