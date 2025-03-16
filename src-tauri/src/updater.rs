@@ -73,6 +73,7 @@ fn update<R: Runtime>(app: AppHandle<R>) -> Result<(), tauri_plugin_updater::Err
         if answer {
             before_exit_app(&app);
             update.install(binary)?;
+            app.restart();
         }
     } else {
         app.notification()
