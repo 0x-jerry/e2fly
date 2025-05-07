@@ -6,6 +6,7 @@ page:
     link-placeholder: Please input shared link, only support vmess/vless for now.
   setting:
     save: Save
+    update-dat: Update dat files
     port: Port
     system-proxy: System Proxy
     v2ray-bin: V2Ray Bin
@@ -14,6 +15,7 @@ page:
     auto-hide-when-blur: Auto hide window when blur
     auto-startup: Auto startup
     proxy--with-lan: Allow connections from the LAN
+    update-dat-success: Download completed
 menu:
   log: Log
   setting: Setting

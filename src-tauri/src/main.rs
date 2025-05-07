@@ -18,6 +18,7 @@ mod proxy;
 mod system_proxy;
 mod tauri;
 mod tray;
+mod update_dat;
 mod updater;
 mod utils;
 mod v2fly;

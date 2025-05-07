@@ -4,7 +4,15 @@ import { useConfigChangedEvent } from '@/events'
 import { disableAutostart, enableAutostart, ipc, isEnabledAutostart } from '@/ipc'
 import { store } from '@/store'
 import { useLoading } from '@0x-jerry/vue-kit'
+import { event } from '@tauri-apps/api'
 import { useToast } from 'primevue/usetoast'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
+event.listen('download-progress', (event) => {
+  console.log(event)
+})
 
 const appConf = reactive<AppConfig>(structuredClone(toRaw(store.config)))
 
@@ -46,6 +54,26 @@ const saveConfig = useLoading(async () => {
 const isModified = computed(() => {
   return JSON.stringify(appConf) === JSON.stringify(store.config)
 })
+
+const updateDatFile = useLoading(async () => {
+  try {
+    await ipc.updateDatFile()
+    toast.add({
+      severity: 'success',
+      summary: 'Download',
+      detail: t('page.setting.update-dat-success'),
+      life: 5000,
+    })
+  } catch (error) {
+    toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: String(error),
+      life: 5000,
+    })
+  }
+})
+
 </script>
 
 <template>
@@ -104,13 +132,12 @@ const isModified = computed(() => {
       </div>
     </div>
     <div>
-      <Button
-        @click="saveConfig"
-        class="w-full"
-        :disabled="isModified"
-        :loading="saveConfig.isLoading"
-        :label="$t('page.setting.save')"
-      />
+      <Button @click="updateDatFile" class="w-full" :disabled="updateDatFile.isLoading"
+        :loading="updateDatFile.isLoading" :label="$t('page.setting.update-dat')" />
+    </div>
+    <div>
+      <Button @click="saveConfig" class="w-full" :disabled="isModified" :loading="saveConfig.isLoading"
+        :label="$t('page.setting.save')" />
     </div>
   </div>
 </template>

@@ -43,6 +43,9 @@ export const ipc = {
   async getV2flyLogs(): Promise<string[]> {
     return invoke('get_v2ray_log')
   },
+  async updateDatFile(): Promise<void> {
+    return invoke('update_xray_dat_data')
+  },
 }
 
 export async function isEnabledAutostart(): Promise<boolean> {

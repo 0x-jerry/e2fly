@@ -14,6 +14,8 @@ page:
     auto-hide-when-blur: 失焦时自动隐藏窗口
     auto-startup: 开机自启动
     proxy--with-lan: 允许来自局域网的连接
+    update-dat: 更新 dat
+    update-dat-success: 下载完成
 menu:
   log: 日志
   setting: 设置
