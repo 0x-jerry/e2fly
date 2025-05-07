@@ -43,8 +43,14 @@ fn save_v2ray_conf(state: State<AppConfigState>, content: String) {
 }
 
 #[command]
-async fn update_xray_dat_data<R: Runtime>(app: AppHandle<R>) {
-    update_dat_files(app).await.unwrap();
+async fn update_xray_dat_data<R: Runtime>(app: AppHandle<R>) -> Result<(), String> {
+    let r = update_dat_files(app).await;
+
+    if let Err(err) = r {
+        return Err(err.to_string());
+    }
+
+    Ok(())
 }
 
 pub fn set_app_ipc_methods<R: Runtime>(app: Builder<R>) -> Builder<R> {

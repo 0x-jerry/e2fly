@@ -40,8 +40,6 @@ pub async fn update_dat_files<R: Runtime>(app: AppHandle<R>) -> Result<(), reqwe
     let geoip_file = bin_dir.join("geoip.dat");
     let geosite_file = bin_dir.join("geosite.dat");
 
-    println!("{:?} {:?}", geoip_file, geosite_file);
-
     download_to_file(
         geoip_dat_url,
         geoip_file,

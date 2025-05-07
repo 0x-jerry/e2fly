@@ -10,8 +10,16 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
-event.listen('download-progress', (event) => {
-  console.log(event)
+interface DownloadProgressEventPayload {
+  name: string
+  total: number
+  downloaded: number
+}
+
+const downloadProgressPayload = ref<DownloadProgressEventPayload>()
+
+event.listen<DownloadProgressEventPayload>('download-progress', (event) => {
+  downloadProgressPayload.value = event.payload
 })
 
 const appConf = reactive<AppConfig>(structuredClone(toRaw(store.config)))
@@ -73,6 +81,16 @@ const updateDatFile = useLoading(async () => {
     })
   }
 })
+
+const btnText = computed(() => {
+  const payload = downloadProgressPayload.value
+
+  if (!payload || !updateDatFile.isLoading) {
+    return t('page.setting.update-dat')
+  }
+
+  return `${payload.name}: ${payload.downloaded} / ${payload.total}`
+})
 </script>
 
 <template>
@@ -132,7 +150,7 @@ const updateDatFile = useLoading(async () => {
     </div>
     <div>
       <Button @click="updateDatFile" class="w-full" :disabled="updateDatFile.isLoading"
-        :loading="updateDatFile.isLoading" :label="$t('page.setting.update-dat')" />
+        :loading="updateDatFile.isLoading" :label="btnText" />
     </div>
     <div>
       <Button @click="saveConfig" class="w-full" :disabled="isModified" :loading="saveConfig.isLoading"
