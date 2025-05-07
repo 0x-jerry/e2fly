@@ -1,9 +1,5 @@
 use model::AppConfig;
-use std::{
-    fs,
-    path::PathBuf,
-    sync::{Mutex, MutexGuard},
-};
+use std::{fs, path::PathBuf, sync::Mutex};
 use tauri::{is_dev, AppHandle, Manager, Result, Runtime, State};
 
 pub mod model;
@@ -11,38 +7,40 @@ pub mod model;
 const CONFIG_NAME: &str = "config.json";
 pub const HOME_PAGE_URL: &str = "https://github.com/0x-jerry/e2fly";
 
-pub struct AppConfigState {
-    conf: Mutex<AppConfig>,
-    conf_dir: PathBuf,
+pub struct AppConfigStateInner {
+    pub conf: AppConfig,
+    pub conf_dir: PathBuf,
 }
 
-impl AppConfigState {
-    pub fn init<R: Runtime>(app: &AppHandle<R>) -> Result<()> {
-        let config_dir = if is_dev() {
-            PathBuf::from("../test-conf")
-        } else {
-            app.path().app_config_dir()?
-        };
+pub type AppConfigState = Mutex<AppConfigStateInner>;
 
-        // ensure config folder
-        if !config_dir.exists() {
-            fs::create_dir_all(&config_dir)?;
-        }
+pub fn init<R: Runtime>(app: &AppHandle<R>) -> Result<()> {
+    let config_dir = if is_dev() {
+        PathBuf::from("../test-conf")
+    } else {
+        app.path().app_config_dir()?
+    };
 
-        let conf_path = config_dir.canonicalize()?;
-
-        let app_conf = AppConfigState {
-            conf: Default::default(),
-            conf_dir: conf_path,
-        };
-
-        app_conf.read();
-
-        app.manage(app_conf);
-
-        Ok(())
+    // ensure config folder
+    if !config_dir.exists() {
+        fs::create_dir_all(&config_dir)?;
     }
 
+    let conf_path = config_dir.canonicalize()?;
+
+    let mut app_conf = AppConfigStateInner {
+        conf: Default::default(),
+        conf_dir: conf_path,
+    };
+
+    app_conf.read();
+
+    app.manage(Mutex::new(app_conf));
+
+    Ok(())
+}
+
+impl AppConfigStateInner {
     pub fn v2ray_config_path(&self) -> PathBuf {
         self.conf_dir.join("v2fly.conf.json")
     }
@@ -58,7 +56,7 @@ impl AppConfigState {
     }
 
     /// Read config from config file
-    pub fn read(&self) {
+    pub fn read(&mut self) {
         let save_file = self.config_file();
 
         let conf = if save_file.exists() {
@@ -68,40 +66,29 @@ impl AppConfigState {
             AppConfig::default()
         };
 
-        self.conf.lock().unwrap().clone_from(&conf);
+        self.conf.clone_from(&conf);
     }
 
-    pub fn save(&self, new_conf: &AppConfig) {
-        self.conf.lock().unwrap().clone_from(new_conf);
+    pub fn save(&mut self, new_conf: &AppConfig) {
+        self.conf.clone_from(new_conf);
 
         let save_file = self.conf_dir.join(CONFIG_NAME);
         let content = serde_json::to_string(&new_conf).unwrap();
 
         fs::write(save_file, content).expect("Write v2ray config file failed");
     }
-
-    pub fn get(&self) -> MutexGuard<AppConfig> {
-        self.conf.lock().unwrap()
-    }
 }
 
 pub trait AppConfigExt {
-    fn app_conf_state(&self) -> State<AppConfigState>;
     fn app_config(&self) -> AppConfig;
 }
 
 impl<R: Runtime> AppConfigExt for AppHandle<R> {
-    fn app_conf_state(&self) -> State<AppConfigState> {
+    fn app_config(&self) -> AppConfig {
         let t = self.state::<AppConfigState>();
 
-        t
-    }
+        let app_conf = t.lock().unwrap().conf.clone();
 
-    fn app_config(&self) -> AppConfig {
-        let t = self.app_conf_state();
-
-        let u = t.get();
-
-        u.clone()
+        app_conf
     }
 }

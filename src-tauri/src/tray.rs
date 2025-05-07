@@ -7,7 +7,7 @@ use tauri::{
 use tauri_plugin_opener::OpenerExt;
 
 use crate::{
-    conf::{AppConfigExt, HOME_PAGE_URL},
+    conf::{AppConfigExt, AppConfigState, HOME_PAGE_URL},
     const_var::TRAY_NAME,
     system_proxy::update_system_proxy,
     updater::check_update,
@@ -78,10 +78,11 @@ pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
                         check_update(app);
                     }
                     TrayMenuId::ToggleSystemProxy => {
-                        let app_conf = app.app_conf_state();
+                        let app_conf = app.state::<AppConfigState>();
+                        let mut app_conf = app_conf.lock().unwrap();
 
-                        let mut conf = app_conf.get().clone();
-                        conf.proxy.system = !conf.proxy.system;
+                        app_conf.conf.proxy.system = !app_conf.conf.proxy.system;
+                        let conf = app_conf.conf.clone();
 
                         app_conf.save(&conf);
 

@@ -1,7 +1,7 @@
 use tauri::async_runtime::Mutex;
 use tauri::{is_dev, AppHandle, Manager, Runtime, State};
 
-use crate::conf::AppConfigExt;
+use crate::conf::AppConfigState;
 use crate::logger::Logger;
 use crate::utils::{hide_windows_cmd_window, tail_from_file};
 use std::ffi::OsStr;
@@ -27,12 +27,12 @@ impl<R: Runtime> FlyState<R> {
     }
 
     pub fn restart(&self) -> Result<(), std::io::Error> {
-        let app_conf_state = self.app_handle.app_conf_state();
-        let app_conf = app_conf_state.get();
+        let app_conf_state = self.app_handle.state::<AppConfigState>();
+        let app_conf = app_conf_state.lock().unwrap();
 
         self.inner.blocking_lock().restart(
-            app_conf.v2_fly.bin.clone(),
-            app_conf_state.v2ray_config_path(),
+            app_conf.conf.v2_fly.bin.clone(),
+            app_conf.v2ray_config_path(),
         )
     }
 

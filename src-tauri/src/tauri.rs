@@ -44,7 +44,7 @@ pub fn start_tauri() {
 
     let app = app.setup(|app| {
         let app_handle = app.handle();
-        conf::AppConfigState::init(app_handle).expect("init app config state failed");
+        conf::init(app_handle).expect("init app config state failed");
 
         let app_conf = app_handle.app_config();
 

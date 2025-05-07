@@ -1,14 +1,15 @@
-use tauri::{command, AppHandle, Builder, Runtime};
+use tauri::{command, AppHandle, Builder, Runtime, State};
 
 use crate::{
-    conf::{model::AppConfig, AppConfigExt},
+    conf::{model::AppConfig, AppConfigExt, AppConfigState},
     system_proxy::update_system_proxy,
+    update_dat::update_dat_files,
     v2fly::FlyStateExt,
 };
 
 #[command]
-fn save_conf<R: Runtime>(app: AppHandle<R>, conf: AppConfig) {
-    app.app_conf_state().save(&conf);
+fn save_conf<R: Runtime>(app: AppHandle<R>, state: State<AppConfigState>, conf: AppConfig) {
+    state.lock().unwrap().save(&conf);
 
     update_system_proxy(&app);
 }
@@ -37,8 +38,13 @@ fn get_v2ray_log<R: Runtime>(app: AppHandle<R>) -> Vec<String> {
 }
 
 #[command]
-fn save_v2ray_conf<R: Runtime>(app: AppHandle<R>, content: String) {
-    app.app_conf_state().save_v2ray_config(content)
+fn save_v2ray_conf(state: State<AppConfigState>, content: String) {
+    state.lock().unwrap().save_v2ray_config(content);
+}
+
+#[command]
+async fn update_xray_dat_data<R: Runtime>(app: AppHandle<R>) {
+    update_dat_files(app).await.unwrap();
 }
 
 pub fn set_app_ipc_methods<R: Runtime>(app: Builder<R>) -> Builder<R> {
@@ -49,5 +55,6 @@ pub fn set_app_ipc_methods<R: Runtime>(app: Builder<R>) -> Builder<R> {
         save_conf,
         read_conf,
         save_v2ray_conf,
+        update_xray_dat_data,
     ])
 }
