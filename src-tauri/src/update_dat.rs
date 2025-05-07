@@ -42,7 +42,7 @@ pub async fn update_dat_files<R: Runtime>(app: AppHandle<R>) -> Result<(), reqwe
 
     println!("{:?} {:?}", geoip_file, geosite_file);
 
-    let _ = download_to_file(
+    download_to_file(
         geoip_dat_url,
         geoip_file,
         proxy_conf.clone(),
@@ -56,7 +56,7 @@ pub async fn update_dat_files<R: Runtime>(app: AppHandle<R>) -> Result<(), reqwe
     )
     .await?;
 
-    let _ = download_to_file(
+    download_to_file(
         geosite_dat_url,
         geosite_file,
         proxy_conf,
@@ -94,14 +94,16 @@ where
 
     let response = client.get(url).send().await?;
 
-    let mut progress_data = DownloadProgress::default();
-    progress_data.total = response.content_length().unwrap_or(0);
-    progress_data.name = response
-        .url()
-        .path_segments()
-        .and_then(|segments| segments.last())
-        .unwrap_or("unknown")
-        .to_string();
+    let mut progress_data = DownloadProgress {
+        total: response.content_length().unwrap_or(0),
+        name: response
+            .url()
+            .path_segments()
+            .and_then(|segments| segments.last())
+            .unwrap_or("unknown")
+            .to_string(),
+        ..Default::default()
+    };
 
     let mut file = fs::File::create(file).unwrap();
     let mut stream = response.bytes_stream();
@@ -111,9 +113,8 @@ where
             Ok(bytes) => {
                 progress_data.downloaded += bytes.len() as u64;
 
-                match progress_fn {
-                    Some(progress_fn) => progress_fn(progress_data.clone()),
-                    None => {}
+                if let Some(progress_fn) = progress_fn {
+                    progress_fn(progress_data.clone())
                 }
 
                 file.write_all(&bytes).unwrap();

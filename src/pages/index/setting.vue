@@ -73,7 +73,6 @@ const updateDatFile = useLoading(async () => {
     })
   }
 })
-
 </script>
 
 <template>

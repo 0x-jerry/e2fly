@@ -1,6 +1,6 @@
 use model::AppConfig;
 use std::{fs, path::PathBuf, sync::Mutex};
-use tauri::{is_dev, AppHandle, Manager, Result, Runtime, State};
+use tauri::{is_dev, AppHandle, Manager, Result, Runtime};
 
 pub mod model;
 
