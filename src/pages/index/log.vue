@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import { ipc } from '@/ipc'
 import { useInterval } from '@/hooks'
-import { path } from '@tauri-apps/api'
-import * as shell from '@tauri-apps/plugin-shell'
 
 const state = reactive({
   logs: [] as string[],
@@ -11,14 +9,13 @@ const state = reactive({
 async function getLogs() {
   const logs = await ipc.getV2flyLogs()
 
-  state.logs = logs.map((line) => line + '\n')
+  state.logs = logs.map((line) => `${line}\n`)
 }
 
 useInterval(() => getLogs(), 1000)
 
 async function openLogFolder() {
-  const logFolder = await path.appLogDir()
-  await shell.open(logFolder)
+  await ipc.openLogsFolder()
 }
 </script>
 

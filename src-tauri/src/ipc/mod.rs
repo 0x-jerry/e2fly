@@ -1,4 +1,5 @@
-use tauri::{command, AppHandle, Builder, Runtime, State};
+use tauri::{command, AppHandle, Builder, Manager, Runtime, State};
+use tauri_plugin_opener::OpenerExt;
 
 use crate::{
     conf::{model::AppConfig, AppConfigExt, AppConfigState},
@@ -53,6 +54,14 @@ async fn update_xray_dat_data<R: Runtime>(app: AppHandle<R>) -> Result<(), Strin
     Ok(())
 }
 
+#[command]
+fn open_logs_folder<R: Runtime>(app: AppHandle<R>) -> Result<(), String> {
+    let logs_dir = app.path().app_log_dir().unwrap();
+    app.opener().reveal_item_in_dir(logs_dir).unwrap();
+
+    Ok(())
+}
+
 pub fn set_app_ipc_methods<R: Runtime>(app: Builder<R>) -> Builder<R> {
     app.invoke_handler(tauri::generate_handler![
         get_v2ray_log,
@@ -62,5 +71,6 @@ pub fn set_app_ipc_methods<R: Runtime>(app: Builder<R>) -> Builder<R> {
         read_conf,
         save_v2ray_conf,
         update_xray_dat_data,
+        open_logs_folder,
     ])
 }

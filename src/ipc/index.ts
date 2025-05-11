@@ -1,7 +1,7 @@
 import { getV2rayConfig } from '@/logic/v2fly'
 import { store } from '@/store'
 import { invoke } from '@tauri-apps/api/core'
-import { AppConfig } from '../config'
+import type { AppConfig } from '../config'
 import { sleep } from '@0x-jerry/utils'
 
 /**
@@ -11,7 +11,6 @@ export const ipc = {
   async getConfig(): Promise<AppConfig> {
     return invoke('read_conf')
   },
-
   async saveConfig(conf: AppConfig) {
     return invoke('save_conf', { conf })
   },
@@ -45,6 +44,9 @@ export const ipc = {
   },
   async updateDatFile(): Promise<void> {
     return invoke('update_xray_dat_data')
+  },
+  async openLogsFolder(): Promise<void> {
+    await invoke('open_logs_folder')
   },
 }
 
