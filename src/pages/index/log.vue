@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { ipc } from '@/ipc'
 import { useInterval } from '@/hooks'
+import { ipc } from '@/ipc'
 
 const state = reactive({
   logs: [] as string[],

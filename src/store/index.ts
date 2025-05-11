@@ -1,4 +1,4 @@
-import { AppConfig } from '../config'
+import type { AppConfig } from '../config'
 import { ipc } from '../ipc'
 
 export const store = reactive({

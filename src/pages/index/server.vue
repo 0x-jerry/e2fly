@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import { getOutboundConfFromBase64 } from '@/logic/v2fly'
+import LoadingPanel from '@/components/LoadingPanel.vue'
+import { Outbound } from '@/config'
 import { ipc } from '@/ipc'
+import { getOutboundConfFromBase64 } from '@/logic/v2fly'
 import { actions, store } from '@/store'
 import { nanoid, remove } from '@0x-jerry/utils'
-import { Outbound } from '@/config'
-import { version } from '../../../package.json'
-import { useToast } from 'primevue/usetoast'
-import { useLoading } from '@0x-jerry/vue-kit'
-import LoadingPanel from '@/components/LoadingPanel.vue'
-import Drawer from 'primevue/drawer'
 import { OutboundObject } from '@0x-jerry/v2ray-schema/types/outbound'
+import { useLoading } from '@0x-jerry/vue-kit'
+import Drawer from 'primevue/drawer'
+import { useToast } from 'primevue/usetoast'
+import { version } from '../../../package.json'
 
 const toast = useToast()
 
@@ -55,7 +55,8 @@ const toggleV2fly = useLoading(async () => {
 type E2FlyConfigOutbound = any
 
 const switchConfig = useLoading(async (item: E2FlyConfigOutbound) => {
-  if (store.config.active.enabled && item.id === store.config.active.outboundId) return
+  if (store.config.active.enabled && item.id === store.config.active.outboundId)
+    return
 
   const err = await actions.startV2fly(item.id)
 
@@ -83,7 +84,9 @@ function getLabel(itemConf: string) {
 }
 
 function isActiveOutboundConfig(item: E2FlyConfigOutbound) {
-  return store.config.active.enabled && store.config.active.outboundId === item.id
+  return (
+    store.config.active.enabled && store.config.active.outboundId === item.id
+  )
 }
 
 function removeOutbound(item: E2FlyConfigOutbound) {

@@ -1,6 +1,6 @@
 @layer reset, primevue;
 
-@import url('normalize.css/normalize.css') layer(reset);
+@import url("normalize.css/normalize.css") layer(reset);
 
 :root {
   --p-toast-width: 330px;

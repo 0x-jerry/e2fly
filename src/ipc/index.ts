@@ -1,8 +1,8 @@
 import { getV2rayConfig } from '@/logic/v2fly'
 import { store } from '@/store'
+import { sleep } from '@0x-jerry/utils'
 import { invoke } from '@tauri-apps/api/core'
 import type { AppConfig } from '../config'
-import { sleep } from '@0x-jerry/utils'
 
 /**
  * @todo implement methods

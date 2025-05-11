@@ -1,9 +1,12 @@
+import type { AppConfig } from '@/config'
 import type { V2FlyConfig } from '@0x-jerry/v2ray-schema'
-import { AppConfig } from '@/config'
-import { OutboundObject } from '@0x-jerry/v2ray-schema/types/outbound'
-import { LogObject } from '@0x-jerry/v2ray-schema/types/log'
-import { InboundObject } from '@0x-jerry/v2ray-schema/types/inbound'
-import { RoutingObject, RuleObject } from '@0x-jerry/v2ray-schema/types/routing'
+import type { InboundObject } from '@0x-jerry/v2ray-schema/types/inbound'
+import type { LogObject } from '@0x-jerry/v2ray-schema/types/log'
+import type { OutboundObject } from '@0x-jerry/v2ray-schema/types/outbound'
+import type {
+  RoutingObject,
+  RuleObject,
+} from '@0x-jerry/v2ray-schema/types/routing'
 import * as x2sp from '@0x-jerry/x2sp'
 
 export interface V2rayConfOption {
@@ -15,7 +18,9 @@ export interface V2rayConfOption {
  * Only support vmess protocol for now.
  * @returns
  */
-export function getOutboundConfFromBase64(opt: V2rayConfOption): OutboundObject {
+export function getOutboundConfFromBase64(
+  opt: V2rayConfOption,
+): OutboundObject {
   const config = x2sp.decode(opt.sharingString)
 
   const outbound: OutboundObject = {
@@ -27,13 +32,15 @@ export function getOutboundConfFromBase64(opt: V2rayConfOption): OutboundObject 
   }
 
   if (config.transport?.type === 'ws') {
+    // biome-ignore lint/style/noNonNullAssertion: <explanation>
     outbound.streamSettings!.wsSettings = {
       path: config.transport.path,
     }
   } else if (config.transport?.type === 'xhttp') {
+    // biome-ignore lint/style/noNonNullAssertion: <explanation>
     outbound.streamSettings!.xhttpSettings = {
       path: config.transport.path,
-      extra: config.transport.extra
+      extra: config.transport.extra,
     }
   }
 
@@ -162,7 +169,7 @@ function getRoutingConf(rules?: RuleObject[]): RoutingObject {
     rules: [
       {
         type: 'field',
-        domain: proxyRules.map((n) => 'geosite:' + n),
+        domain: proxyRules.map((n) => `geosite:${n}`),
         outboundTag: OutboundTag.PROXY,
       },
       {

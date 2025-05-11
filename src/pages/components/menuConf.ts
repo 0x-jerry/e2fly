@@ -1,9 +1,9 @@
-import SettingIcon from '~icons/carbon/settings'
 import ServerIcon from '~icons/carbon/bare-metal-server'
 import DebugIcon from '~icons/carbon/debug'
+import SettingIcon from '~icons/carbon/settings'
 
-import { Component } from 'vue'
 import { i18n } from '@/i18n'
+import type { Component } from 'vue'
 
 // @ts-ignore
 const { t } = i18n.global

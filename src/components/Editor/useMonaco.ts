@@ -1,5 +1,5 @@
 import { editor } from 'monaco-editor'
-import { Ref, onMounted, onUnmounted } from 'vue'
+import { type Ref, onMounted, onUnmounted } from 'vue'
 
 export function useMonaco(
   containerEl: Ref<HTMLElement>,

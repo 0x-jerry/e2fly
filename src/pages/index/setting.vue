@@ -1,7 +1,12 @@
 <script lang="ts" setup>
 import { AppConfig } from '@/config'
 import { useConfigChangedEvent } from '@/events'
-import { disableAutostart, enableAutostart, ipc, isEnabledAutostart } from '@/ipc'
+import {
+  disableAutostart,
+  enableAutostart,
+  ipc,
+  isEnabledAutostart,
+} from '@/ipc'
 import { store } from '@/store'
 import { useLoading } from '@0x-jerry/vue-kit'
 import { event } from '@tauri-apps/api'

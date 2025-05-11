@@ -1,7 +1,7 @@
 import { sleep } from '@0x-jerry/utils'
 
 export function useInterval(cb: () => any, timeout = 200) {
-  let wrapper = async () => {
+  const wrapper = async () => {
     try {
       await cb()
     } catch (_) {}
@@ -36,6 +36,6 @@ export function useInterval(cb: () => any, timeout = 200) {
 
   return {
     start,
-    stop
+    stop,
   }
 }
