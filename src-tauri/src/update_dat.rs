@@ -1,11 +1,15 @@
 use futures::StreamExt;
 use reqwest::IntoUrl;
-use std::{fs, io::Write, path};
+use std::{
+    fs,
+    io::Write,
+    path::{self, PathBuf},
+};
 use tauri::{AppHandle, Emitter, EventTarget, Manager, Runtime};
 
 use crate::conf::AppConfigState;
 
-pub async fn update_dat_files<R: Runtime>(app: AppHandle<R>) -> Result<(), reqwest::Error> {
+pub async fn update_dat_files<R: Runtime>(app: AppHandle<R>) -> Result<(), String> {
     let conf = {
         let app_conf_state = app.state::<AppConfigState>();
         let app_conf_state = app_conf_state.lock().unwrap();
@@ -14,9 +18,16 @@ pub async fn update_dat_files<R: Runtime>(app: AppHandle<R>) -> Result<(), reqwe
 
     let xray_bin_path = conf.v2_fly.bin.clone();
 
-    if !fs::exists(xray_bin_path.clone()).unwrap_or(false) {
-        return Ok(());
+    if xray_bin_path.is_empty() {
+        return Err("Binary path is empty".to_string());
     }
+
+    let bin_path =
+        which::which(xray_bin_path.clone()).unwrap_or(PathBuf::from(xray_bin_path.clone()));
+
+    let bin_path = bin_path.canonicalize().map_err(|e| e.to_string())?;
+
+    let bin_dir = bin_path.parent().unwrap();
 
     let proxy_conf = if conf.active.enabled && conf.v2_fly.http.enabled {
         let http_proxy = format!(
@@ -35,8 +46,6 @@ pub async fn update_dat_files<R: Runtime>(app: AppHandle<R>) -> Result<(), reqwe
     let geosite_dat_url =
         "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat";
 
-    let bin_path = path::PathBuf::from(xray_bin_path.clone());
-    let bin_dir = bin_path.parent().unwrap();
     let geoip_file = bin_dir.join("geoip.dat");
     let geosite_file = bin_dir.join("geosite.dat");
 
@@ -52,7 +61,8 @@ pub async fn update_dat_files<R: Runtime>(app: AppHandle<R>) -> Result<(), reqwe
             .unwrap();
         }),
     )
-    .await?;
+    .await
+    .map_err(|e| e.to_string())?;
 
     download_to_file(
         geosite_dat_url,
@@ -66,7 +76,8 @@ pub async fn update_dat_files<R: Runtime>(app: AppHandle<R>) -> Result<(), reqwe
             .unwrap();
         }),
     )
-    .await?;
+    .await
+    .map_err(|e| e.to_string())?;
 
     Ok(())
 }
