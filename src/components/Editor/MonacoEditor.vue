@@ -47,7 +47,7 @@ ins.onDidChangeModelContent(() => {
   <div class="editor-container" ref="el"></div>
 </template>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .editor-container {
   width: 100%;
   height: 100%;

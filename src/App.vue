@@ -34,7 +34,7 @@ init()
   <router-view v-if="initialized"></router-view>
 </template>
 
-<style lang="less">
+<style lang="scss">
 hr {
   border-width: 0 0 1px;
   @apply border-light-900 !my-3;

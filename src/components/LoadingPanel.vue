@@ -11,16 +11,13 @@ defineProps<LoadingProps>()
 <template>
   <div class="relative">
     <slot></slot>
-    <div
-      v-if="loading"
-      class="spinner absolute top-0 left-0 size-full flex items-center justify-center"
-    >
+    <div v-if="loading" class="spinner absolute top-0 left-0 size-full flex items-center justify-center">
       <Spinner class="h-4/5 max-h-8" strokeWidth="6" />
     </div>
   </div>
 </template>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .spinner {
   @apply bg-gray-4 bg-op-40;
   z-index: 999;

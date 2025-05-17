@@ -22,20 +22,15 @@ function handleMenu(menu: SelectButtonChangeEvent) {
       </span>
     </div>
     <div class="flex gap-2">
-      <SelectButton
-        :model-value="activeMenu?.route"
-        :options="menus"
-        option-value="route"
-        @change="handleMenu"
-        #option="{ option }"
-      >
+      <SelectButton :model-value="activeMenu?.route" :options="menus" option-value="route" @change="handleMenu"
+        #option="{ option }">
         <component :is="option.icon"></component>
       </SelectButton>
     </div>
   </div>
 </template>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .app-head {
   // -webkit-app-region: drag;
   background: #f1f5f9;

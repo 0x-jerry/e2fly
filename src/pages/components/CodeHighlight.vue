@@ -25,4 +25,4 @@ watch(
   <pre><code :class="`language-${props.lang}`" v-html="html?.value"></code></pre>
 </template>
 
-<style lang="less"></style>
+<style lang="scss"></style>

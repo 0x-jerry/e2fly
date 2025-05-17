@@ -174,7 +174,7 @@ async function saveCurrentConfig() {
   </Drawer>
 </template>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .add-card {
   border: 1px solid;
   display: flex;

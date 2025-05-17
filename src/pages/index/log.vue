@@ -32,7 +32,7 @@ async function openLogFolder() {
   </div>
 </template>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .log-page {
   @apply bg-light-300;
   height: 100%;
