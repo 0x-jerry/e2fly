@@ -78,13 +78,15 @@ pub fn setup_tray_menu<R: Runtime>(app: &AppHandle<R>) -> Result<(), Error> {
                         check_update(app);
                     }
                     TrayMenuId::ToggleSystemProxy => {
-                        let app_conf = app.state::<AppConfigState>();
-                        let mut app_conf = app_conf.lock().unwrap();
+                        {
+                            let app_conf = app.state::<AppConfigState>();
+                            let mut app_conf = app_conf.lock().unwrap();
 
-                        app_conf.conf.proxy.system = !app_conf.conf.proxy.system;
-                        let conf = app_conf.conf.clone();
+                            app_conf.conf.proxy.system = !app_conf.conf.proxy.system;
+                            let conf = app_conf.conf.clone();
 
-                        app_conf.save(&conf);
+                            app_conf.save(&conf);
+                        }
 
                         update_system_proxy(app);
                     }
