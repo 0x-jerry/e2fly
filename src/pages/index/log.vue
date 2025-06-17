@@ -27,7 +27,7 @@ async function openLogFolder() {
       </Button>
     </div>
     <div class="px-3 overflow-auto flex-1">
-      <pre><code v-for="line in state.logs" :key="line" >{{ line }}</code></pre>
+      <pre><code v-for="line in state.logs">{{ line }}</code></pre>
     </div>
   </div>
 </template>
