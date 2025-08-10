@@ -27,7 +27,7 @@ file-rotate = "0"
 tauri-plugin-notification = "2"
 tauri-plugin-dialog = "2"
 futures = "0.3"
-which = "7.0"
+which = "8.0"
 # derive_more = { version = "1.0.0", features = ["deref"] }
 # tokio = "1.41.0"
 
