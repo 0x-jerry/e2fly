@@ -1,9 +1,7 @@
 use futures::StreamExt;
 use reqwest::IntoUrl;
 use std::{
-    fs,
-    io::Write,
-    path::{self, PathBuf},
+    env, fs, io::Write, path::{self, PathBuf}
 };
 use tauri::{AppHandle, Emitter, EventTarget, Manager, Runtime};
 
@@ -84,7 +82,7 @@ pub async fn update_dat_files<R: Runtime>(app: AppHandle<R>) -> Result<(), Strin
 
 async fn download_to_file<U, P>(
     url: U,
-    file: P,
+    dest_file: P,
     proxy: Option<reqwest::Proxy>,
     progress_fn: Option<impl Fn(DownloadProgress) + Copy>,
 ) -> Result<(), reqwest::Error>
@@ -114,7 +112,9 @@ where
         ..Default::default()
     };
 
-    let mut file = fs::File::create(file).unwrap();
+    let dest_filename = PathBuf::from(dest_file).file_name().unwrap();
+    let temp_file_path = env::temp_dir().join(dest_filename);
+    let mut file_handler = fs::File::create(temp_file_path).unwrap();
     let mut stream = response.bytes_stream();
 
     while let Some(item) = stream.next().await {
@@ -126,7 +126,7 @@ where
                     progress_fn(progress_data.clone())
                 }
 
-                file.write_all(&bytes).unwrap();
+                file_handler.write_all(&bytes).unwrap();
             }
             Err(e) => {
                 return Err(e);
@@ -134,7 +134,10 @@ where
         }
     }
 
-    file.flush().unwrap();
+    file_handler.flush().unwrap();
+
+    fs::copy(temp_file_path, dest_file).expect("Copy dat file failed");
+    let _ = fs::remove_file(temp_file_path);
 
     Ok(())
 }
