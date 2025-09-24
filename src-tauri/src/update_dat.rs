@@ -1,7 +1,9 @@
 use futures::StreamExt;
 use reqwest::IntoUrl;
 use std::{
-    env, fs, io::Write, path::{self, PathBuf}
+    env, fs,
+    io::Write,
+    path::{self, PathBuf},
 };
 use tauri::{AppHandle, Emitter, EventTarget, Manager, Runtime};
 
@@ -112,9 +114,10 @@ where
         ..Default::default()
     };
 
-    let dest_filename = PathBuf::from(dest_file).file_name().unwrap();
+    let dest_file = dest_file.as_ref().to_path_buf();
+    let dest_filename = dest_file.file_name().unwrap();
     let temp_file_path = env::temp_dir().join(dest_filename);
-    let mut file_handler = fs::File::create(temp_file_path).unwrap();
+    let mut file_handler = fs::File::create(temp_file_path.clone()).unwrap();
     let mut stream = response.bytes_stream();
 
     while let Some(item) = stream.next().await {
@@ -136,7 +139,7 @@ where
 
     file_handler.flush().unwrap();
 
-    fs::copy(temp_file_path, dest_file).expect("Copy dat file failed");
+    fs::copy(temp_file_path.clone(), dest_file).expect("Copy dat file failed");
     let _ = fs::remove_file(temp_file_path);
 
     Ok(())
