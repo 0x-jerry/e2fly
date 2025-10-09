@@ -2,6 +2,7 @@ use tauri::{command, AppHandle, Builder, Manager, Runtime, State};
 use tauri_plugin_opener::OpenerExt;
 
 use crate::{
+    app::update_autolaunch,
     conf::{model::AppConfig, AppConfigExt, AppConfigState},
     system_proxy::update_system_proxy,
     update_dat::update_dat_files,
@@ -13,6 +14,7 @@ fn save_conf<R: Runtime>(app: AppHandle<R>, state: State<AppConfigState>, conf: 
     state.lock().unwrap().save(&conf);
 
     update_system_proxy(&app);
+    update_autolaunch(&app);
 }
 
 #[command]

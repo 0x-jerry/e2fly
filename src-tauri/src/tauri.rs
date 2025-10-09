@@ -1,9 +1,9 @@
 use tauri::{is_dev, Manager, RunEvent, WindowEvent};
-use tauri_plugin_autostart::{MacosLauncher, ManagerExt};
+use tauri_plugin_autostart::MacosLauncher;
 use tauri_plugin_window_state::StateFlags;
 
 use crate::{
-    app,
+    app::{self, update_autolaunch},
     conf::{self, AppConfigExt},
     const_var::WINDOW_NAME,
     ipc, menu, proxy, tray,
@@ -18,10 +18,6 @@ pub fn start_tauri() {
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_dialog::init())
-        .plugin(tauri_plugin_autostart::init(
-            MacosLauncher::LaunchAgent,
-            Some(vec!["--minimized"]),
-        ))
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_shell::init())
         .plugin(
@@ -32,10 +28,15 @@ pub fn start_tauri() {
         .plugin(tauri_plugin_clipboard_manager::init());
 
     if !is_dev() {
-        app = app.plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
-            let win = app.get_webview_window(WINDOW_NAME).expect("no main window");
-            show_window(&win).expect("show main window");
-        }));
+        app = app
+            .plugin(tauri_plugin_autostart::init(
+                MacosLauncher::LaunchAgent,
+                Some(vec!["--minimized"]),
+            ))
+            .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
+                let win = app.get_webview_window(WINDOW_NAME).expect("no main window");
+                show_window(&win).expect("show main window");
+            }));
     }
 
     let app = ipc::set_app_ipc_methods(app);
@@ -63,19 +64,7 @@ pub fn start_tauri() {
 
         menu::setup_win_menu(app_handle)?;
 
-        if app_conf.app.auto_startup {
-            let _ = app
-                .autolaunch()
-                .enable()
-                .map_err(|err| println!("enable autostart failed: {}", err));
-        } else {
-            let _ = app
-                .autolaunch()
-                .disable()
-                .map_err(|err| println!("disable autostart failed: {}", err));
-
-            app.get_webview_window(WINDOW_NAME).map(|win| win.show());
-        }
+        update_autolaunch(app_handle);
 
         Ok(())
     });

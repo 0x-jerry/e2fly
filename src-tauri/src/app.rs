@@ -1,4 +1,5 @@
-use tauri::{AppHandle, Runtime};
+use tauri::{is_dev, AppHandle, Runtime};
+use tauri_plugin_autostart::ManagerExt;
 use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 
 use crate::{conf::AppConfigExt, proxy::set_proxy, v2fly::FlyStateExt};
@@ -19,4 +20,20 @@ pub fn before_exit_app<R: Runtime>(app: &AppHandle<R>) {
     }
 
     app.fly_state().stop();
+}
+
+pub fn update_autolaunch<R: Runtime>(app: &AppHandle<R>) {
+    let app_conf = app.app_config();
+
+    if !is_dev() {
+        let autolaunch = app.autolaunch();
+
+        if autolaunch.is_enabled().unwrap_or_default() != app_conf.app.auto_startup {
+            if app_conf.app.auto_startup {
+                let _ = autolaunch.enable();
+            } else {
+                let _ = autolaunch.disable();
+            }
+        }
+    }
 }
