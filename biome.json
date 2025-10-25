@@ -1,52 +1,68 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.3.0/schema.json",
-	"vcs": {
-		"enabled": true,
-		"clientKind": "git",
-		"useIgnoreFile": true
-	},
-	"files": {
-		"ignoreUnknown": true,
-		"includes": ["**/src/**", "**/scripts/**", "!**/src/typed-router.d.ts"]
-	},
-	"formatter": {
-		"enabled": true,
-		"useEditorconfig": true
-	},
-	"assist": { "actions": { "source": { "organizeImports": "on" } } },
-	"linter": {
-		"enabled": true,
-		"rules": {
-			"recommended": true,
-			"complexity": {
-				"noForEach": "off"
-			}
-		}
-	},
-	"javascript": {
-		"formatter": {
-			"jsxQuoteStyle": "single",
-			"quoteProperties": "asNeeded",
-			"trailingCommas": "all",
-			"semicolons": "asNeeded",
-			"arrowParentheses": "always",
-			"bracketSameLine": false,
-			"quoteStyle": "single",
-			"attributePosition": "auto",
-			"bracketSpacing": true
-		}
-	},
-	"overrides": [
-		{
-			"includes": ["**/*.vue"],
-			"linter": {
-				"rules": {
-					"style": {
-						"useConst": "off",
-						"useImportType": "off"
-					}
-				}
-			}
-		}
-	]
+  "root": true,
+  "$schema": "https://biomejs.dev/schemas/2.3.0/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": true,
+    "includes": [
+      "**/src/**",
+      "**/scripts/**",
+      "!**/src/typed-router.d.ts"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "useEditorconfig": true
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "complexity": {
+        "noForEach": "off"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "jsxQuoteStyle": "single",
+      "quoteProperties": "asNeeded",
+      "trailingCommas": "all",
+      "semicolons": "asNeeded",
+      "arrowParentheses": "always",
+      "bracketSameLine": false,
+      "quoteStyle": "single",
+      "attributePosition": "auto",
+      "bracketSpacing": true
+    }
+  },
+  "overrides": [
+    {
+      "includes": [
+        "**/*.vue"
+      ],
+      "linter": {
+        "rules": {
+          "style": {
+            "useConst": "off",
+            "useImportType": "off"
+          },
+          "correctness": {
+            "noUnusedVariables": "off"
+          }
+        }
+      }
+    }
+  ]
 }

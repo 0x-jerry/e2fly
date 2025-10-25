@@ -3,13 +3,24 @@ import { useInterval } from '@/hooks'
 import { ipc } from '@/ipc'
 
 const state = reactive({
-  logs: [] as string[],
+  logs: [] as {content: string, key: string}[],
 })
 
 async function getLogs() {
   const logs = await ipc.getV2flyLogs()
 
-  state.logs = logs.map((line) => `${line}\n`)
+  const countMap = new Map<string, number>()
+  state.logs = logs.map((line) => {
+
+    const count = (countMap.get(line) || 0) + 1
+
+    countMap.set(line, count);
+
+    return {
+      key: `${count}-${line}`,
+      content: `${line}\n`
+    }
+  })
 }
 
 useInterval(() => getLogs(), 1000)
@@ -27,7 +38,7 @@ async function openLogFolder() {
       </Button>
     </div>
     <div class="px-3 overflow-auto flex-1">
-      <pre><code v-for="line in state.logs">{{ line }}</code></pre>
+      <pre><code v-for="line in state.logs" :key="line.key">{{ line.content }}</code></pre>
     </div>
   </div>
 </template>
