@@ -22,7 +22,7 @@ function handleMenu(menu: SelectButtonChangeEvent) {
       </span>
     </div>
     <div class="flex gap-2">
-      <SelectButton :model-value="activeMenu?.route" :options="menus" option-value="route" @change="handleMenu"
+      <SelectButton :model-value="activeMenu?.route" :options="menus" option-label="text" option-value="route" @change="handleMenu"
         #option="{ option }">
         <component :is="option.icon"></component>
       </SelectButton>
