@@ -35,23 +35,13 @@ fn enable_http_proxy(net_type: &str, conf: &ProxyConf) -> io::Result<()> {
     // set http proxy
     run_command(
         PROXY_CMD,
-        &[
-            "-setwebproxy",
-            net_type,
-            conf.addr.as_str(),
-            conf.port.as_str(),
-        ],
+        &["-setwebproxy", net_type, conf.addr.as_str(), conf.port.as_str()],
     )?;
 
     // set https proxy
     run_command(
         PROXY_CMD,
-        &[
-            "-setsecurewebproxy",
-            net_type,
-            conf.addr.as_str(),
-            conf.port.as_str(),
-        ],
+        &["-setsecurewebproxy", net_type, conf.addr.as_str(), conf.port.as_str()],
     )?;
 
     Ok(())
@@ -61,12 +51,7 @@ fn enable_socks_proxy(net_type: &str, conf: &ProxyConf) -> io::Result<()> {
     // set socks proxy
     run_command(
         PROXY_CMD,
-        &[
-            "-setsocksfirewallproxy",
-            net_type,
-            conf.addr.as_str(),
-            conf.port.as_str(),
-        ],
+        &["-setsocksfirewallproxy", net_type, conf.addr.as_str(), conf.port.as_str()],
     )?;
 
     Ok(())
@@ -75,16 +60,22 @@ fn enable_socks_proxy(net_type: &str, conf: &ProxyConf) -> io::Result<()> {
 fn enable_proxy(proxy_type: SysProxyType) -> io::Result<()> {
     let types = get_available_network_types();
 
-    for net_type in types {
-        match proxy_type {
-            SysProxyType::Http(Some(ref conf)) => {
+    match proxy_type {
+        SysProxyType::Http(Some(ref conf)) => {
+            for net_type in &types {
                 enable_http_proxy(net_type, conf)?;
             }
-            SysProxyType::Socks(Some(ref conf)) => {
+        }
+        SysProxyType::Socks(Some(ref conf)) => {
+            for net_type in &types {
                 enable_socks_proxy(net_type, conf)?;
             }
-            _ => {}
         }
+        SysProxyType::Tun(_) => {
+            // TODO: Implement TUN mode setup for macOS
+            println!("TUN mode enable requested (not implemented)");
+        }
+        _ => {}
     }
 
     Ok(())
@@ -93,14 +84,20 @@ fn enable_proxy(proxy_type: SysProxyType) -> io::Result<()> {
 fn disable_proxy(proxy_type: SysProxyType) -> io::Result<()> {
     let types = get_available_network_types();
 
-    for net_type in types {
-        match proxy_type {
-            SysProxyType::Http(_) => {
+    match proxy_type {
+        SysProxyType::Http(_) => {
+            for net_type in &types {
                 disable_http_proxy(net_type)?;
             }
-            SysProxyType::Socks(_) => {
+        }
+        SysProxyType::Socks(_) => {
+            for net_type in &types {
                 disable_socks_proxy(net_type)?;
             }
+        }
+        SysProxyType::Tun(_) => {
+            // TODO: Implement TUN mode disable for macOS
+            println!("TUN mode disable requested (not implemented)");
         }
     }
 
