@@ -1,4 +1,3 @@
-import type { AppConfig } from '@/config'
 import type { V2FlyConfig } from '@0x-jerry/v2ray-schema'
 import type { InboundObject } from '@0x-jerry/v2ray-schema/types/inbound'
 import type { LogObject } from '@0x-jerry/v2ray-schema/types/log'
@@ -8,6 +7,7 @@ import type {
   RuleObject,
 } from '@0x-jerry/v2ray-schema/types/routing'
 import * as x2sp from '@0x-jerry/x2sp'
+import type { AppConfig } from '@/config'
 
 export interface V2rayConfOption {
   sharingString: string
@@ -32,12 +32,12 @@ export function getOutboundConfFromBase64(
   }
 
   if (config.transport?.type === 'ws') {
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
+    // biome-ignore lint/style/noNonNullAssertion: <>
     outbound.streamSettings!.wsSettings = {
       path: config.transport.path,
     }
   } else if (config.transport?.type === 'xhttp') {
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
+    // biome-ignore lint/style/noNonNullAssertion: <>
     outbound.streamSettings!.xhttpSettings = {
       path: config.transport.path,
       extra: config.transport.extra,
@@ -129,7 +129,7 @@ function getHttpInbound(port: number, allowLAN?: boolean): InboundObject {
     port: port,
     sniffing: {
       enabled: true,
-      destOverride: ['fakedns+others', 'tls', 'http', 'quic'],
+      destOverride: ['tls', 'http', 'quic'],
     },
   }
 }
@@ -145,7 +145,7 @@ function getSocksInbound(port: number, allowLAN?: boolean): InboundObject {
     },
     sniffing: {
       enabled: true,
-      destOverride: ['fakedns+others', 'tls', 'http', 'quic'],
+      destOverride: ['tls', 'http', 'quic'],
     },
   }
 }
@@ -246,11 +246,6 @@ export async function getV2rayConfig(
     dns: {
       servers: [
         {
-          address: 'fakedns',
-          domains: ['geosite:geolocation-!cn'],
-          expectIPs: ['geoip:!cn'],
-        },
-        {
           address: '223.5.5.5',
           domains: ['geosite:cn'],
           expectIPs: ['geoip:cn'],
@@ -262,7 +257,6 @@ export async function getV2rayConfig(
         },
         '223.5.5.5',
         '1.1.1.1',
-        'localhost',
       ],
     },
   }
