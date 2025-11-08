@@ -95,7 +95,7 @@ export function getOutboundConfFromBase64(
 
 export function getLogConf(): LogObject {
   return {
-    loglevel: 'debug',
+    loglevel: 'warning',
   }
 }
 
