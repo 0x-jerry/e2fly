@@ -28,6 +28,7 @@ tauri-plugin-notification = "2"
 tauri-plugin-dialog = "2"
 futures = "0.3"
 which = "7.0"
+sysinfo = "0.37"
 # derive_more = { version = "1.0.0", features = ["deref"] }
 # tokio = "1.41.0"
 
