@@ -59,7 +59,10 @@ async fn update_xray_dat_data<R: Runtime>(app: AppHandle<R>) -> Result<(), Strin
 #[command]
 fn open_logs_folder<R: Runtime>(app: AppHandle<R>) -> Result<(), String> {
     let logs_dir = app.path().app_log_dir().unwrap();
-    app.opener().reveal_item_in_dir(logs_dir).unwrap();
+
+    app.opener()
+        .open_path(logs_dir.to_str().unwrap(), None::<&str>)
+        .unwrap();
 
     Ok(())
 }
