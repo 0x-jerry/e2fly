@@ -5,7 +5,7 @@ use std::ffi::OsStr;
 use std::fs::{self, File};
 use std::path::PathBuf;
 use std::process::Command;
-use tauri::{is_dev, AppHandle, Manager, Runtime, State};
+use tauri::{AppHandle, Manager, Runtime, State};
 
 pub struct FlyState<R: Runtime> {
     log_file: PathBuf,
@@ -100,11 +100,7 @@ impl<R: Runtime> FlyStateExt<R> for AppHandle<R> {
 fn get_log_file_path<R: Runtime>(app: &AppHandle<R>) -> PathBuf {
     let app_log_dir = app.path().app_log_dir().expect("get app log dir failed");
 
-    let file_name = if is_dev() {
-        "v2ray.dev.log"
-    } else {
-        "v2ray.log"
-    };
+    let file_name = "v2ray.log";
 
     app_log_dir.join(file_name)
 }
@@ -112,11 +108,7 @@ fn get_log_file_path<R: Runtime>(app: &AppHandle<R>) -> PathBuf {
 fn get_pid_file_path<R: Runtime>(app: &AppHandle<R>) -> PathBuf {
     let app_log_dir = app.path().app_config_dir().expect("get app log dir failed");
 
-    let pid_file_name = if is_dev() {
-        "v2ray_pid.dev.txt"
-    } else {
-        "v2ray_pid.txt"
-    };
+    let pid_file_name = "v2ray_pid.txt";
 
     app_log_dir.join(pid_file_name)
 }

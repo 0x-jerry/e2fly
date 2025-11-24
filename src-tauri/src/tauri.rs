@@ -12,6 +12,12 @@ use crate::{
 };
 
 pub fn start_tauri() {
+    let mut context = tauri::generate_context!();
+
+    if is_dev() {
+        context.config_mut().identifier = "e2fly-dev.0x-jerry.com".into();
+    }
+
     let app = tauri::Builder::default();
 
     let mut app = app
@@ -40,12 +46,6 @@ pub fn start_tauri() {
     }
 
     let app = ipc::set_app_ipc_methods(app);
-
-    let mut context = tauri::generate_context!();
-
-    if is_dev() {
-        context.config_mut().identifier = "e2fly-dev.0x-jerry.com".into();
-    }
 
     let app = app.setup(|app| {
         let app_handle = app.handle();

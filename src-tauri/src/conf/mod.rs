@@ -1,6 +1,6 @@
 use model::AppConfig;
 use std::{fs, path::PathBuf, sync::Mutex};
-use tauri::{is_dev, AppHandle, Manager, Result, Runtime};
+use tauri::{AppHandle, Manager, Result, Runtime};
 
 pub mod model;
 
@@ -15,11 +15,7 @@ pub struct AppConfigStateInner {
 pub type AppConfigState = Mutex<AppConfigStateInner>;
 
 pub fn init<R: Runtime>(app: &AppHandle<R>) -> Result<()> {
-    let config_dir = if is_dev() {
-        PathBuf::from("../test-conf")
-    } else {
-        app.path().app_config_dir()?
-    };
+    let config_dir = app.path().app_config_dir()?;
 
     // ensure config folder
     if !config_dir.exists() {
