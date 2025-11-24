@@ -128,6 +128,6 @@ fn kill_by_pid(pid: u32) {
     let pid = sysinfo::Pid::from_u32(pid);
 
     if let Some(process) = sys.process(pid) {
-        process.kill();
+        process.kill_and_wait().unwrap_or_default();
     }
 }
