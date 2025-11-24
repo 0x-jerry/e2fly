@@ -3,7 +3,7 @@
   "productName": "E2Fly",
   "mainBinaryName": "E2Fly",
   "version": "1.15.2",
-  "identifier": "com.0x-jerry.dev",
+  "identifier": "e2fly.0x-jerry.com",
   "build": {
     "beforeBuildCommand": "pnpm build:web",
     "beforeDevCommand": "pnpm dev:web",

@@ -41,7 +41,11 @@ pub fn start_tauri() {
 
     let app = ipc::set_app_ipc_methods(app);
 
-    let context = tauri::generate_context!();
+    let mut context = tauri::generate_context!();
+
+    if is_dev() {
+        context.config_mut().identifier = "e2fly-dev.0x-jerry.com".into();
+    }
 
     let app = app.setup(|app| {
         let app_handle = app.handle();
