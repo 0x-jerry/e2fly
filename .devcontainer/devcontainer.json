@@ -1,8 +1,0 @@
-{
-  "image": "mcr.microsoft.com/devcontainers/universal:3",
-  "features": {
-    "ghcr.io/devcontainers/features/rust:1": {
-      "version": "latest"
-    }
-  }
-}
