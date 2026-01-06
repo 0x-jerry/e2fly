@@ -67,6 +67,38 @@ fn open_logs_folder<R: Runtime>(app: AppHandle<R>) -> Result<(), String> {
     Ok(())
 }
 
+#[command]
+fn get_default_interface_name() -> Result<String, String> {
+    let name = crate::net::get_default_interface_name().unwrap_or_default();
+
+    Ok(name)
+}
+
+#[command]
+async fn enable_tun_mode<R: Runtime>(app: AppHandle<R>) -> Result<(), String> {
+    crate::tun::enable_tun(&app)
+        .await
+        .map_err(|e| e.to_string())?;
+
+    Ok(())
+}
+
+#[command]
+async fn disable_tun_mode<R: Runtime>(app: AppHandle<R>) -> Result<(), String> {
+    crate::tun::disable_tun(&app).map_err(|e| e.to_string())?;
+
+    Ok(())
+}
+
+#[command]
+async fn setup_auto_routes(gateway: String) -> Result<(), String> {
+    crate::net::setup_auto_routes(gateway.as_str())
+        .await
+        .map_err(|e| e.to_string())?;
+
+    Ok(())
+}
+
 pub fn set_app_ipc_methods<R: Runtime>(app: Builder<R>) -> Builder<R> {
     app.invoke_handler(tauri::generate_handler![
         get_v2ray_log,
@@ -77,5 +109,9 @@ pub fn set_app_ipc_methods<R: Runtime>(app: Builder<R>) -> Builder<R> {
         save_v2ray_conf,
         update_xray_dat_data,
         open_logs_folder,
+        get_default_interface_name,
+        setup_auto_routes,
+        enable_tun_mode,
+        disable_tun_mode,
     ])
 }

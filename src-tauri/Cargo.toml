@@ -15,6 +15,7 @@ rust-version = "1.81"
 tauri-build = { version = "2", features = [] }
 
 [dependencies]
+log = "0.4"
 reqwest = { version = "0.12", features = ["json"] }
 serde_json = "1"
 serde = { version = "1", features = ["derive"] }
@@ -29,6 +30,9 @@ tauri-plugin-dialog = "2"
 futures = "0.3"
 which = "7.0"
 sysinfo = "0.37"
+anyhow = "1"
+netdev = "0.40"
+net-route = "0.4"
 # derive_more = { version = "1.0.0", features = ["deref"] }
 # tokio = "1.41.0"
 
