@@ -11,7 +11,7 @@ pub async fn enable_tun<T: AsRef<Path>>(
     program_path: T,
     config_path: T,
     pid_path: T,
-    gateway: &str,
+    interface_name: &str,
 ) -> Result<()> {
     let mut program = Command::new(program_path.as_ref());
 
@@ -23,7 +23,7 @@ pub async fn enable_tun<T: AsRef<Path>>(
     fs::write(pid_path, id.to_string())?;
 
     thread::sleep(Duration::from_secs(1));
-    setup_auto_routes(gateway).await?;
+    setup_auto_routes(interface_name).await?;
 
     println!("Setup auto routes success");
 

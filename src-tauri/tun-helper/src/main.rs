@@ -18,9 +18,9 @@ struct StartArgs {
     #[arg(long)]
     pid_path: String,
 
-    /// Tun gateway
+    /// Tun interface name
     #[arg(long)]
-    gateway: String,
+    interface_name: String,
 }
 
 #[derive(Parser, Debug)]
@@ -53,7 +53,7 @@ pub async fn main() -> Result<()> {
                 &args.program_path,
                 &args.config_path,
                 &args.pid_path,
-                &args.gateway,
+                &args.interface_name,
             )
             .await?;
         }

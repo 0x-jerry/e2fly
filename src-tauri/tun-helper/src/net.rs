@@ -1,7 +1,7 @@
 use anyhow::Result;
 use net_route::{Handle, Route};
 
-pub async fn setup_auto_routes(gateway: &str) -> Result<()> {
+pub async fn setup_auto_routes(interface_name: &str) -> Result<()> {
     let handle = Handle::new()?;
 
     let routes = [
@@ -15,9 +15,20 @@ pub async fn setup_auto_routes(gateway: &str) -> Result<()> {
         ("128.0.0.0", 1),
     ];
 
+    let interfaces = netdev::interface::get_interfaces();
+    let int = interfaces
+        .iter()
+        .find(|i| i.friendly_name == Some(interface_name.into()));
+
+    let index = match int {
+        Some(i) => i.index,
+        None => return Ok(()),
+    };
+
+    println!("index {}", index);
+
     for route in routes {
-        let route =
-            Route::new(route.0.parse().unwrap(), route.1).with_gateway(gateway.parse().unwrap());
+        let route = Route::new(route.0.parse().unwrap(), route.1).with_ifindex(index);
 
         match handle.add(&route).await {
             Ok(_) => {

@@ -6,7 +6,7 @@ use tauri::{AppHandle, Manager, Runtime};
 use crate::{conf::AppConfigExt, utils::relative_command_path};
 
 const TUN_HELPER_PROGRAM: &str = "tun-helper";
-const TUN_GATEWAY: &str = "198.18.0.1";
+const TUN_INTERFACE_NAME: &str = "utun19";
 const TUN_PROGRAM: &str = "hev-socks5-tunnel";
 const TUN_PID_FILE: &str = "tun.pid";
 const TUN_CONFIG_FILE: &str = "tun.conf.yaml";
@@ -24,8 +24,8 @@ pub async fn enable_tun<R: Runtime>(app: &AppHandle<R>) -> Result<()> {
         tun_program.to_str().unwrap(),
         "--config-path",
         tun_conf_path.to_str().unwrap(),
-        "--gateway",
-        TUN_GATEWAY,
+        "--interface-name",
+        TUN_INTERFACE_NAME,
         "--pid-path",
         pid_path.to_str().unwrap(),
     ];
@@ -83,17 +83,17 @@ fn write_tun_config_file<R: Runtime>(app: &AppHandle<R>) -> Result<PathBuf> {
     let content = format!(
         r#"
 tunnel:
-    name: utun9
+    name: {}
     mtu: 8500
     multi-queue: false
-    ipv4: {}
+    ipv4: 198.18.0.1
     ipv6: "fc00::1"
 socks5:
     port: {}
     address: 127.0.0.1
     udp: tcp
         "#,
-        TUN_GATEWAY, port,
+        TUN_INTERFACE_NAME, port,
     );
     std::fs::write(&conf_path, content)?;
     Ok(conf_path)
