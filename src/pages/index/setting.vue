@@ -174,7 +174,8 @@ const toggleTunMode = useLoading(async () => {
     </div>
     <div>
       <Button @click="toggleTunMode" class="w-full" :disabled="toggleTunMode.isLoading"
-        :loading="toggleTunMode.isLoading" :label="isTunModeEnabled ? 'Disable' : 'Enable'" />
+        :severity="isTunModeEnabled ? 'danger' : 'primary'" :loading="toggleTunMode.isLoading"
+        :label="isTunModeEnabled ? 'Disable TUN Mode' : 'Enable TUN Mode'" />
     </div>
   </div>
 </template>
