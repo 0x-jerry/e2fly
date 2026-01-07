@@ -2,9 +2,10 @@ use rev_buf_reader::RevBufReader;
 use std::{
     fs::File,
     io::{self, BufRead, Read},
+    path::{Path, PathBuf},
     process::{Command, Stdio},
 };
-use tauri::{AppHandle, Manager, Result, Runtime, WebviewWindow};
+use tauri::{utils::platform, AppHandle, Manager, Result, Runtime, WebviewWindow};
 
 use crate::const_var::WINDOW_NAME;
 
@@ -118,5 +119,31 @@ pub fn kill_by_pid(pid: u32) {
         if let Some(process) = sys.process(pid) {
             process.kill_and_wait().unwrap_or_default();
         }
+    }
+}
+
+pub fn relative_command_path(
+    command: &Path,
+) -> std::result::Result<PathBuf, tauri_plugin_shell::Error> {
+    match platform::current_exe()?.parent() {
+        #[cfg(windows)]
+        Some(exe_dir) => {
+            let mut command_path = exe_dir.join(command);
+            let already_exe = command_path.extension().is_some_and(|ext| ext == "exe");
+            if !already_exe {
+                // do not use with_extension to retain dots in the command filename
+                command_path.as_mut_os_string().push(".exe");
+            }
+            Ok(command_path)
+        }
+        #[cfg(not(windows))]
+        Some(exe_dir) => {
+            let mut command_path = exe_dir.join(command);
+            if command_path.extension().is_some_and(|ext| ext == "exe") {
+                command_path.set_extension("");
+            }
+            Ok(command_path)
+        }
+        None => Err(tauri_plugin_shell::Error::CurrentExeHasNoParent),
     }
 }

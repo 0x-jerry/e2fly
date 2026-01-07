@@ -11,11 +11,23 @@ rust-version = "1.81"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[workspace]
+members = ["tun-helper"]
+
+[workspace.dependencies]
+log = "0.4"
+anyhow = "1"
+sysinfo = "0.37"
+netdev = "0.40"
+
 [build-dependencies]
 tauri-build = { version = "2", features = [] }
 
 [dependencies]
-log = "0.4"
+log = { workspace = true }
+anyhow = { workspace = true }
+sysinfo = { workspace = true }
+netdev = { workspace = true }
 reqwest = { version = "0.12", features = ["json"] }
 serde_json = "1"
 serde = { version = "1", features = ["derive"] }
@@ -29,10 +41,7 @@ tauri-plugin-notification = "2"
 tauri-plugin-dialog = "2"
 futures = "0.3"
 which = "7.0"
-sysinfo = "0.37"
-anyhow = "1"
-netdev = "0.40"
-net-route = "0.4"
+privilege = "0.3"
 # derive_more = { version = "1.0.0", features = ["deref"] }
 # tokio = "1.41.0"
 

@@ -17,7 +17,9 @@
   "homepage": "https://github.com/0x-jerry/e2fly#readme",
   "scripts": {
     "dev": "tauri dev",
-    "build": "tauri build",
+    "build": "tsx scripts/build.ts",
+    "build:tauri": "tauri build",
+    "build:tun-helper": "tsx scripts/buildTunHelper.ts",
     "dev:web": "vite",
     "build:web": "vite build",
     "g:icons": "tauri icon assets/logo.png -o src-tauri/icons && tauri icon assets/enabled/logo.png -o src-tauri/icons/enabled",

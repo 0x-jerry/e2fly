@@ -90,15 +90,6 @@ async fn disable_tun_mode<R: Runtime>(app: AppHandle<R>) -> Result<(), String> {
     Ok(())
 }
 
-#[command]
-async fn setup_auto_routes(gateway: String) -> Result<(), String> {
-    crate::net::setup_auto_routes(gateway.as_str())
-        .await
-        .map_err(|e| e.to_string())?;
-
-    Ok(())
-}
-
 pub fn set_app_ipc_methods<R: Runtime>(app: Builder<R>) -> Builder<R> {
     app.invoke_handler(tauri::generate_handler![
         get_v2ray_log,
@@ -110,7 +101,6 @@ pub fn set_app_ipc_methods<R: Runtime>(app: Builder<R>) -> Builder<R> {
         update_xray_dat_data,
         open_logs_folder,
         get_default_interface_name,
-        setup_auto_routes,
         enable_tun_mode,
         disable_tun_mode,
     ])
