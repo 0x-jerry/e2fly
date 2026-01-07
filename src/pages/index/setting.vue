@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+import { useLoading } from '@0x-jerry/vue-kit'
+import { event } from '@tauri-apps/api'
+import { useToast } from 'primevue/usetoast'
+import { useI18n } from 'vue-i18n'
 import { AppConfig } from '@/config'
 import { useConfigChangedEvent } from '@/events'
 import {
@@ -8,10 +12,6 @@ import {
   isEnabledAutostart,
 } from '@/ipc'
 import { store } from '@/store'
-import { useLoading } from '@0x-jerry/vue-kit'
-import { event } from '@tauri-apps/api'
-import { useToast } from 'primevue/usetoast'
-import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
@@ -28,6 +28,12 @@ event.listen<DownloadProgressEventPayload>('download-progress', (event) => {
 })
 
 const appConf = reactive<AppConfig>(structuredClone(toRaw(store.config)))
+
+const isTunModeEnabled = ref(false);
+
+onMounted(async () => {
+  isTunModeEnabled.value = await ipc.isEnabledTunMode()
+})
 
 useConfigChangedEvent().on(() => {
   Object.assign(appConf, structuredClone(toRaw(store.config)))
@@ -96,6 +102,11 @@ const btnText = computed(() => {
 
   return `${payload.name}: ${payload.downloaded} / ${payload.total}`
 })
+
+const toggleTunMode = useLoading(async () => {
+  await ipc.toggleTunMode(!isTunModeEnabled.value)
+  isTunModeEnabled.value = !isTunModeEnabled.value
+})
 </script>
 
 <template>
@@ -160,6 +171,10 @@ const btnText = computed(() => {
     <div>
       <Button @click="saveConfig" class="w-full" :disabled="isModified" :loading="saveConfig.isLoading"
         :label="$t('page.setting.save')" />
+    </div>
+    <div>
+      <Button @click="toggleTunMode" class="w-full" :disabled="toggleTunMode.isLoading"
+        :loading="toggleTunMode.isLoading" :label="isTunModeEnabled ? 'Disable' : 'Enable'" />
     </div>
   </div>
 </template>

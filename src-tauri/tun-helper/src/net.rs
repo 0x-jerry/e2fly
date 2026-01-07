@@ -21,10 +21,10 @@ pub async fn setup_auto_routes(gateway: &str) -> Result<()> {
 
         match handle.add(&route).await {
             Ok(_) => {
-                log::info!("route add {:?}", route);
+                println!("route add {:?}", route);
             }
             Err(err) => {
-                log::error!("route add err: {}", err)
+                println!("route add err: {}", err)
             }
         }
     }

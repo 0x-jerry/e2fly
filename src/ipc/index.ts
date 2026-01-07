@@ -1,7 +1,7 @@
-import { getV2rayConfig } from '@/logic/v2fly'
-import { store } from '@/store'
 import { sleep } from '@0x-jerry/utils'
 import { invoke } from '@tauri-apps/api/core'
+import { getV2rayConfig } from '@/logic/v2fly'
+import { store } from '@/store'
 import type { AppConfig } from '../config'
 
 /**
@@ -47,6 +47,16 @@ export const ipc = {
   },
   async openLogsFolder(): Promise<void> {
     await invoke('open_logs_folder')
+  },
+  async toggleTunMode(enable: boolean): Promise<void> {
+    if (enable) {
+      return invoke('enable_tun_mode')
+    } else {
+      return invoke('disable_tun_mode')
+    }
+  },
+  async isEnabledTunMode(): Promise<boolean> {
+    return invoke('is_tun_mode_enabled')
   },
 }
 

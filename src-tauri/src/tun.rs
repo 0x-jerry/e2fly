@@ -3,7 +3,7 @@ use std::path::{Path, PathBuf};
 use anyhow::{bail, Result};
 use tauri::{AppHandle, Manager, Runtime};
 
-use crate::utils::relative_command_path;
+use crate::{conf::AppConfigExt, utils::relative_command_path};
 
 const TUN_HELPER_PROGRAM: &str = "tun-helper";
 const TUN_GATEWAY: &str = "198.18.0.1";
@@ -15,6 +15,9 @@ pub async fn enable_tun<R: Runtime>(app: &AppHandle<R>) -> Result<()> {
     let tun_program = relative_command_path(Path::new(TUN_PROGRAM))?;
     let tun_conf_path = write_tun_config_file(app)?;
 
+    let conf_dir = app.path().app_config_dir()?;
+    let pid_path = conf_dir.join(TUN_PID_FILE);
+
     let args = [
         "start",
         "--program-path",
@@ -23,6 +26,8 @@ pub async fn enable_tun<R: Runtime>(app: &AppHandle<R>) -> Result<()> {
         tun_conf_path.to_str().unwrap(),
         "--gateway",
         TUN_GATEWAY,
+        "--pid-path",
+        pid_path.to_str().unwrap(),
     ];
 
     println!("Tun mode enable {:?}", args);
@@ -38,7 +43,7 @@ pub fn disable_tun<R: Runtime>(app: &AppHandle<R>) -> Result<()> {
     let args = [
         //
         "stop",
-        "--pid-file",
+        "--pid-path",
         pid_path.to_str().unwrap(),
     ];
 
@@ -46,6 +51,14 @@ pub fn disable_tun<R: Runtime>(app: &AppHandle<R>) -> Result<()> {
     exec_tun_helper(&args)?;
 
     Ok(())
+}
+
+pub fn is_tun_mode_enabled<R: Runtime>(app: &AppHandle<R>) -> bool {
+    app.path()
+        .app_config_dir()
+        .unwrap()
+        .join(TUN_PID_FILE)
+        .exists()
 }
 
 fn exec_tun_helper(args: &[&str]) -> Result<()> {
@@ -65,7 +78,7 @@ fn exec_tun_helper(args: &[&str]) -> Result<()> {
 fn write_tun_config_file<R: Runtime>(app: &AppHandle<R>) -> Result<PathBuf> {
     let conf_dir = app.path().app_config_dir()?;
     let conf_path = conf_dir.join(TUN_CONFIG_FILE);
-    let pid_path = conf_dir.join(TUN_PID_FILE);
+    let port = app.app_config().v2_fly.socks.port;
 
     let content = format!(
         r#"
@@ -76,17 +89,12 @@ tunnel:
     ipv4: {}
     ipv6: "fc00::1"
 socks5:
-    port: 10021
+    port: {}
     address: 127.0.0.1
     udp: tcp
-misc:
-    pid-file: {}
         "#,
-        TUN_GATEWAY,
-        pid_path.to_str().unwrap()
+        TUN_GATEWAY, port,
     );
-
     std::fs::write(&conf_path, content)?;
-
     Ok(conf_path)
 }

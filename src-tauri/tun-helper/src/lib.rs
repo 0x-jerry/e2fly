@@ -3,24 +3,24 @@ mod utils;
 
 use std::{fs, path::Path, process::Command, thread, time::Duration};
 
-use anyhow::{Result, bail};
+use anyhow::Result;
 
 use crate::{net::setup_auto_routes, utils::kill_by_pid};
 
 pub async fn enable_tun<T: AsRef<Path>>(
     program_path: T,
     config_path: T,
+    pid_path: T,
     gateway: &str,
 ) -> Result<()> {
     let mut program = Command::new(program_path.as_ref());
 
-    let t = program.args([config_path.as_ref()]).spawn()?.wait()?;
+    let t = program.args([config_path.as_ref()]).spawn()?;
 
-    if !t.success() {
-        bail!("Start tun failed: {}", t);
-    }
+    let id = t.id();
 
-    println!("Start TUN success");
+    println!("Start TUN success {}", id);
+    fs::write(pid_path, id.to_string())?;
 
     thread::sleep(Duration::from_secs(1));
     setup_auto_routes(gateway).await?;

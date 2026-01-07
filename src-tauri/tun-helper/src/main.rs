@@ -14,6 +14,10 @@ struct StartArgs {
     #[arg(long)]
     config_path: String,
 
+    /// Tun pid file path
+    #[arg(long)]
+    pid_path: String,
+
     /// Tun gateway
     #[arg(long)]
     gateway: String,
@@ -24,7 +28,7 @@ struct StartArgs {
 struct StopArgs {
     /// Tun pid file path
     #[arg(long)]
-    pid_file: String,
+    pid_path: String,
 }
 
 #[derive(Parser, Debug)] // requires `derive` feature
@@ -45,10 +49,16 @@ pub async fn main() -> Result<()> {
 
     match args {
         TunHelperCli::Start(args) => {
-            enable_tun(&args.program_path, &args.config_path, &args.gateway).await?;
+            enable_tun(
+                &args.program_path,
+                &args.config_path,
+                &args.pid_path,
+                &args.gateway,
+            )
+            .await?;
         }
         TunHelperCli::Stop(args) => {
-            disable_tun(args.pid_file)?;
+            disable_tun(args.pid_path)?;
         }
     }
 

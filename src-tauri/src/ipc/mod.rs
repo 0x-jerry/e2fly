@@ -90,6 +90,13 @@ async fn disable_tun_mode<R: Runtime>(app: AppHandle<R>) -> Result<(), String> {
     Ok(())
 }
 
+#[command]
+async fn is_tun_mode_enabled<R: Runtime>(app: AppHandle<R>) -> Result<bool, String> {
+    let r = crate::tun::is_tun_mode_enabled(&app);
+
+    Ok(r)
+}
+
 pub fn set_app_ipc_methods<R: Runtime>(app: Builder<R>) -> Builder<R> {
     app.invoke_handler(tauri::generate_handler![
         get_v2ray_log,
@@ -103,5 +110,6 @@ pub fn set_app_ipc_methods<R: Runtime>(app: Builder<R>) -> Builder<R> {
         get_default_interface_name,
         enable_tun_mode,
         disable_tun_mode,
+        is_tun_mode_enabled,
     ])
 }
