@@ -81,11 +81,13 @@ pub fn show_window<R: Runtime>(win: &WebviewWindow<R>) -> Result<()> {
 pub fn kill_by_pid(pid: u32) {
     #[cfg(windows)]
     {
+        use anyhow::Result;
+
         if let Err(err) = win_kill_process_by_pid(pid) {
             println!("kill process failed, error: {}", err);
         }
 
-        fn win_kill_process_by_pid(pid: u32) -> Result<(), String> {
+        fn win_kill_process_by_pid(pid: u32) -> Result<()> {
             use windows::Win32::Foundation::{CloseHandle, HANDLE};
             use windows::Win32::System::Threading::{
                 OpenProcess, TerminateProcess, PROCESS_QUERY_INFORMATION, PROCESS_TERMINATE,
@@ -94,15 +96,14 @@ pub fn kill_by_pid(pid: u32) {
             unsafe {
                 let desired_access = PROCESS_TERMINATE | PROCESS_QUERY_INFORMATION;
 
-                let process_handle: HANDLE =
-                    OpenProcess(desired_access, false, pid).map_err(|err| err.to_string())?;
+                let process_handle: HANDLE = OpenProcess(desired_access, false, pid)?;
 
                 // Use a guard or defer equivalent for closing the handle
                 // The HANDLE type doesn't implement Drop automatically in windows-rs for all scenarios,
                 // so explicit closing is a good practice, or use an external crate like 'scopeguard'.
 
-                TerminateProcess(process_handle, 1).map_err(|err| err.to_string())?;
-                CloseHandle(process_handle).map_err(|err| err.to_string())?;
+                TerminateProcess(process_handle, 1)?;
+                CloseHandle(process_handle)?;
             };
 
             Ok(())

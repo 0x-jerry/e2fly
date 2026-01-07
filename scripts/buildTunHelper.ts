@@ -1,7 +1,7 @@
-import { buildThenCopyTunHelper } from "./shared";
+import { buildThenCopyTunHelper } from './shared'
 
-process.chdir("./src-tauri");
-await buildThenCopyTunHelper();
+process.chdir('./src-tauri')
+await buildThenCopyTunHelper()
 
 // finished
-process.exit(0);
+process.exit(0)

@@ -1,7 +1,7 @@
 use anyhow::Result;
 use tun_helper::{disable_tun, enable_tun};
 
-use clap::{Parser, command};
+use clap::Parser;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
