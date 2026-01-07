@@ -106,19 +106,27 @@ enum OutboundTag {
   DNS = 'dns-output',
 }
 
-function getOutboundDirectConf(): OutboundObject {
+function getOutboundDirectConf(inet: string): OutboundObject {
   return {
     tag: OutboundTag.DIRECT,
     protocol: 'freedom',
-    settings: {},
+    streamSettings: {
+      sockopt: {
+        interface: inet as any,
+      },
+    },
   }
 }
 
-function getOutboundBlockConf(): OutboundObject {
+function getOutboundBlockConf(inet: string): OutboundObject {
   return {
     tag: OutboundTag.BLOCK,
     protocol: 'blackhole',
-    settings: {},
+    streamSettings: {
+      sockopt: {
+        interface: inet as any,
+      },
+    },
   }
 }
 
@@ -187,6 +195,9 @@ function getRoutingConf(rules?: RuleObject[]): RoutingObject {
 export async function getV2rayConfig(
   opt: AppConfig,
   outbound: OutboundObject,
+  other: {
+    defaultInterfaceName: string
+  },
 ): Promise<V2FlyConfig> {
   const { v2fly, proxy } = opt
 
@@ -231,6 +242,13 @@ export async function getV2rayConfig(
     })
   }
 
+  // Update default interface name
+  Object.assign(outbound.streamSettings!, {
+    sockopt: {
+      interface: other.defaultInterfaceName as any,
+    },
+  })
+
   return {
     log: getLogConf(),
     inbounds,
@@ -239,8 +257,8 @@ export async function getV2rayConfig(
         ...outbound,
         tag: OutboundTag.PROXY,
       },
-      getOutboundDirectConf(),
-      getOutboundBlockConf(),
+      getOutboundDirectConf(other.defaultInterfaceName),
+      getOutboundBlockConf(other.defaultInterfaceName),
     ],
     routing: getRoutingConf(extraRules),
     dns: {

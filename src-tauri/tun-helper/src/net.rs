@@ -16,9 +16,15 @@ pub async fn setup_auto_routes(interface_name: &str) -> Result<()> {
     ];
 
     let interfaces = netdev::interface::get_interfaces();
-    let int = interfaces
-        .iter()
-        .find(|i| i.friendly_name == Some(interface_name.into()));
+    let int = interfaces.iter().find(|i| {
+        #[cfg(windows)]
+        let r = i.friendly_name == Some(interface_name.into());
+
+        #[cfg(unix)]
+        let r = i.name == interface_name;
+
+        return r;
+    });
 
     let index = match int {
         Some(i) => i.index,

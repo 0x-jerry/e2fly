@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import LoadingPanel from '@/components/LoadingPanel.vue'
-import { Outbound } from '@/config'
-import { ipc } from '@/ipc'
-import { getOutboundConfFromBase64 } from '@/logic/v2fly'
-import { actions, store } from '@/store'
 import { nanoid, remove } from '@0x-jerry/utils'
 import { OutboundObject } from '@0x-jerry/v2ray-schema/types/outbound'
 import { useLoading } from '@0x-jerry/vue-kit'
 import Drawer from 'primevue/drawer'
 import { useToast } from 'primevue/usetoast'
+import LoadingPanel from '@/components/LoadingPanel.vue'
+import { Outbound } from '@/config'
+import { ipc } from '@/ipc'
+import { getOutboundConfFromBase64 } from '@/logic/v2fly'
+import { actions, store } from '@/store'
 import { version } from '../../../package.json'
 
 const toast = useToast()

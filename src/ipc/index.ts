@@ -19,7 +19,10 @@ export const ipc = {
 
     if (!outbound) return
 
-    const v2rayConf = await getV2rayConfig(store.config, JSON.parse(outbound))
+    const inet = await ipc.getDefaultInterfaceName()
+    const v2rayConf = await getV2rayConfig(store.config, JSON.parse(outbound), {
+      defaultInterfaceName: inet,
+    })
 
     await invoke('save_v2ray_conf', { content: JSON.stringify(v2rayConf) })
 
@@ -47,6 +50,9 @@ export const ipc = {
   },
   async openLogsFolder(): Promise<void> {
     await invoke('open_logs_folder')
+  },
+  async getDefaultInterfaceName(): Promise<string> {
+    return invoke('get_default_interface_name')
   },
   async toggleTunMode(enable: boolean): Promise<void> {
     if (enable) {
