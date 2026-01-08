@@ -6,12 +6,17 @@ import type {
   RoutingObject,
   RuleObject,
 } from '@0x-jerry/v2ray-schema/types/routing'
+import type { StreamSettingsObject } from '@0x-jerry/v2ray-schema/types/transport'
 import * as x2sp from '@0x-jerry/x2sp'
 import type { AppConfig } from '@/config'
 
 export interface V2rayConfOption {
   sharingString: string
   mux: boolean
+}
+
+export interface TunConfig {
+  interfaceName: string
 }
 
 /**
@@ -103,30 +108,38 @@ enum OutboundTag {
   DIRECT = 'direct',
   PROXY = 'proxy',
   BLOCK = 'block',
-  DNS = 'dns-output',
 }
 
-function getOutboundDirectConf(inet: string): OutboundObject {
+enum InboundTag {
+  DNS = 'dns',
+}
+
+function getOutboundDirectConf(conf?: TunConfig): OutboundObject {
   return {
     tag: OutboundTag.DIRECT,
     protocol: 'freedom',
-    streamSettings: {
-      sockopt: {
-        interface: inet as any,
-      },
-    },
+    streamSettings: bindingTunConfig(undefined, conf),
   }
 }
 
-function getOutboundBlockConf(inet: string): OutboundObject {
+function bindingTunConfig(
+  streamSettings?: StreamSettingsObject,
+  conf?: TunConfig,
+): StreamSettingsObject | undefined {
+  return conf
+    ? Object.assign({}, streamSettings, {
+        sockopt: {
+          interface: conf.interfaceName as any,
+        },
+      })
+    : streamSettings
+}
+
+function getOutboundBlockConf(conf?: TunConfig): OutboundObject {
   return {
     tag: OutboundTag.BLOCK,
     protocol: 'blackhole',
-    streamSettings: {
-      sockopt: {
-        interface: inet as any,
-      },
-    },
+    streamSettings: bindingTunConfig(undefined, conf),
   }
 }
 
@@ -195,9 +208,7 @@ function getRoutingConf(rules?: RuleObject[]): RoutingObject {
 export async function getV2rayConfig(
   opt: AppConfig,
   outbound: OutboundObject,
-  other: {
-    defaultInterfaceName: string
-  },
+  tunConf?: TunConfig,
 ): Promise<V2FlyConfig> {
   const { v2fly, proxy } = opt
 
@@ -242,12 +253,15 @@ export async function getV2rayConfig(
     })
   }
 
-  // Update default interface name
-  Object.assign(outbound.streamSettings!, {
-    sockopt: {
-      interface: other.defaultInterfaceName as any,
-    },
-  })
+  if (tunConf) {
+    extraRules.push({
+      type: 'field',
+      outboundTag: OutboundTag.DIRECT,
+      inboundTag: [InboundTag.DNS],
+    })
+
+    outbound.streamSettings = bindingTunConfig(outbound.streamSettings, tunConf)
+  }
 
   return {
     log: getLogConf(),
@@ -257,11 +271,12 @@ export async function getV2rayConfig(
         ...outbound,
         tag: OutboundTag.PROXY,
       },
-      getOutboundDirectConf(other.defaultInterfaceName),
-      getOutboundBlockConf(other.defaultInterfaceName),
+      getOutboundDirectConf(tunConf),
+      getOutboundBlockConf(tunConf),
     ],
     routing: getRoutingConf(extraRules),
     dns: {
+      tag: InboundTag.DNS,
       servers: [
         {
           address: '223.5.5.5',

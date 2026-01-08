@@ -1,6 +1,6 @@
 import { sleep } from '@0x-jerry/utils'
 import { invoke } from '@tauri-apps/api/core'
-import { getV2rayConfig } from '@/logic/v2fly'
+import { getV2rayConfig, type TunConfig } from '@/logic/v2fly'
 import { store } from '@/store'
 import type { AppConfig } from '../config'
 
@@ -19,10 +19,13 @@ export const ipc = {
 
     if (!outbound) return
 
-    const inet = await ipc.getDefaultInterfaceName()
-    const v2rayConf = await getV2rayConfig(store.config, JSON.parse(outbound), {
-      defaultInterfaceName: inet,
-    })
+    const tunConf = await generateTunConfig()
+
+    const v2rayConf = await getV2rayConfig(
+      store.config,
+      JSON.parse(outbound),
+      tunConf,
+    )
 
     await invoke('save_v2ray_conf', { content: JSON.stringify(v2rayConf) })
 
@@ -37,6 +40,20 @@ export const ipc = {
     const isStartFailed = logs.at(0)?.startsWith('Failed to start')
     if (isStartFailed) {
       return logs.at(0)
+    }
+
+    async function generateTunConfig() {
+      const enabledTun = await ipc.isEnabledTunMode()
+      if (!enabledTun) {
+        return
+      }
+
+      const inet = await ipc.getDefaultInterfaceName()
+      const conf: TunConfig = {
+        interfaceName: inet,
+      }
+
+      return conf
     }
   },
   async stopV2fly() {
@@ -56,14 +73,25 @@ export const ipc = {
   },
   async toggleTunMode(enable: boolean): Promise<void> {
     if (enable) {
-      return invoke('enable_tun_mode')
+      await invoke('enable_tun_mode')
     } else {
-      return invoke('disable_tun_mode')
+      await invoke('disable_tun_mode')
     }
+    await restartV2fly()
   },
   async isEnabledTunMode(): Promise<boolean> {
     return invoke('is_tun_mode_enabled')
   },
+}
+
+async function restartV2fly() {
+  const conf = await ipc.getConfig()
+  if (!conf.active.enabled) {
+    return
+  }
+
+  await ipc.stopV2fly()
+  await ipc.startV2fly(conf.active.outboundId)
 }
 
 export async function isEnabledAutostart(): Promise<boolean> {
