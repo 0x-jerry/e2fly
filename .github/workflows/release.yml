@@ -51,8 +51,10 @@ jobs:
         include:
           - platform: "macos-latest" # for Arm based macs (M1 and above).
             args: "--target aarch64-apple-darwin"
+            hostTuple: aarch64-apple-darwin
           - platform: "macos-latest" # for Intel based macs.
             args: "--target x86_64-apple-darwin"
+            hostTuple: x86_64-apple-darwin
           - platform: "windows-latest"
             args: ""
           # - platform: 'ubuntu-22.04' # for Tauri v1 you could replace this with ubuntu-20.04.
@@ -101,6 +103,8 @@ jobs:
 
       - name: Build tun-helper
         run: npm run build:tun-helper
+        env:
+          BUILD_HOST_TUPLE: ${{ matrix.hostTuple }}
 
       - uses: tauri-apps/tauri-action@v0
         env:

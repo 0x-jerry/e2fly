@@ -17,9 +17,11 @@ export async function buildThenCopyTunHelper() {
 }
 
 async function getTargetTriple() {
-  const targetTriple = await exec('rustc --print host-tuple', {
-    collectOutput: true,
-  })
+  const targetTriple =
+    process.env.BUILD_HOST_TUPLE ||
+    (await exec('rustc --print host-tuple', {
+      collectOutput: true,
+    }))
 
   return targetTriple.trim()
 }
