@@ -15,6 +15,7 @@ Em..., There are no excited features. It just works as expected.
 ## TODO
 
 - [x] System proxy
+- [x] TUN mode
 - [x] Support Mac
 - [x] Support Window
 - [ ] Support Linux
