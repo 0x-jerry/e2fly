@@ -8,7 +8,7 @@ log = { workspace = true }
 anyhow = { workspace = true }
 sysinfo = { workspace = true }
 netdev = { workspace = true }
-simple_logger = "5"
+simplelog = "0.12"
 net-route = "0.4"
 clap = { version = "4", features = ["derive"] }
 clap_derive = "4"

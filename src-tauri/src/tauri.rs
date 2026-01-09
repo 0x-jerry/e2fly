@@ -29,11 +29,6 @@ pub fn start_tauri() {
         .plugin(
             tauri_plugin_log::Builder::new()
                 .max_file_size(1024 * 1024 * 5 /* bytes */)
-                .target(tauri_plugin_log::Target::new(
-                    tauri_plugin_log::TargetKind::LogDir {
-                        file_name: Some("app".to_string()),
-                    },
-                ))
                 .build(),
         )
         .plugin(

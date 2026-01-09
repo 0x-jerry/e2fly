@@ -43,7 +43,27 @@ enum TunHelperCli {
 
 #[tokio::main]
 pub async fn main() -> Result<()> {
-    simple_logger::init().unwrap();
+    {
+        use log::LevelFilter;
+        use simplelog::{
+            ColorChoice, CombinedLogger, Config, TermLogger, TerminalMode, WriteLogger,
+        };
+        use std::fs::File;
+        CombinedLogger::init(vec![
+            TermLogger::new(
+                LevelFilter::Debug,
+                Config::default(),
+                TerminalMode::Mixed,
+                ColorChoice::Auto,
+            ),
+            WriteLogger::new(
+                LevelFilter::Info,
+                Config::default(),
+                File::create("tun-helper.log").unwrap(),
+            ),
+        ])
+        .unwrap();
+    }
 
     let args = TunHelperCli::parse();
 
@@ -51,16 +71,21 @@ pub async fn main() -> Result<()> {
 
     match args {
         TunHelperCli::Start(args) => {
-            enable_tun(
+            if let Err(err) = enable_tun(
                 &args.program_path,
                 &args.config_path,
                 &args.pid_path,
                 &args.interface_name,
             )
-            .await?;
+            .await
+            {
+                log::error!("{}", err)
+            };
         }
         TunHelperCli::Stop(args) => {
-            disable_tun(args.pid_path)?;
+            if let Err(err) = disable_tun(args.pid_path) {
+                log::error!("{}", err);
+            };
         }
     }
 

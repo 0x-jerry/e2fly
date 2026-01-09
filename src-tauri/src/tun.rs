@@ -75,7 +75,10 @@ fn exec_tun_helper(args: &[&str]) -> Result<()> {
     let t = p.gui(true).hide(true).args(args).run()?;
 
     if !t.success() {
-        bail!("Failed to enable tun mode {}", t.code().unwrap())
+        bail!(
+            "Failed to execute tun-helper, error code: {}",
+            t.code().unwrap()
+        )
     }
 
     Ok(())
