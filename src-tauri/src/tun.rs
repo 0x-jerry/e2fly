@@ -31,7 +31,10 @@ pub async fn enable_tun<R: Runtime>(app: &AppHandle<R>) -> Result<()> {
     ];
 
     log::info!("Tun mode enable {:?}", args);
-    exec_tun_helper(&args)?;
+
+    if let Err(e) = exec_tun_helper(&args) {
+        log::error!("Failed to enable tun mode {}", e);
+    }
 
     Ok(())
 }
@@ -48,7 +51,10 @@ pub fn disable_tun<R: Runtime>(app: &AppHandle<R>) -> Result<()> {
     ];
 
     log::info!("Tun mode disable {:?}", args);
-    exec_tun_helper(&args)?;
+
+    if let Err(e) = exec_tun_helper(&args) {
+        log::error!("Failed to disable tun mode {}", e);
+    }
 
     Ok(())
 }

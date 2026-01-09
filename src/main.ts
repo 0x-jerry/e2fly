@@ -1,4 +1,5 @@
 import Aura from '@primeuix/themes/aura'
+import * as log from '@tauri-apps/plugin-log'
 import PrimeVue, { type PrimeVueConfiguration } from 'primevue/config'
 import ToastService from 'primevue/toastservice'
 import { createApp } from 'vue'
@@ -49,3 +50,7 @@ app.use(router)
 app.use(i18n)
 
 app.mount('#app')
+
+window.addEventListener('unhandledrejection', async (evt) => {
+  await log.error(String(evt.reason))
+})
