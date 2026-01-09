@@ -19,13 +19,13 @@ pub async fn enable_tun<T: AsRef<Path>>(
 
     let id = t.id();
 
-    println!("Start TUN success {}", id);
+    log::info!("Start TUN success {}", id);
     fs::write(pid_path, id.to_string())?;
 
     thread::sleep(Duration::from_secs(1));
     setup_auto_routes(interface_name).await?;
 
-    println!("Setup auto routes success");
+    log::info!("Setup auto routes success");
 
     Ok(())
 }

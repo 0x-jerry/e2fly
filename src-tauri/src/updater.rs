@@ -25,7 +25,7 @@ pub fn check_update<R: Runtime>(app: &AppHandle<R>) {
 }
 
 fn update<R: Runtime>(app: AppHandle<R>) -> Result<(), tauri_plugin_updater::Error> {
-    println!("start check update");
+    log::info!("start check update");
 
     let conf = app.app_config();
 
@@ -39,7 +39,7 @@ fn update<R: Runtime>(app: AppHandle<R>) -> Result<(), tauri_plugin_updater::Err
 
         let url = Url::parse(http_proxy.as_str()).expect("parse proxy url");
 
-        println!("set proxy {}", url);
+        log::info!("set proxy {}", url);
 
         updater_builder = updater_builder.proxy(url);
     }
@@ -49,15 +49,15 @@ fn update<R: Runtime>(app: AppHandle<R>) -> Result<(), tauri_plugin_updater::Err
     if let Some(update) = block_on(updater.check())? {
         let mut downloaded = 0;
 
-        println!("start download");
+        log::info!("start download");
 
         let binary = update.download(
             |chunk_length, content_length| {
                 downloaded += chunk_length;
-                println!("downloaded {downloaded} from {content_length:?}");
+                log::info!("downloaded {downloaded} from {content_length:?}");
             },
             || {
-                println!("download finished");
+                log::info!("download finished");
             },
         );
 

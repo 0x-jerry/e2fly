@@ -27,6 +27,19 @@ pub fn start_tauri() {
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_shell::init())
         .plugin(
+            tauri_plugin_log::Builder::new()
+                .max_file_size(1024 * 1024 * 5 /* bytes */)
+                .target(tauri_plugin_log::Target::new(
+                    tauri_plugin_log::TargetKind::Stdout,
+                ))
+                .target(tauri_plugin_log::Target::new(
+                    tauri_plugin_log::TargetKind::LogDir {
+                        file_name: Some("logs".to_string()),
+                    },
+                ))
+                .build(),
+        )
+        .plugin(
             tauri_plugin_window_state::Builder::default()
                 .with_state_flags(StateFlags::POSITION)
                 .build(),
@@ -92,7 +105,7 @@ pub fn start_tauri() {
         RunEvent::Exit => {
             app::before_exit_app(app_handle);
 
-            println!("app exited!");
+            log::info!("app exited!");
         }
         _ => (),
     })

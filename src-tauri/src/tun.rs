@@ -30,7 +30,7 @@ pub async fn enable_tun<R: Runtime>(app: &AppHandle<R>) -> Result<()> {
         pid_path.to_str().unwrap(),
     ];
 
-    println!("Tun mode enable {:?}", args);
+    log::info!("Tun mode enable {:?}", args);
     exec_tun_helper(&args)?;
 
     Ok(())
@@ -47,7 +47,7 @@ pub fn disable_tun<R: Runtime>(app: &AppHandle<R>) -> Result<()> {
         pid_path.to_str().unwrap(),
     ];
 
-    println!("Tun mode disable {:?}", args);
+    log::info!("Tun mode disable {:?}", args);
     exec_tun_helper(&args)?;
 
     Ok(())

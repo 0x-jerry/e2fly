@@ -43,9 +43,11 @@ enum TunHelperCli {
 
 #[tokio::main]
 pub async fn main() -> Result<()> {
+    simple_logger::init().unwrap();
+
     let args = TunHelperCli::parse();
 
-    println!("args: {:?}", args);
+    log::info!("args: {:?}", args);
 
     match args {
         TunHelperCli::Start(args) => {

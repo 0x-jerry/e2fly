@@ -2,7 +2,7 @@ pub fn kill_by_pid(pid: u32) {
     #[cfg(windows)]
     {
         if let Err(err) = win_kill_process_by_pid(pid) {
-            println!("kill process failed, error: {}", err);
+            log::info!("kill process failed, error: {}", err);
         }
 
         fn win_kill_process_by_pid(pid: u32) -> Result<(), String> {
@@ -17,13 +17,13 @@ pub fn kill_by_pid(pid: u32) {
                 let process_handle: HANDLE =
                     OpenProcess(desired_access, false, pid).map_err(|err| err.to_string())?;
 
-                println!("terminate process");
+                log::info!("terminate process");
                 // Use a guard or defer equivalent for closing the handle
                 // The HANDLE type doesn't implement Drop automatically in windows-rs for all scenarios,
                 // so explicit closing is a good practice, or use an external crate like 'scopeguard'.
 
                 TerminateProcess(process_handle, 1).map_err(|err| err.to_string())?;
-                println!("close handle");
+                log::info!("close handle");
                 CloseHandle(process_handle).map_err(|err| err.to_string())?;
             };
 

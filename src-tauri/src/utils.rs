@@ -84,7 +84,7 @@ pub fn kill_by_pid(pid: u32) {
         use anyhow::Result;
 
         if let Err(err) = win_kill_process_by_pid(pid) {
-            println!("kill process failed, error: {}", err);
+            log::info!("kill process failed, error: {}", err);
         }
 
         fn win_kill_process_by_pid(pid: u32) -> Result<()> {

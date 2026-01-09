@@ -31,17 +31,17 @@ pub async fn setup_auto_routes(interface_name: &str) -> Result<()> {
         None => return Ok(()),
     };
 
-    println!("index {}", index);
+    log::info!("index {}", index);
 
     for route in routes {
         let route = Route::new(route.0.parse().unwrap(), route.1).with_ifindex(index);
 
         match handle.add(&route).await {
             Ok(_) => {
-                println!("route add {:?}", route);
+                log::info!("route add {:?}", route);
             }
             Err(err) => {
-                println!("route add err: {}", err)
+                log::info!("route add err: {}", err)
             }
         }
     }

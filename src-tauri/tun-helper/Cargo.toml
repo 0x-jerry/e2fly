@@ -8,10 +8,14 @@ log = { workspace = true }
 anyhow = { workspace = true }
 sysinfo = { workspace = true }
 netdev = { workspace = true }
+simple_logger = "5"
 net-route = "0.4"
 clap = { version = "4", features = ["derive"] }
 clap_derive = "4"
 tokio = { version = "1", features = ["rt-multi-thread"] }
 
 [target."cfg(target_os = \"windows\")".dependencies]
-windows = {version = "0.62", features = ["Win32_Foundation", "Win32_System_Threading"] }
+windows = { version = "0.62", features = [
+  "Win32_Foundation",
+  "Win32_System_Threading",
+] }
