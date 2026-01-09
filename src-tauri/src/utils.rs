@@ -135,6 +135,15 @@ pub fn relative_command_path(
                 // do not use with_extension to retain dots in the command filename
                 command_path.as_mut_os_string().push(".exe");
             }
+
+            let command_path_str = command_path.to_str().unwrap();
+
+            command_path = if command_path_str.starts_with("\\\\?\\") {
+                command_path_str[4..].into()
+            } else {
+                command_path
+            };
+
             Ok(command_path)
         }
         #[cfg(not(windows))]
