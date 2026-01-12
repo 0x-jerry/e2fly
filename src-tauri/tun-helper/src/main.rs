@@ -1,4 +1,5 @@
-use anyhow::Result;
+use anyhow::{Result, bail};
+use std::env;
 use tun_helper::{disable_tun, enable_tun};
 
 use clap::Parser;
@@ -43,31 +44,13 @@ enum TunHelperCli {
 
 #[tokio::main]
 pub async fn main() -> Result<()> {
-    {
-        use log::LevelFilter;
-        use simplelog::{
-            ColorChoice, CombinedLogger, Config, TermLogger, TerminalMode, WriteLogger,
-        };
-        use std::fs::File;
-        CombinedLogger::init(vec![
-            TermLogger::new(
-                LevelFilter::Debug,
-                Config::default(),
-                TerminalMode::Mixed,
-                ColorChoice::Auto,
-            ),
-            WriteLogger::new(
-                LevelFilter::Info,
-                Config::default(),
-                File::create("tun-helper.log").unwrap(),
-            ),
-        ])
-        .unwrap();
-    }
+    init_logs()?;
+
+    log::info!("Start parse args: {:?}", env::args());
 
     let args = TunHelperCli::parse();
 
-    log::info!("args: {:?}", args);
+    log::info!("Parsed args: {:?}", args);
 
     match args {
         TunHelperCli::Start(args) => {
@@ -88,6 +71,42 @@ pub async fn main() -> Result<()> {
             };
         }
     }
+
+    Ok(())
+}
+
+fn init_logs() -> Result<()> {
+    use log::LevelFilter;
+    use simplelog::{ColorChoice, CombinedLogger, Config, TermLogger, TerminalMode, WriteLogger};
+    use std::fs::File;
+
+    let log_file_path = match env::current_exe() {
+        Ok(exe) => {
+            log::info!("exe path: {:?}", exe);
+
+            if exe.parent().is_none() {
+                bail!("Can not find exe dir");
+            }
+
+            exe.parent().unwrap().join("tun-helper.log")
+        }
+        Err(_) => {
+            log::error!("Failed to get current executable path");
+            bail!("initlized logs failed!");
+        }
+    };
+
+    let file = File::create(&log_file_path)?;
+
+    CombinedLogger::init(vec![
+        TermLogger::new(
+            LevelFilter::Debug,
+            Config::default(),
+            TerminalMode::Mixed,
+            ColorChoice::Auto,
+        ),
+        WriteLogger::new(LevelFilter::Info, Config::default(), file),
+    ])?;
 
     Ok(())
 }

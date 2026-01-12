@@ -28,6 +28,7 @@ pub fn start_tauri() {
         .plugin(tauri_plugin_shell::init())
         .plugin(
             tauri_plugin_log::Builder::new()
+                .level(log::LevelFilter::Info)
                 .max_file_size(1024 * 1024 * 5 /* bytes */)
                 .build(),
         )

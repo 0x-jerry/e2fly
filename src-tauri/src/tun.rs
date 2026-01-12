@@ -30,8 +30,6 @@ pub async fn enable_tun<R: Runtime>(app: &AppHandle<R>) -> Result<()> {
         pid_path.to_str().unwrap(),
     ];
 
-    log::info!("Tun mode enable {:?}", args);
-
     if let Err(e) = exec_tun_helper(&args) {
         log::error!("Failed to enable tun mode {}", e);
 
@@ -51,8 +49,6 @@ pub fn disable_tun<R: Runtime>(app: &AppHandle<R>) -> Result<()> {
         "--pid-path",
         pid_path.to_str().unwrap(),
     ];
-
-    log::info!("Tun mode disable {:?}", args);
 
     if let Err(e) = exec_tun_helper(&args) {
         log::error!("Failed to disable tun mode {}", e);
@@ -74,15 +70,17 @@ pub fn is_tun_mode_enabled<R: Runtime>(app: &AppHandle<R>) -> bool {
 fn exec_tun_helper(args: &[&str]) -> Result<()> {
     let tun_helper_program = relative_command_path(Path::new(TUN_HELPER_PROGRAM))?;
 
+    log::info!("Tun helper path {:?}", tun_helper_program);
+    log::info!("Tun helper args {:?}", args);
+
     let mut p = privilege::runas::Command::new(tun_helper_program);
 
     let t = p.gui(true).hide(true).args(args).run()?;
 
+    log::info!("Tun helper execution result code: {:?}", t.code());
+
     if !t.success() {
-        bail!(
-            "Failed to execute tun-helper, error code: {}",
-            t.code().unwrap()
-        )
+        bail!("Failed to execute tun-helper, error code: {:?}", t.code())
     }
 
     Ok(())
