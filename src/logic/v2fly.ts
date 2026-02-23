@@ -78,7 +78,8 @@ export function getOutboundConfFromBase64(
           users: [
             {
               id: config.uuid,
-              encryption: 'none',
+              flow: config.flow ?? "",
+              encryption: config.encryption || 'none',
             },
           ],
         },
