@@ -29,7 +29,7 @@ pub fn init<R: Runtime>(app: &AppHandle<R>) -> Result<()> {
         conf_dir: conf_path,
     };
 
-    app_conf.read();
+    app_conf.initialize();
 
     app.manage(Mutex::new(app_conf));
 
@@ -37,14 +37,41 @@ pub fn init<R: Runtime>(app: &AppHandle<R>) -> Result<()> {
 }
 
 impl AppConfigStateInner {
+    pub fn v2ray_config_dir(&self) -> PathBuf {
+        self.conf_dir.join("v2fly-conf")
+    }
+
     pub fn v2ray_config_path(&self) -> PathBuf {
-        self.conf_dir.join("v2fly.conf.json")
+        self.v2ray_config_dir().join("active.conf.json")
+    }
+
+    pub fn v2ray_base_config_path(&self) -> PathBuf {
+        self.v2ray_config_dir().join("common.conf.json")
+    }
+
+    pub fn save_v2ray_base_config(&self, content: String) {
+        let conf_path = self.v2ray_base_config_path();
+
+        fs::write(conf_path, content).expect("Write v2ray config file failed");
     }
 
     pub fn save_v2ray_config(&self, content: String) {
         let conf_path = self.v2ray_config_path();
 
         fs::write(conf_path, content).expect("Write v2ray config file failed");
+    }
+
+    fn initialize(&mut self) {
+        self.read();
+
+        let v2ray_conf_dir = self.v2ray_config_dir();
+        fs::create_dir_all(v2ray_conf_dir).expect("Create v2ray config folder failed");
+
+        if !self.v2ray_base_config_path().exists() {
+            let content = include_str!("../../assets/common.json");
+
+            self.save_v2ray_base_config(content.to_string());
+        }
     }
 
     fn config_file(&self) -> PathBuf {

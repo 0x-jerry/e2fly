@@ -1,6 +1,3 @@
-use tauri::{command, AppHandle, Builder, Manager, Runtime, State};
-use tauri_plugin_opener::OpenerExt;
-
 use crate::{
     app::update_autolaunch,
     conf::{model::AppConfig, AppConfigExt, AppConfigState},
@@ -8,6 +5,8 @@ use crate::{
     update_dat::update_dat_files,
     v2fly::FlyStateExt,
 };
+use tauri::{command, AppHandle, Builder, Manager, Runtime, State};
+use tauri_plugin_opener::OpenerExt;
 
 #[command]
 fn save_conf<R: Runtime>(app: AppHandle<R>, state: State<AppConfigState>, conf: AppConfig) {
@@ -43,6 +42,11 @@ fn get_v2ray_log<R: Runtime>(app: AppHandle<R>) -> Vec<String> {
 #[command]
 fn save_v2ray_conf(state: State<AppConfigState>, content: String) {
     state.lock().unwrap().save_v2ray_config(content);
+}
+
+#[command]
+fn save_v2ray_base_conf(state: State<AppConfigState>, content: String) {
+    state.lock().unwrap().save_v2ray_base_config(content);
 }
 
 #[command]
@@ -105,6 +109,7 @@ pub fn set_app_ipc_methods<R: Runtime>(app: Builder<R>) -> Builder<R> {
         save_conf,
         read_conf,
         save_v2ray_conf,
+        save_v2ray_base_conf,
         update_xray_dat_data,
         open_logs_folder,
         get_default_interface_name,

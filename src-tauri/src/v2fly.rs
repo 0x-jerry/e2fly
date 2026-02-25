@@ -28,8 +28,8 @@ impl<R: Runtime> FlyState<R> {
 
         self.stop();
 
-        let v2ray_conf_path = app_conf.v2ray_config_path();
-        let args = ["run", "-c", v2ray_conf_path.to_str().unwrap()];
+        let v2ray_conf_dir = app_conf.v2ray_config_dir();
+        let args = ["run", "-confdir", v2ray_conf_dir.to_str().unwrap()];
         self.start_with_args(app_conf.conf.v2_fly.bin.clone(), args)
     }
 
