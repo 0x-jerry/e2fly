@@ -2,16 +2,6 @@
   "log": {
     "loglevel": "warning"
   },
-  "outbounds": [
-    {
-      "tag": "direct",
-      "protocol": "freedom"
-    },
-    {
-      "tag": "block",
-      "protocol": "blackhole"
-    }
-  ],
   "dns": {
     "tag": "dns",
     "servers": [

@@ -78,7 +78,7 @@ export function getOutboundConfFromBase64(
           users: [
             {
               id: config.uuid,
-              flow: config.flow ?? "",
+              flow: config.flow ?? '',
               encryption: config.encryption || 'none',
             },
           ],
@@ -276,22 +276,5 @@ export async function getV2rayConfig(
       getOutboundBlockConf(tunConf),
     ],
     routing: getRoutingConf(extraRules),
-    dns: {
-      tag: InboundTag.DNS,
-      servers: [
-        {
-          address: '223.5.5.5',
-          domains: ['geosite:cn'],
-          expectIPs: ['geoip:cn'],
-        },
-        {
-          address: 'https://1.1.1.1/dns-query',
-          domains: ['geosite:geolocation-!cn'],
-          expectIPs: ['geoip:!cn'],
-        },
-        '223.5.5.5',
-        '1.1.1.1',
-      ],
-    },
   }
 }

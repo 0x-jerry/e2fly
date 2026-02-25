@@ -22,7 +22,7 @@ pub fn init<R: Runtime>(app: &AppHandle<R>) -> Result<()> {
         fs::create_dir_all(&config_dir)?;
     }
 
-    let conf_path = config_dir.canonicalize()?;
+    let conf_path = config_dir;
 
     let mut app_conf = AppConfigStateInner {
         conf: Default::default(),
