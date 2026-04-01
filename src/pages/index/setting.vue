@@ -24,7 +24,11 @@ interface DownloadProgressEventPayload {
 const downloadProgressPayload = ref<DownloadProgressEventPayload>()
 
 event.listen<DownloadProgressEventPayload>('download-progress', (event) => {
-  downloadProgressPayload.value = event.payload
+  if (event.payload.total === event.payload.downloaded) {
+    downloadProgressPayload.value = undefined
+  } else {
+    downloadProgressPayload.value = event.payload
+  }
 })
 
 const appConf = reactive<AppConfig>(structuredClone(toRaw(store.config)))
@@ -96,7 +100,7 @@ const updateDatFile = useLoading(async () => {
 const btnText = computed(() => {
   const payload = downloadProgressPayload.value
 
-  if (!payload || !updateDatFile.isLoading) {
+  if (!payload) {
     return t('page.setting.update-dat')
   }
 
@@ -116,10 +120,7 @@ async function updateTunModeStatus() {
 <template>
   <div class="px-3 py-2" gap="0.5rem" flex="~ col">
     <div flex="~">
-      <BinaryCheckbox
-        v-model="appConf.proxy.system"
-        class="flex-1 justify-start"
-      >
+      <BinaryCheckbox v-model="appConf.proxy.system" class="flex-1 justify-start">
         {{ $t("page.setting.system-proxy") }}
       </BinaryCheckbox>
     </div>
@@ -129,40 +130,25 @@ async function updateTunModeStatus() {
       </BinaryCheckbox>
     </div>
     <div flex="~">
-      <BinaryCheckbox
-        v-model="appConf.app.autoStartup"
-        class="flex-1 justify-start"
-      >
+      <BinaryCheckbox v-model="appConf.app.autoStartup" class="flex-1 justify-start">
         {{ $t("page.setting.auto-startup") }}
       </BinaryCheckbox>
     </div>
     <div flex="~">
-      <BinaryCheckbox
-        v-model="appConf.v2fly.routes.bypassCN"
-        class="flex-1 justify-start"
-      >
+      <BinaryCheckbox v-model="appConf.v2fly.routes.bypassCN" class="flex-1 justify-start">
         {{ $t("page.setting.bypassCN") }}
       </BinaryCheckbox>
     </div>
     <div flex="~">
-      <BinaryCheckbox
-        v-model="appConf.v2fly.routes.blockAds"
-        class="flex-1 justify-start"
-      >
+      <BinaryCheckbox v-model="appConf.v2fly.routes.blockAds" class="flex-1 justify-start">
         {{ $t("page.setting.blockAds") }}
       </BinaryCheckbox>
     </div>
     <div flex="~">
-      <BinaryCheckbox
-        v-model="appConf.v2fly.stream.tcp"
-        class="flex-1 justify-start"
-      >
+      <BinaryCheckbox v-model="appConf.v2fly.stream.tcp" class="flex-1 justify-start">
         TCP
       </BinaryCheckbox>
-      <BinaryCheckbox
-        v-model="appConf.v2fly.stream.udp"
-        class="flex-1 justify-start"
-      >
+      <BinaryCheckbox v-model="appConf.v2fly.stream.udp" class="flex-1 justify-start">
         UDP
       </BinaryCheckbox>
     </div>
@@ -170,22 +156,14 @@ async function updateTunModeStatus() {
       <BinaryCheckbox v-model="appConf.v2fly.http.enabled"></BinaryCheckbox>
       <div w="6em" text="right">Http {{ $t("page.setting.port") }}：</div>
       <div flex="1">
-        <InputText
-          class="w-full"
-          v-model.number="appConf.v2fly.http.port"
-          block
-        />
+        <InputText class="w-full" v-model.number="appConf.v2fly.http.port" block />
       </div>
     </div>
     <div class="items-center gap-x-1" flex="~">
       <BinaryCheckbox v-model="appConf.v2fly.socks.enabled"></BinaryCheckbox>
       <div w="6em" text="right">Socks {{ $t("page.setting.port") }}：</div>
       <div flex="1">
-        <InputText
-          v-model.number="appConf.v2fly.socks.port"
-          class="w-full"
-          block
-        />
+        <InputText v-model.number="appConf.v2fly.socks.port" class="w-full" block />
       </div>
     </div>
     <div class="items-center gap-x-1" flex="~">
@@ -195,32 +173,17 @@ async function updateTunModeStatus() {
       </div>
     </div>
     <div>
-      <Button
-        @click="updateDatFile"
-        class="w-full"
-        :disabled="updateDatFile.isLoading"
-        :loading="updateDatFile.isLoading"
-        :label="btnText"
-      />
+      <Button @click="updateDatFile" class="w-full" :disabled="updateDatFile.isLoading || !!downloadProgressPayload"
+        :loading="updateDatFile.isLoading || !!downloadProgressPayload" :label="btnText" />
     </div>
     <div>
-      <Button
-        @click="saveConfig"
-        class="w-full"
-        :disabled="isModified"
-        :loading="saveConfig.isLoading"
-        :label="$t('page.setting.save')"
-      />
+      <Button @click="saveConfig" class="w-full" :disabled="isModified" :loading="saveConfig.isLoading"
+        :label="$t('page.setting.save')" />
     </div>
     <div>
-      <Button
-        @click="toggleTunMode"
-        class="w-full"
-        :disabled="toggleTunMode.isLoading"
-        :severity="isTunModeEnabled ? 'danger' : 'primary'"
-        :loading="toggleTunMode.isLoading"
-        :label="isTunModeEnabled ? 'Disable TUN Mode' : 'Enable TUN Mode'"
-      />
+      <Button @click="toggleTunMode" class="w-full" :disabled="toggleTunMode.isLoading"
+        :severity="isTunModeEnabled ? 'danger' : 'primary'" :loading="toggleTunMode.isLoading"
+        :label="isTunModeEnabled ? 'Disable TUN Mode' : 'Enable TUN Mode'" />
     </div>
   </div>
 </template>
