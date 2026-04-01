@@ -4,7 +4,7 @@ import PrimeVue, { type PrimeVueConfiguration } from 'primevue/config'
 import ToastService from 'primevue/toastservice'
 import { createApp } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { routes } from 'vue-router/auto-routes'
+import { handleHotUpdate, routes } from 'vue-router/auto-routes'
 import App from './App.vue'
 import { i18n } from './i18n'
 
@@ -30,6 +30,10 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes: extendRoutes(),
 })
+
+if (import.meta.hot) {
+  handleHotUpdate(router)
+}
 
 app.use(PrimeVue, {
   theme: {

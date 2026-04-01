@@ -3,7 +3,7 @@ import { useInterval } from '@/hooks'
 import { ipc } from '@/ipc'
 
 const state = reactive({
-  logs: [] as {content: string, key: string}[],
+  logs: [] as { content: string; key: string }[],
 })
 
 async function getLogs() {
@@ -11,14 +11,13 @@ async function getLogs() {
 
   const countMap = new Map<string, number>()
   state.logs = logs.map((line) => {
-
     const count = (countMap.get(line) || 0) + 1
 
-    countMap.set(line, count);
+    countMap.set(line, count)
 
     return {
       key: `${count}-${line}`,
-      content: `${line}\n`
+      content: `${line}\n`,
     }
   })
 }
@@ -33,7 +32,12 @@ async function openLogFolder() {
 <template>
   <div class="log-page flex flex-col">
     <div class="flex gap-1 border-(0 b solid gray-3) mb-1 justify-end">
-      <Button border="rounded-0" size="small" severity="secondary" @click="openLogFolder">
+      <Button
+        border="rounded-0"
+        size="small"
+        severity="secondary"
+        @click="openLogFolder"
+      >
         Open Log Folder
       </Button>
     </div>
