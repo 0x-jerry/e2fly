@@ -31,6 +31,12 @@ pub fn init<R: Runtime>(app: &AppHandle<R>) -> Result<()> {
 
     app_conf.initialize();
 
+    {
+        // Remove old config files
+        let _ = fs::remove_file(app_conf.v2ray_config_dir().join("active.conf.json"));
+        let _ = fs::remove_file(app_conf.v2ray_config_dir().join("common.conf.json"));
+    }
+
     app.manage(Mutex::new(app_conf));
 
     Ok(())
@@ -42,11 +48,11 @@ impl AppConfigStateInner {
     }
 
     pub fn v2ray_config_path(&self) -> PathBuf {
-        self.v2ray_config_dir().join("active.conf.json")
+        self.v2ray_config_dir().join("active.conf.jsonc")
     }
 
     pub fn v2ray_base_config_path(&self) -> PathBuf {
-        self.v2ray_config_dir().join("common.conf.json")
+        self.v2ray_config_dir().join("common.conf.jsonc")
     }
 
     pub fn save_v2ray_base_config(&self, content: String) {
@@ -68,7 +74,7 @@ impl AppConfigStateInner {
         fs::create_dir_all(v2ray_conf_dir).expect("Create v2ray config folder failed");
 
         if !self.v2ray_base_config_path().exists() {
-            let content = include_str!("../../assets/common.json");
+            let content = include_str!("../../assets/common.jsonc");
 
             self.save_v2ray_base_config(content.to_string());
         }
