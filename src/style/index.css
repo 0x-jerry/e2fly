@@ -3,19 +3,19 @@
 @import url('normalize.css/normalize.css') layer(reset);
 
 /* TDesign's numbered --td-brand-color-N ramp is referenced only by the aliases below,
-   so they are set directly. Values are Tailwind v4's green scale: base 600, hover 500,
-   active 700, tints 50/100, disabled 300. The two text roles use 700/800, the lightest
-   greens that clear WCAG AA (4.5:1) on white. */
+   so they are set directly. Values are Tailwind v3's emerald scale: base 500, hover 400,
+   active 600, tints 50/100, disabled 300. The two text roles use 700/800, the lightest
+   steps that clear WCAG AA (4.5:1) on white. */
 :root {
-  --td-brand-color: oklch(62.7% 0.194 149.214);
-  --td-brand-color-hover: oklch(72.3% 0.219 149.579);
-  --td-brand-color-active: oklch(52.7% 0.154 150.069);
-  --td-brand-color-focus: oklch(96.2% 0.044 156.743);
-  --td-brand-color-disabled: oklch(87.1% 0.15 154.449);
-  --td-brand-color-light: oklch(98.2% 0.018 155.826);
-  --td-brand-color-light-hover: oklch(96.2% 0.044 156.743);
-  --td-text-color-brand: oklch(52.7% 0.154 150.069);
-  --td-text-color-link: oklch(44.8% 0.119 151.328);
+  --td-brand-color: #10b981;
+  --td-brand-color-hover: #34d399;
+  --td-brand-color-active: #059669;
+  --td-brand-color-focus: #d1fae5;
+  --td-brand-color-disabled: #6ee7b7;
+  --td-brand-color-light: #ecfdf5;
+  --td-brand-color-light-hover: #d1fae5;
+  --td-text-color-brand: #047857;
+  --td-text-color-link: #065f46;
 }
 
 .drawer-full-bleed .t-drawer__body {
