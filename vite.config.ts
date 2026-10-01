@@ -10,7 +10,7 @@ import IconsResolver from 'unplugin-icons/resolver'
 import Unocss from 'unocss/vite'
 import vueI18n from '@intlify/unplugin-vue-i18n/vite'
 
-const r = (...path: string[]) => join(__dirname, ...path)
+const r = (...path: string[]) => join(import.meta.dirname, ...path)
 
 // https://vitejs.dev/config/
 export default defineConfig({
