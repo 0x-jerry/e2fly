@@ -200,20 +200,20 @@ async function saveCurrentConfig() {
   justify-content: center;
   cursor: pointer;
 
-  @apply p-2;
-  @apply border-gray-300 rounded;
-  @apply hover:border-blue-500;
+  --uno: p-2;
+  --uno: border-gray-300 rounded;
+  --uno: hover:border-blue-500;
 }
 
 .cards {
-  // @apply my-1;
+  // --uno: my-1;
 }
 
 .v2fly-item-btn {
-  @apply px-3 py-2;
-  @apply bg-gray-100 text-gray-700;
-  @apply text-sm;
-  @apply flex;
+  --uno: px-3 py-2;
+  --uno: bg-gray-100 text-gray-700;
+  --uno: text-sm;
+  --uno: flex;
   outline: none;
   border: none;
   cursor: pointer;
@@ -225,10 +225,10 @@ async function saveCurrentConfig() {
 
   .icon {
     opacity: 0;
-    @apply transition transition-opacity;
+    --uno: transition transition-opacity;
 
     &:hover {
-      @apply text-blue-500;
+      --uno: text-blue-500;
     }
   }
 
@@ -241,7 +241,7 @@ async function saveCurrentConfig() {
 
 .connection-btn {
   &.is-disabled {
-    @apply bg-green-500;
+    --uno: bg-green-500;
   }
 }
 </style>

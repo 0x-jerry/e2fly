@@ -44,11 +44,11 @@ async function openLogFolder() {
 
 <style lang="scss" scoped>
 .log-page {
-  @apply bg-light-300;
+  --uno: bg-light-300;
   height: 100%;
   margin: 0;
-  @apply text-gray-700;
-  @apply text-xs;
+  --uno: text-gray-700;
+  --uno: text-xs;
 }
 
 pre {
@@ -59,6 +59,6 @@ pre {
 }
 
 code {
-  @apply font-mono;
+  --uno: font-mono;
 }
 </style>

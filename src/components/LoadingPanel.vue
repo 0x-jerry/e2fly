@@ -15,8 +15,8 @@ defineProps<LoadingProps>()
 
 <style lang="scss" scoped>
 .spinner {
-  @apply absolute top-0 left-0 size-full flex items-center justify-center;
-  @apply bg-gray-4 bg-op-40;
+  --uno: absolute top-0 left-0 size-full flex items-center justify-center;
+  --uno: bg-gray-4 bg-op-40;
   z-index: 999;
 }
 </style>

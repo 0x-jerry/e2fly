@@ -35,12 +35,12 @@ init()
 <style lang="scss">
 hr {
   border-width: 0 0 1px;
-  @apply border-light-900 !my-3;
+  --uno: border-light-900 my-3!;
 }
 
 html,
 body {
-  @apply font-sans;
+  --uno: font-sans;
 }
 
 html {
@@ -52,15 +52,15 @@ html {
 }
 
 .btn {
-  @apply border-none px-2 py-1 bg-gray-2;
+  --uno: border-none px-2 py-1 bg-gray-2;
   cursor: pointer;
 
   &:hover {
-    @apply bg-gray-3;
+    --uno: bg-gray-3;
   }
 
   &:active {
-    @apply bg-gray-2;
+    --uno: bg-gray-2;
   }
 }
 </style>

@@ -42,10 +42,10 @@ function handleMenu(value: string | number | boolean) {
   // -webkit-app-region: drag;
   background: #f1f5f9;
 
-  @apply pl-3;
-  @apply flex items-center;
+  --uno: pl-3;
+  --uno: flex items-center;
 
-  @apply border-(0 b solid gray-3);
+  --uno: border-(0 b solid gray-3);
 }
 
 :deep(.t-radio-button__label) {
