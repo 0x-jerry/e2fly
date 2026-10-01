@@ -35,7 +35,7 @@ init()
 <style lang="scss">
 hr {
   border-width: 0 0 1px;
-  --uno: border-light-900 my-3!;
+  --uno: border-light-900 my-3;
 }
 
 html,
