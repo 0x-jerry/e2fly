@@ -5,8 +5,8 @@
   "version": "1.20.1",
   "identifier": "e2fly.0x-jerry.com",
   "build": {
-    "beforeBuildCommand": "pnpm build:web",
-    "beforeDevCommand": "pnpm dev:web",
+    "beforeBuildCommand": "bun run build:web",
+    "beforeDevCommand": "bun run dev:web",
     "frontendDist": "../dist",
     "devUrl": "http://localhost:5173/"
   },

@@ -64,16 +64,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v2
         with:
-          version: 8
+          bun-version: 1.4.2
 
       - name: setup node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "pnpm"
+
+      - name: Cache bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
 
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
@@ -99,10 +106,10 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Install dependencies
-        run: pnpm i
+        run: bun install --frozen-lockfile
 
       - name: Build tun-helper
-        run: npm run build:tun-helper
+        run: bun run build:tun-helper
         env:
           BUILD_HOST_TUPLE: ${{ matrix.hostTuple }}
 

@@ -5,7 +5,7 @@ process.chdir('./src-tauri')
 await buildThenCopyTunHelper()
 
 process.chdir('..')
-await exec('npm run build:tauri')
+await exec('bun run build:tauri')
 
 // finished
 process.exit(0)
