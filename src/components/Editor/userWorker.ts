@@ -23,5 +23,3 @@ self.MonacoEnvironment = {
     return new editorWorker()
   },
 }
-
-monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true)

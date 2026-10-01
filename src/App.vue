@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Toast from 'primevue/toast'
 import { useConfigChangedEvent } from './events'
 import { useEvent } from './hooks/useEvent'
 import { ipc } from './ipc'
@@ -30,7 +29,6 @@ init()
 </script>
 
 <template>
-  <Toast position="bottom-center"></Toast>
   <router-view v-if="initialized"></router-view>
 </template>
 

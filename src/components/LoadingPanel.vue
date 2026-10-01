@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import Spinner from 'primevue/progressspinner'
-
 export interface LoadingProps {
   loading?: boolean
 }
@@ -11,17 +9,13 @@ defineProps<LoadingProps>()
 <template>
   <div class="relative">
     <slot></slot>
-    <div
-      v-if="loading"
-      class="spinner absolute top-0 left-0 size-full flex items-center justify-center"
-    >
-      <Spinner class="h-4/5 max-h-8" strokeWidth="6" />
-    </div>
+    <t-loading :loading="loading" class="spinner" />
   </div>
 </template>
 
 <style lang="scss" scoped>
 .spinner {
+  @apply absolute top-0 left-0 size-full flex items-center justify-center;
   @apply bg-gray-4 bg-op-40;
   z-index: 999;
 }

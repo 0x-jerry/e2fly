@@ -11,18 +11,20 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    BinaryCheckbox: typeof import('./../src/components/BinaryCheckbox.vue')['default']
-    Button: typeof import('primevue/button')['default']
-    Checkbox: typeof import('primevue/checkbox')['default']
     ICarbonCircleFilled: typeof import('~icons/carbon/circle-filled')['default']
     ICarbonCode: typeof import('~icons/carbon/code')['default']
     ICarbonCopy: typeof import('~icons/carbon/copy')['default']
     ICarbonTrashCan: typeof import('~icons/carbon/trash-can')['default']
-    InputText: typeof import('primevue/inputtext')['default']
     LoadingPanel: typeof import('./../src/components/LoadingPanel.vue')['default']
     MonacoEditor: typeof import('./../src/components/Editor/MonacoEditor.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SelectButton: typeof import('primevue/selectbutton')['default']
+    TButton: typeof import('tdesign-vue-next')['Button']
+    TCheckbox: typeof import('tdesign-vue-next')['Checkbox']
+    TDrawer: typeof import('tdesign-vue-next')['Drawer']
+    TInput: typeof import('tdesign-vue-next')['Input']
+    TLoading: typeof import('tdesign-vue-next')['Loading']
+    TRadioButton: typeof import('tdesign-vue-next')['RadioButton']
+    TRadioGroup: typeof import('tdesign-vue-next')['RadioGroup']
   }
 }

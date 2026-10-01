@@ -2,16 +2,13 @@
 import { nanoid, remove } from '@0x-jerry/utils'
 import { OutboundObject } from '@0x-jerry/v2ray-schema/types/outbound'
 import { useLoading } from '@0x-jerry/vue-kit'
-import Drawer from 'primevue/drawer'
-import { useToast } from 'primevue/usetoast'
+import { MessagePlugin } from 'tdesign-vue-next'
 import LoadingPanel from '@/components/LoadingPanel.vue'
 import { Outbound } from '@/config'
 import { ipc } from '@/ipc'
 import { getOutboundConfFromBase64 } from '@/logic/v2fly'
 import { actions, store } from '@/store'
 import { version } from '../../../package.json'
-
-const toast = useToast()
 
 const v2flyConf = reactive({
   sharingString: '',
@@ -42,12 +39,7 @@ const toggleV2fly = useLoading(async () => {
     const err = await actions.startV2fly(store.config.active.outboundId)
 
     if (err) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: err,
-        life: 5000,
-      })
+      MessagePlugin.error({ content: err, duration: 5000 })
     }
   }
 })
@@ -61,12 +53,7 @@ const switchConfig = useLoading(async (item: E2FlyConfigOutbound) => {
   const err = await actions.startV2fly(item.id)
 
   if (err) {
-    toast.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: err,
-      life: 5000,
-    })
+    MessagePlugin.error({ content: err, duration: 5000 })
   }
 })
 
@@ -161,17 +148,17 @@ async function saveCurrentConfig() {
       </LoadingPanel>
     </div>
 
-    <Button
+    <t-button
       @click="toggleV2fly"
-      border="rounded-0"
       :loading="toggleV2fly.isLoading"
-      :severity="!store.config.active.enabled ? 'primary' : 'danger'"
-      :label="
+      :theme="!store.config.active.enabled ? 'primary' : 'danger'"
+    >
+      {{
         store.config.active.enabled
           ? $t('page.server.disconnect')
           : $t('page.server.reconnect')
-      "
-    />
+      }}
+    </t-button>
     <textarea
       class="w-full border-gray-300 bg-gray-100 resize-y outline-none border-x-0 text-sm px-3"
       rows="6"
@@ -179,36 +166,30 @@ async function saveCurrentConfig() {
       v-model="v2flyConf.sharingString"
     ></textarea>
     <div class="px-4 my-2">
-      <BinaryCheckbox v-model="v2flyConf.mux">Mux</BinaryCheckbox>
+      <t-checkbox v-model="v2flyConf.mux">Mux</t-checkbox>
     </div>
-    <Button
-      severity="secondary"
-      class="w-full rounded-0 block"
-      @click="addConfig"
-    >
+    <t-button block @click="addConfig">
       {{ $t('page.server.add') }}
-    </Button>
+    </t-button>
     <div class="mt-3" text="xs gray-3 center">version: v{{ version }}</div>
   </div>
 
-  <Drawer
+  <t-drawer
     v-model:visible="preview.show"
-    position="full"
-    :pt="{
-      content: 'p-0',
-      header: 'py-1',
-    }"
+    placement="right"
+    size="100%"
+    class="drawer-full-bleed"
   >
     <template #header>
       <div class="flex gap-2 items-center">
         <h2 class="m-0">Edit Config</h2>
-        <Button size="small" @click="saveCurrentConfig">Save</Button>
+        <t-button size="small" @click="saveCurrentConfig">Save</t-button>
       </div>
     </template>
     <div class="flex flex-col h-full b-(0 t solid gray-3)">
       <MonacoEditor class="flex-1" v-model="preview.content"></MonacoEditor>
     </div>
-  </Drawer>
+  </t-drawer>
 </template>
 
 <style lang="scss" scoped>

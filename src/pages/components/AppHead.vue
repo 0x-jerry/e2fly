@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { SelectButtonChangeEvent } from 'primevue/selectbutton'
 import { menus } from './menuConf'
 
 const router = useRouter()
@@ -7,10 +6,8 @@ const route = useRoute()
 
 const activeMenu = computed(() => menus.find((n) => n.route === route.path))
 
-function handleMenu(menu: SelectButtonChangeEvent) {
-  const route = menu.value
-
-  router.push(route)
+function handleMenu(value: string | number | boolean) {
+  router.push(String(value))
 }
 </script>
 
@@ -22,16 +19,20 @@ function handleMenu(menu: SelectButtonChangeEvent) {
       </span>
     </div>
     <div class="flex gap-2">
-      <SelectButton
+      <t-radio-group
         :model-value="activeMenu?.route"
-        :options="menus"
-        option-label="text"
-        option-value="route"
+        theme="button"
+        variant="default-filled"
         @change="handleMenu"
-        #option="{ option }"
       >
-        <component :is="option.icon"></component>
-      </SelectButton>
+        <t-radio-button
+          v-for="menu in menus"
+          :key="menu.route"
+          :value="menu.route"
+        >
+          <component :is="menu.icon"></component>
+        </t-radio-button>
+      </t-radio-group>
     </div>
   </div>
 </template>
@@ -45,5 +46,9 @@ function handleMenu(menu: SelectButtonChangeEvent) {
   @apply flex items-center;
 
   @apply border-(0 b solid gray-3);
+}
+
+:deep(.t-radio-button__label) {
+  display: inline-flex;
 }
 </style>

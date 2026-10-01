@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useLoading } from '@0x-jerry/vue-kit'
 import { event } from '@tauri-apps/api'
-import { useToast } from 'primevue/usetoast'
+import { MessagePlugin } from 'tdesign-vue-next'
 import { useI18n } from 'vue-i18n'
 import { AppConfig } from '@/config'
 import { useConfigChangedEvent } from '@/events'
@@ -43,8 +43,6 @@ useConfigChangedEvent().on(() => {
   Object.assign(appConf, structuredClone(toRaw(store.config)))
 })
 
-const toast = useToast()
-
 const saveConfig = useLoading(async () => {
   store.config = structuredClone(toRaw(appConf))
 
@@ -54,12 +52,7 @@ const saveConfig = useLoading(async () => {
   if (conf.active.enabled) {
     const err = await ipc.startV2fly(conf.active.outboundId)
     if (err) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: err,
-        life: 5000,
-      })
+      MessagePlugin.error({ content: err, duration: 5000 })
     }
   } else {
     await ipc.stopV2fly()
@@ -81,19 +74,12 @@ const isModified = computed(() => {
 const updateDatFile = useLoading(async () => {
   try {
     await ipc.updateDatFile()
-    toast.add({
-      severity: 'success',
-      summary: 'Download',
-      detail: t('page.setting.update-dat-success'),
-      life: 5000,
+    MessagePlugin.success({
+      content: t('page.setting.update-dat-success'),
+      duration: 5000,
     })
   } catch (error) {
-    toast.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: String(error),
-      life: 5000,
-    })
+    MessagePlugin.error({ content: String(error), duration: 5000 })
   }
 })
 
@@ -120,111 +106,114 @@ async function updateTunModeStatus() {
 <template>
   <div class="px-3 py-2" gap="0.5rem" flex="~ col">
     <div flex="~">
-      <BinaryCheckbox
+      <t-checkbox
         v-model="appConf.proxy.system"
         class="flex-1 justify-start"
       >
         {{ $t('page.setting.system-proxy') }}
-      </BinaryCheckbox>
+      </t-checkbox>
     </div>
     <div flex="~">
-      <BinaryCheckbox v-model="appConf.proxy.lan" class="flex-1 justify-start">
+      <t-checkbox v-model="appConf.proxy.lan" class="flex-1 justify-start">
         {{ $t('page.setting.proxy--with-lan') }}
-      </BinaryCheckbox>
+      </t-checkbox>
     </div>
     <div flex="~">
-      <BinaryCheckbox
+      <t-checkbox
         v-model="appConf.app.autoStartup"
         class="flex-1 justify-start"
       >
         {{ $t('page.setting.auto-startup') }}
-      </BinaryCheckbox>
+      </t-checkbox>
     </div>
     <div flex="~">
-      <BinaryCheckbox
+      <t-checkbox
         v-model="appConf.v2fly.routes.bypassCN"
         class="flex-1 justify-start"
       >
         {{ $t('page.setting.bypassCN') }}
-      </BinaryCheckbox>
+      </t-checkbox>
     </div>
     <div flex="~">
-      <BinaryCheckbox
+      <t-checkbox
         v-model="appConf.v2fly.routes.blockAds"
         class="flex-1 justify-start"
       >
         {{ $t('page.setting.blockAds') }}
-      </BinaryCheckbox>
+      </t-checkbox>
     </div>
     <div flex="~">
-      <BinaryCheckbox
+      <t-checkbox
         v-model="appConf.v2fly.stream.tcp"
         class="flex-1 justify-start"
       >
         TCP
-      </BinaryCheckbox>
-      <BinaryCheckbox
+      </t-checkbox>
+      <t-checkbox
         v-model="appConf.v2fly.stream.udp"
         class="flex-1 justify-start"
       >
         UDP
-      </BinaryCheckbox>
+      </t-checkbox>
     </div>
     <div class="items-center gap-x-1" flex="~">
-      <BinaryCheckbox v-model="appConf.v2fly.http.enabled"></BinaryCheckbox>
+      <t-checkbox v-model="appConf.v2fly.http.enabled"></t-checkbox>
       <div w="6em" text="right">Http {{ $t('page.setting.port') }}：</div>
       <div flex="1">
-        <InputText
+        <t-input
           class="w-full"
-          v-model.number="appConf.v2fly.http.port"
-          block
+          type="number"
+          v-model="appConf.v2fly.http.port"
         />
       </div>
     </div>
     <div class="items-center gap-x-1" flex="~">
-      <BinaryCheckbox v-model="appConf.v2fly.socks.enabled"></BinaryCheckbox>
+      <t-checkbox v-model="appConf.v2fly.socks.enabled"></t-checkbox>
       <div w="6em" text="right">Socks {{ $t('page.setting.port') }}：</div>
       <div flex="1">
-        <InputText
-          v-model.number="appConf.v2fly.socks.port"
+        <t-input
           class="w-full"
-          block
+          type="number"
+          v-model="appConf.v2fly.socks.port"
         />
       </div>
     </div>
     <div class="items-center gap-x-1" flex="~">
       <div w="7.8em" text="right">{{ $t('page.setting.v2ray-bin') }}：</div>
       <div flex="1">
-        <InputText v-model.number="appConf.v2fly.bin" class="w-full" block />
+        <t-input v-model="appConf.v2fly.bin" class="w-full" />
       </div>
     </div>
     <div>
-      <Button
+      <t-button
+        block
         @click="updateDatFile"
-        class="w-full"
         :disabled="updateDatFile.isLoading || !!downloadProgressPayload"
         :loading="updateDatFile.isLoading || !!downloadProgressPayload"
-        :label="btnText"
-      />
+      >
+        {{ btnText }}
+      </t-button>
     </div>
     <div>
-      <Button
+      <t-button
+        block
         @click="saveConfig"
-        class="w-full"
         :disabled="isModified"
         :loading="saveConfig.isLoading"
-        :label="$t('page.setting.save')"
-      />
+      >
+        {{ $t('page.setting.save') }}
+      </t-button>
     </div>
     <div>
-      <Button
+      <t-button
+        block
         @click="toggleTunMode"
-        class="w-full"
         :disabled="toggleTunMode.isLoading"
-        :severity="isTunModeEnabled ? 'danger' : 'primary'"
+        :theme="isTunModeEnabled ? 'danger' : 'primary'"
         :loading="toggleTunMode.isLoading"
-        :label="isTunModeEnabled ? 'Disable TUN Mode' : 'Enable TUN Mode'"
-      />
+      >
+        {{ isTunModeEnabled ? 'Disable TUN Mode' : 'Enable TUN Mode' }}
+      </t-button>
     </div>
   </div>
 </template>

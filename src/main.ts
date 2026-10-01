@@ -1,7 +1,4 @@
-import Aura from '@primeuix/themes/aura'
 import * as log from '@tauri-apps/plugin-log'
-import PrimeVue, { type PrimeVueConfiguration } from 'primevue/config'
-import ToastService from 'primevue/toastservice'
 import { createApp } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { handleHotUpdate, routes } from 'vue-router/auto-routes'
@@ -34,20 +31,6 @@ const router = createRouter({
 if (import.meta.hot) {
   handleHotUpdate(router)
 }
-
-app.use(PrimeVue, {
-  theme: {
-    preset: Aura,
-    options: {
-      prefix: 'p',
-      darkModeSelector: 'system',
-      cssLayer: true,
-    },
-  },
-  ripple: true,
-} as PrimeVueConfiguration)
-
-app.use(ToastService)
 
 app.use(router)
 

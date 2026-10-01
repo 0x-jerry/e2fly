@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "target": "esnext",
     "useDefineForClassFields": true,
     "module": "esnext",
@@ -15,7 +14,7 @@
     "skipLibCheck": true,
     "types": ["vite/client", "unplugin-icons/types/vue"],
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src", "types"],

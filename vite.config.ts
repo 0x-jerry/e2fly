@@ -3,7 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import { join } from 'path'
 import VueRouter from 'vue-router/vite'
 import Components from 'unplugin-vue-components/vite'
-import { PrimeVueResolver } from 'unplugin-vue-components/resolvers'
+import { TDesignResolver } from 'unplugin-vue-components/resolvers'
 import AutoImport from 'unplugin-auto-import/vite'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
@@ -49,8 +49,8 @@ export default defineConfig({
       dts: 'types/auto-components.d.ts',
       resolvers: [
         IconsResolver(),
-        PrimeVueResolver({
-          importStyle: false,
+        TDesignResolver({
+          library: 'vue-next',
         }),
       ],
     }),

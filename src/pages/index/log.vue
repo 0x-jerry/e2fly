@@ -32,14 +32,9 @@ async function openLogFolder() {
 <template>
   <div class="log-page flex flex-col">
     <div class="flex gap-1 border-(0 b solid gray-3) mb-1 justify-end">
-      <Button
-        border="rounded-0"
-        size="small"
-        severity="secondary"
-        @click="openLogFolder"
-      >
+      <t-button size="small" @click="openLogFolder">
         Open Log Folder
-      </Button>
+      </t-button>
     </div>
     <div class="px-3 overflow-auto flex-1">
       <pre><code v-for="line in state.logs" :key="line.key">{{ line.content }}</code></pre>
